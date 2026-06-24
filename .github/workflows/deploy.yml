@@ -46,12 +46,10 @@ jobs:
         run: cp dist/index.html dist/404.html
 
       - name: Configure GitHub Pages
+        # Reads the repo's Pages configuration. Pages must be enabled once, by
+        # hand: Settings -> Pages -> Build and deployment -> Source: GitHub
+        # Actions. The workflow token isn't permitted to enable Pages itself.
         uses: actions/configure-pages@v5
-        with:
-          # Auto-enable Pages (and set the source to GitHub Actions) if the
-          # token has permission. If org policy blocks this, enable Pages once
-          # manually: Settings -> Pages -> Source: GitHub Actions.
-          enablement: true
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
