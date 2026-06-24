@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      # Temporary: gives a live preview URL before merging to main.
+      # Drop this line once the work lands on main.
+      - claude/zealous-euler-hzmm5n
+  workflow_dispatch:
+
+# Permissions required to publish to GitHub Pages via the official actions.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one Pages deployment at a time; cancel superseded in-progress runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # GitHub Pages has no server-side rewrites. Serving a copy of index.html
+      # as 404.html lets history-mode deep links / refreshes boot the SPA so
+      # React Router can render the right screen.
+      - name: Add SPA fallback for client-side routes
+        run: cp dist/index.html dist/404.html
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          # Auto-enable Pages (and set the source to GitHub Actions) if the
+          # token has permission. If org policy blocks this, enable Pages once
+          # manually: Settings -> Pages -> Source: GitHub Actions.
+          enablement: true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
