@@ -22,6 +22,7 @@ export interface PriorityMetric {
 
 export interface PerformanceMetrics {
   totalCases: number
+  requestsThisMonth: number
   openCases: number
   completedCount: number
   /** Of completed repairs, the share finished on or before target. */
@@ -89,8 +90,14 @@ export function computeMetrics(repairs: Repair[], now: Date = new Date()): Perfo
     }
   })
 
+  const requestsThisMonth = repairs.filter((r) => {
+    const d = new Date(r.submittedAt)
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()
+  }).length
+
   return {
     totalCases: repairs.length,
+    requestsThisMonth,
     openCases: repairs.filter(isOpen).length,
     completedCount: completed.length,
     onTimeCompletionRate: completed.length === 0 ? null : onTime.length / completed.length,

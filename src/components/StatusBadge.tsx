@@ -1,13 +1,13 @@
 import type { RepairStatus } from '../types'
 
 const styles: Record<RepairStatus, string> = {
-  Submitted: 'bg-slate-100 text-slate-700 ring-slate-500/30',
-  Acknowledged: 'bg-blue-50 text-blue-800 ring-blue-600/30',
-  Triaged: 'bg-violet-50 text-violet-800 ring-violet-600/30',
-  'Appointment booked': 'bg-cyan-50 text-cyan-800 ring-cyan-600/30',
-  'In progress': 'bg-indigo-50 text-indigo-800 ring-indigo-600/30',
-  'Awaiting information': 'bg-orange-50 text-orange-900 ring-orange-600/30',
-  Completed: 'bg-green-50 text-green-800 ring-green-600/30',
+  Submitted: 'bg-slate-100 text-ink ring-line/60',
+  Acknowledged: 'bg-govblue/10 text-govblue-dark ring-govblue/30',
+  Triaged: 'bg-govblue/10 text-govblue-dark ring-govblue/30',
+  'Appointment booked': 'bg-govblue/15 text-govblue-dark ring-govblue/40',
+  'In progress': 'bg-govblue/15 text-govblue-dark ring-govblue/40',
+  'Awaiting information': 'bg-urgent-light text-urgent-dark ring-urgent/40',
+  Completed: 'bg-govgreen/10 text-govgreen-dark ring-govgreen/30',
 }
 
 export function StatusBadge({ status }: { status: RepairStatus }) {

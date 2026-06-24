@@ -1,15 +1,15 @@
 import type { Priority } from '../types'
 
 const styles: Record<Priority, string> = {
-  Emergency: 'bg-red-50 text-red-800 ring-red-600/30',
-  Urgent: 'bg-amber-50 text-amber-900 ring-amber-600/40',
-  Standard: 'bg-slate-100 text-slate-700 ring-slate-500/30',
+  Emergency: 'bg-emergency-light text-emergency-dark ring-emergency/40',
+  Urgent: 'bg-urgent-light text-urgent-dark ring-urgent/50',
+  Routine: 'bg-govgreen/10 text-govgreen-dark ring-govgreen/30',
 }
 
 const dot: Record<Priority, string> = {
-  Emergency: 'bg-red-600',
-  Urgent: 'bg-amber-500',
-  Standard: 'bg-slate-400',
+  Emergency: 'bg-emergency',
+  Urgent: 'bg-urgent',
+  Routine: 'bg-govgreen',
 }
 
 export function PriorityBadge({ priority }: { priority: Priority }) {

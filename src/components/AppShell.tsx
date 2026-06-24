@@ -1,14 +1,19 @@
-import { Link, Outlet } from 'react-router-dom'
-import { Wrench } from 'lucide-react'
-import { ModeToggle } from './ModeToggle'
-import { TopNav } from './TopNav'
+import { Outlet, useLocation } from 'react-router-dom'
+import { Landmark } from 'lucide-react'
+import { ViewSwitcher } from './ViewSwitcher'
 import { PhaseBanner } from './PhaseBanner'
 import { Footer } from './Footer'
-import { useMode } from '../lib/useMode'
+
+/** The simulated signed-in user, by view (no real auth — demo only). */
+function identityFor(pathname: string): { who: string; detail: string } {
+  if (pathname.startsWith('/ops')) return { who: 'Dispatcher', detail: 'Riverford Ops' }
+  if (pathname.startsWith('/performance')) return { who: 'Public', detail: 'Open data' }
+  return { who: 'Aisha Bello', detail: '12 Acacia House, Flat 4' }
+}
 
 export function AppShell() {
-  const mode = useMode()
-  const homeHref = mode === 'caseworker' ? '/officer' : '/'
+  const { pathname } = useLocation()
+  const id = identityFor(pathname)
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -17,28 +22,34 @@ export function AppShell() {
       </a>
 
       <header>
-        <div className="bg-navy text-white">
-          <div className="container-page flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between">
-            <Link
-              to={homeHref}
-              className="flex items-center gap-3 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
-            >
-              <span className="flex h-9 w-9 items-center justify-center rounded-md bg-white/10 ring-1 ring-inset ring-white/20">
-                <Wrench className="h-5 w-5" aria-hidden="true" />
+        {/* Thin GOV.UK-style black masthead */}
+        <div className="bg-ink text-white">
+          <div className="container-page flex flex-wrap items-center gap-x-4 gap-y-2 py-2.5">
+            <div className="flex items-center gap-2">
+              <span
+                className="flex h-7 w-7 items-center justify-center rounded-sm bg-white/10 ring-1 ring-inset ring-white/25"
+                aria-hidden="true"
+              >
+                <Landmark className="h-4 w-4" />
               </span>
-              <span>
-                <span className="block text-lg font-extrabold leading-tight">Right to Repair</span>
-                <span className="block text-xs text-white/70">Riverford Borough Council</span>
+              <span className="text-lg font-extrabold tracking-tight">Patch</span>
+              <span className="hidden text-sm text-white/70 sm:inline">— Right to Repair Digital Service</span>
+            </div>
+
+            <div className="ml-auto flex items-center gap-3">
+              <span className="hidden items-center gap-1.5 text-xs md:inline-flex">
+                <span className="text-white/55">Signed in as</span>
+                <span className="font-semibold text-white">{id.who}</span>
+                <span className="text-white/55">· {id.detail}</span>
               </span>
-            </Link>
-            <ModeToggle />
+              <ViewSwitcher />
+            </div>
           </div>
         </div>
-        <TopNav />
         <PhaseBanner />
       </header>
 
-      <main id="main" className="container-page w-full flex-1 py-8">
+      <main id="main" className="container-page w-full flex-1 py-6 sm:py-8">
         <Outlet />
       </main>
 

@@ -48,8 +48,8 @@ export const SLA_POLICY: Record<Priority, SlaRule> = {
       'Faulty electrics (not dangerous)',
     ],
   },
-  Standard: {
-    priority: 'Standard',
+  Routine: {
+    priority: 'Routine',
     acknowledgeWithin: '5 working days',
     acknowledgeHours: 24 * 5,
     repairWithin: '28 days',
@@ -154,7 +154,7 @@ export function suggestPriority(
   const emergencyMatches = findKeywords(text, EMERGENCY_KEYWORDS)
   const urgentMatches = findKeywords(text, URGENT_KEYWORDS)
 
-  let priority: Priority = 'Standard'
+  let priority: Priority = 'Routine'
   let rationale = 'Routine repair with no risk indicators detected.'
 
   if (emergencyMatches.length > 0) {
@@ -173,11 +173,11 @@ export function suggestPriority(
   }
 
   // Vulnerability and resident-reported urgency can raise (never lower) priority.
-  if (opts.vulnerable && priority === 'Standard') {
+  if (opts.vulnerable && priority === 'Routine') {
     priority = 'Urgent'
     rationale = 'A vulnerable resident or at-risk household raises this to Urgent.'
   }
-  if (opts.urgentReported && priority === 'Standard') {
+  if (opts.urgentReported && priority === 'Routine') {
     priority = 'Urgent'
     rationale = 'The resident reported this as urgent, so it is treated as at least Urgent pending triage.'
   }

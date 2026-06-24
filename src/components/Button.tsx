@@ -3,12 +3,12 @@ import type { ButtonHTMLAttributes } from 'react'
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost'
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50'
+  'inline-flex items-center justify-center gap-2 rounded px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50'
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-govgreen text-white hover:bg-govgreen-dark',
-  secondary: 'bg-white text-navy ring-1 ring-inset ring-slate-300 hover:bg-slate-50',
-  danger: 'bg-red-600 text-white hover:bg-red-700',
+  primary: 'bg-govblue text-white hover:bg-govblue-dark',
+  secondary: 'bg-white text-ink ring-1 ring-inset ring-line hover:bg-slate-50',
+  danger: 'bg-emergency text-white hover:bg-emergency-dark',
   ghost: 'text-govblue hover:bg-slate-100',
 }
 

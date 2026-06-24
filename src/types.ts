@@ -1,7 +1,7 @@
-// Core domain model for the Right to Repair service.
-// Shared by both the resident-facing and caseworker-facing views.
+// Core domain model for Patch — the Right to Repair digital service.
+// Shared by the Resident, Council Ops and Public Dashboard views via RepairsContext.
 
-export type Priority = 'Emergency' | 'Urgent' | 'Standard'
+export type Priority = 'Emergency' | 'Urgent' | 'Routine'
 
 export type RepairStatus =
   | 'Submitted'
@@ -21,8 +21,23 @@ export type Category =
   | 'Doors/windows'
   | 'Other'
 
+/** Coarse issue type the AI agent detects from the description — drives icons. */
+export type IssueType = 'boiler' | 'leak' | 'damp' | 'structural' | 'electrical' | 'other'
+
+/** Engineer trades the dispatcher books against. */
+export type Trade = 'Plumbing' | 'Electrical' | 'General/Structural'
+
 /** Who an event or note came from. */
 export type Actor = 'resident' | 'council' | 'system'
+
+export interface Engineer {
+  id: string
+  name: string
+  trade: Trade
+  initials: string
+  /** Hex colour used for this engineer's calendar blocks. */
+  color: string
+}
 
 export interface EvidenceFile {
   id: string
@@ -49,9 +64,12 @@ export interface InternalNote {
 }
 
 export interface Appointment {
-  date: string // ISO date
+  date: string // ISO date (kept for display)
   window: string // e.g. '08:00–12:00'
   note?: string
+  engineerId?: string
+  start?: string // ISO datetime — calendar block start
+  end?: string // ISO datetime — calendar block end
 }
 
 export interface Resident {
@@ -71,7 +89,7 @@ export interface Repair {
   status: RepairStatus
   submittedAt: string // ISO
   acknowledgementDeadline: string // ISO
-  estimatedCompletion: string // ISO
+  estimatedCompletion: string // ISO — the SLA "resolve by" deadline (drives countdowns)
   appointment?: Appointment
   assignedTo?: string
   riskFlags: string[]
@@ -81,6 +99,12 @@ export interface Repair {
   notes: InternalNote[]
   acknowledgedAt?: string // ISO — set when acknowledged
   completedAt?: string // ISO — set when completed
+  // --- AI agent analysis (populated on submission / seeded) ---
+  issueType?: IssueType
+  aiSummary?: string // plain-English explanation shown to the resident
+  suggestedTrade?: Trade
+  estRepairHours?: number
+  materials?: string[]
 }
 
 export type Mode = 'resident' | 'caseworker'
@@ -105,15 +129,4 @@ export const STATUSES: RepairStatus[] = [
   'Completed',
 ]
 
-export const PRIORITIES: Priority[] = ['Emergency', 'Urgent', 'Standard']
-
-/** Teams and contractors a caseworker can assign work to (mock). */
-export const ASSIGNEES: string[] = [
-  'Priya Shah (Housing Officer)',
-  'James Coyle (Housing Officer)',
-  'Riverford Direct Labour — Plumbing',
-  'Riverford Direct Labour — Glazing',
-  'Apex Heating Ltd',
-  'Northside Electrical (NICEIC)',
-  'Structural Surveyor (external)',
-]
+export const PRIORITIES: Priority[] = ['Emergency', 'Urgent', 'Routine']

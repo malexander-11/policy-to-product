@@ -7,6 +7,7 @@ import {
 } from 'react'
 import type {
   Appointment,
+  Engineer,
   EvidenceFile,
   Priority,
   Repair,
@@ -14,8 +15,9 @@ import type {
   TimelineEvent,
 } from '../types'
 import { createSeedRepairs } from '../data/seed'
+import { ENGINEERS, getEngineer } from '../data/engineers'
 import { deadlinesFrom } from '../lib/policy'
-import { formatDate } from '../lib/format'
+import { formatDate, formatTime, formatWeekday } from '../lib/format'
 
 // --- id / reference generation (runtime only) -----------------------------
 
@@ -49,6 +51,15 @@ type Action =
   | { kind: 'residentNote'; ref: string; text: string }
   | { kind: 'evidence'; ref: string; file: EvidenceFile }
   | { kind: 'priority'; ref: string; priority: Priority; reason: string }
+  | {
+      kind: 'approveBooking'
+      ref: string
+      engineerId: string
+      engineerName: string
+      trade: string
+      start: string
+      end: string
+    }
 
 function addEvent(r: Repair, ev: Omit<TimelineEvent, 'id'>): Repair {
   return { ...r, timeline: [...r.timeline, { id: uid(`${r.reference}-t`), ...ev }] }
@@ -191,6 +202,34 @@ function reducer(state: State, action: Action): State {
         })
       })
 
+    case 'approveBooking':
+      return mapRef(state, action.ref, (r) => {
+        const windowLabel = `${formatTime(action.start)}–${formatTime(action.end)}`
+        const appointment: Appointment = {
+          date: action.start,
+          window: windowLabel,
+          engineerId: action.engineerId,
+          start: action.start,
+          end: action.end,
+          note: `${action.engineerName} (${action.trade})`,
+        }
+        const next: Repair = {
+          ...r,
+          appointment,
+          assignedTo: `${action.engineerName} (${action.trade})`,
+          status: r.status === 'Completed' ? r.status : 'Appointment booked',
+          acknowledgedAt: r.acknowledgedAt ?? nowIso,
+        }
+        return addEvent(next, {
+          timestamp: nowIso,
+          title: 'Engineer assigned',
+          description: `${action.engineerName} (${action.trade}) scheduled for ${formatWeekday(
+            action.start,
+          )}, ${windowLabel}.`,
+          actor: 'council',
+        })
+      })
+
     default:
       return state
   }
@@ -200,7 +239,13 @@ function reducer(state: State, action: Action): State {
 
 interface RepairsContextValue {
   repairs: Repair[]
+  engineers: Engineer[]
   getRepair: (ref: string) => Repair | undefined
+  getEngineer: (id: string) => Engineer | undefined
+  approveBooking: (
+    ref: string,
+    booking: { engineerId: string; engineerName: string; trade: string; start: string; end: string },
+  ) => void
   addRepair: (repair: Repair) => void
   acknowledge: (ref: string) => void
   assignContractor: (ref: string, assignee: string) => void
@@ -226,7 +271,19 @@ export function RepairsProvider({ children }: { children: ReactNode }) {
   const value = useMemo<RepairsContextValue>(
     () => ({
       repairs: state.repairs,
+      engineers: ENGINEERS,
       getRepair: (ref) => state.repairs.find((r) => r.reference === ref),
+      getEngineer,
+      approveBooking: (ref, b) =>
+        dispatch({
+          kind: 'approveBooking',
+          ref,
+          engineerId: b.engineerId,
+          engineerName: b.engineerName,
+          trade: b.trade,
+          start: b.start,
+          end: b.end,
+        }),
       addRepair: (repair) => dispatch({ kind: 'add', repair }),
       acknowledge: (ref) => dispatch({ kind: 'acknowledge', ref }),
       assignContractor: (ref, assignee) => dispatch({ kind: 'assign', ref, assignee }),

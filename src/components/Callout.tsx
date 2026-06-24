@@ -5,24 +5,24 @@ type Tone = 'info' | 'warning' | 'emergency' | 'success'
 
 const config: Record<Tone, { wrap: string; icon: ReactNode; title: string }> = {
   info: {
-    wrap: 'border-govblue bg-blue-50/70',
+    wrap: 'border-govblue bg-govblue/5',
     icon: <Info className="h-5 w-5 text-govblue" aria-hidden="true" />,
-    title: 'text-navy',
+    title: 'text-ink',
   },
   warning: {
-    wrap: 'border-amber-500 bg-amber-50',
-    icon: <AlertTriangle className="h-5 w-5 text-amber-600" aria-hidden="true" />,
-    title: 'text-amber-900',
+    wrap: 'border-urgent bg-urgent-light',
+    icon: <AlertTriangle className="h-5 w-5 text-urgent-dark" aria-hidden="true" />,
+    title: 'text-urgent-dark',
   },
   emergency: {
-    wrap: 'border-red-600 bg-red-50',
-    icon: <Phone className="h-5 w-5 text-red-600" aria-hidden="true" />,
-    title: 'text-red-800',
+    wrap: 'border-emergency bg-emergency-light',
+    icon: <Phone className="h-5 w-5 text-emergency" aria-hidden="true" />,
+    title: 'text-emergency-dark',
   },
   success: {
-    wrap: 'border-govgreen bg-green-50',
+    wrap: 'border-govgreen bg-govgreen/5',
     icon: <CheckCircle2 className="h-5 w-5 text-govgreen" aria-hidden="true" />,
-    title: 'text-green-900',
+    title: 'text-govgreen-dark',
   },
 }
 

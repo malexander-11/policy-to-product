@@ -8,14 +8,14 @@
   }
 
   body {
-    @apply bg-slate-50 font-sans text-ink antialiased;
+    @apply bg-white font-sans text-ink antialiased;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    @apply font-bold tracking-tight text-navy;
+    @apply font-bold tracking-tight text-ink;
   }
 
   /* GOV.UK-style high-visibility focus state for accessibility */
