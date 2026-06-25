@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The thinking behind Patch — Right to Repair</title>
+    <meta
+      name="description"
+      content="The user-centred design and product thinking behind Patch, an agentic Right to Repair digital service."
+    />
+    <style>
+      /* ---- GOV.UK Design System palette + type (self-contained) ------------ */
+      :root {
+        --ink: #0b0c0c;
+        --midgrey: #505a5f;
+        --line: #b1b4b6;
+        --lightgrey: #f3f2f1;
+        --green: #00703c;
+        --green-dark: #005a30;
+        --blue: #1d70b8;
+        --blue-dark: #155087;
+        --purple: #4c2c92;
+        --red: #d4351c;
+        --yellow: #ffdd00;
+        --green-tint: #cce2d8;
+        --green-tint-text: #005a30;
+        --blue-tint: #d2e2f1;
+        --blue-tint-text: #144e81;
+        --amber-tint: #fcd6c3;
+        --amber-tint-text: #6e3619;
+        --neutral-tint: #eeefef;
+        --neutral-tint-text: #383f43;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: #fff;
+        color: var(--ink);
+        font-family: arial, helvetica, sans-serif;
+        font-size: 19px;
+        line-height: 1.31579;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--blue);
+        text-decoration: underline;
+        text-underline-offset: 0.1em;
+      }
+      a:hover {
+        color: var(--blue-dark);
+        text-decoration-thickness: 3px;
+      }
+      a:focus {
+        outline: 3px solid transparent;
+        color: var(--ink);
+        background: var(--yellow);
+        box-shadow: 0 -2px var(--yellow), 0 4px var(--ink);
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 3px solid var(--yellow);
+        outline-offset: 0;
+      }
+
+      .width-container {
+        max-width: 1020px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+      @media (min-width: 641px) {
+        .width-container {
+          padding: 0 30px;
+        }
+      }
+
+      /* ---- Header ---------------------------------------------------------- */
+      .masthead {
+        background: var(--ink);
+        color: #fff;
+        border-bottom: 10px solid transparent;
+      }
+      .masthead__inner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 0;
+      }
+      .masthead svg {
+        height: 30px;
+        width: 30px;
+      }
+      .masthead__wordmark {
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.01em;
+      }
+      .service-nav {
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+      }
+      .service-nav__inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 24px;
+      }
+      .service-nav__name {
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        padding: 14px 0;
+      }
+      .service-nav__name:hover {
+        color: var(--ink);
+      }
+      .service-nav a.service-nav__link {
+        color: var(--blue);
+        font-weight: 600;
+        text-decoration: none;
+        padding: 14px 0;
+        border-bottom: 3px solid transparent;
+        font-size: 16px;
+      }
+      .service-nav a.service-nav__link:hover {
+        text-decoration: underline;
+      }
+      .service-nav__spacer {
+        margin-left: auto;
+      }
+
+      /* ---- Phase banner ---------------------------------------------------- */
+      .phase {
+        border-bottom: 1px solid var(--line);
+      }
+      .phase__inner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0;
+        font-size: 16px;
+      }
+      .phase__tag {
+        background: var(--blue);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 3px 8px;
+      }
+
+      /* ---- Typography ------------------------------------------------------ */
+      main {
+        padding: 32px 0 16px;
+      }
+      h1 {
+        font-size: 2.5rem;
+        line-height: 1.09;
+        font-weight: 700;
+        margin: 0 0 8px;
+      }
+      @media (min-width: 641px) {
+        h1 {
+          font-size: 3rem;
+          line-height: 1.04;
+        }
+      }
+      h2 {
+        font-size: 1.6875rem;
+        line-height: 1.1;
+        font-weight: 700;
+        margin: 48px 0 16px;
+      }
+      @media (min-width: 641px) {
+        h2 {
+          font-size: 2.25rem;
+        }
+      }
+      h3 {
+        font-size: 1.25rem;
+        line-height: 1.2;
+        font-weight: 700;
+        margin: 28px 0 8px;
+      }
+      @media (min-width: 641px) {
+        h3 {
+          font-size: 1.5rem;
+        }
+      }
+      h4 {
+        font-size: 1.1875rem;
+        line-height: 1.25;
+        font-weight: 700;
+        margin: 20px 0 6px;
+      }
+      p,
+      ul,
+      ol {
+        margin: 0 0 20px;
+      }
+      .lead {
+        font-size: 1.3125rem;
+        line-height: 1.4;
+      }
+      @media (min-width: 641px) {
+        .lead {
+          font-size: 1.5rem;
+          line-height: 1.35;
+        }
+      }
+      .text-muted {
+        color: var(--midgrey);
+      }
+      .measure {
+        max-width: 38em;
+      }
+      ul.list,
+      ol.list {
+        padding-left: 20px;
+      }
+      ul.list li,
+      ol.list li {
+        margin-bottom: 8px;
+      }
+      .caption {
+        color: var(--midgrey);
+        font-size: 1.1875rem;
+        font-weight: 400;
+        display: block;
+        margin-bottom: 4px;
+      }
+      @media (min-width: 641px) {
+        .caption {
+          font-size: 1.5rem;
+        }
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 40px 0;
+      }
+      .section-break-xl {
+        margin: 56px 0;
+      }
+
+      /* ---- GDS components -------------------------------------------------- */
+      .inset {
+        border-left: 10px solid var(--line);
+        padding: 4px 0 4px 18px;
+        margin: 24px 0;
+      }
+      .inset p:last-child {
+        margin-bottom: 0;
+      }
+      .warning {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 24px 0;
+      }
+      .warning__icon {
+        flex: 0 0 auto;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 700;
+        font-size: 24px;
+        text-align: center;
+        line-height: 35px;
+      }
+      .warning__text {
+        font-weight: 700;
+      }
+      .panel {
+        border: 5px solid var(--green);
+        text-align: left;
+      }
+      .panel__title {
+        background: var(--green);
+        color: #fff;
+        font-weight: 700;
+        padding: 10px 16px;
+        font-size: 1.1875rem;
+      }
+      .panel__body {
+        padding: 16px;
+      }
+      .panel__body p:last-child {
+        margin-bottom: 0;
+      }
+
+      .tag {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 2px 8px;
+        background: var(--neutral-tint);
+        color: var(--neutral-tint-text);
+        white-space: nowrap;
+      }
+      .tag--green {
+        background: var(--green-tint);
+        color: var(--green-tint-text);
+      }
+      .tag--blue {
+        background: var(--blue-tint);
+        color: var(--blue-tint-text);
+      }
+      .tag--amber {
+        background: var(--amber-tint);
+        color: var(--amber-tint-text);
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        background: #fff;
+        padding: 20px;
+        height: 100%;
+      }
+      .card--grey {
+        background: var(--lightgrey);
+        border-color: var(--lightgrey);
+      }
+      .card--accent-blue {
+        border-left: 5px solid var(--blue);
+      }
+      .card--accent-green {
+        border-left: 5px solid var(--green);
+      }
+      .card--accent-purple {
+        border-left: 5px solid var(--purple);
+      }
+      .card h3,
+      .card h4 {
+        margin-top: 0;
+      }
+      .card p:last-child,
+      .card ul:last-child {
+        margin-bottom: 0;
+      }
+
+      .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: 1fr;
+      }
+      @media (min-width: 641px) {
+        .grid--2 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .grid--3 {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .stat {
+        border-top: 4px solid var(--blue);
+        padding-top: 8px;
+      }
+      .stat__num {
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1;
+        display: block;
+      }
+      .stat__label {
+        color: var(--midgrey);
+        font-size: 16px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--green);
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.1875rem;
+        padding: 10px 18px;
+        text-decoration: none;
+        box-shadow: 0 2px 0 #002d18;
+      }
+      .button:hover {
+        background: var(--green-dark);
+        color: #fff;
+      }
+      .button:active {
+        transform: translateY(2px);
+        box-shadow: none;
+      }
+      .button--secondary {
+        background: var(--lightgrey);
+        color: var(--ink);
+        box-shadow: 0 2px 0 #929191;
+      }
+      .button--secondary:hover {
+        background: #dbdad9;
+        color: var(--ink);
+      }
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin: 24px 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0 24px;
+        font-size: 16px;
+      }
+      caption {
+        text-align: left;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 11px 16px 11px 0;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      thead th {
+        border-bottom: 2px solid var(--ink);
+      }
+
+      /* numbered step list (GOV.UK "task list" flavour) */
+      .steps {
+        list-style: none;
+        counter-reset: step;
+        padding: 0;
+        margin: 24px 0;
+        border-top: 1px solid var(--line);
+      }
+      .steps > li {
+        counter-increment: step;
+        display: flex;
+        gap: 16px;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .steps > li::before {
+        content: counter(step);
+        flex: 0 0 auto;
+        width: 36px;
+        height: 36px;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 700;
+        text-align: center;
+        line-height: 36px;
+      }
+      .steps__body {
+        padding-top: 4px;
+      }
+      .steps__body p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* contents */
+      .contents {
+        border-top: 2px solid var(--ink);
+        padding-top: 12px;
+        margin: 32px 0 8px;
+      }
+      .contents ol {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        counter-reset: c;
+      }
+      .contents li {
+        counter-increment: c;
+        padding: 6px 0;
+      }
+      .contents li::before {
+        content: counter(c) ". ";
+        color: var(--midgrey);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .needstmt {
+        border-left: 5px solid var(--blue);
+        background: #fff;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+      }
+      .needstmt b {
+        color: var(--blue-dark);
+      }
+
+      .beforeafter {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 12px;
+        font-size: 16px;
+      }
+      .beforeafter .was {
+        text-decoration: line-through;
+        color: var(--midgrey);
+      }
+      .beforeafter .arrow {
+        font-weight: 700;
+      }
+      .beforeafter .now {
+        font-weight: 700;
+      }
+
+      footer.site-footer {
+        margin-top: 56px;
+        border-top: 1px solid var(--line);
+        background: var(--lightgrey);
+      }
+      .site-footer__inner {
+        padding: 32px 0;
+      }
+      .site-footer__crown {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .site-footer__crown svg {
+        width: 24px;
+        height: 24px;
+        flex: 0 0 auto;
+        color: var(--ink);
+      }
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+      }
+      .skip-link:focus {
+        position: static;
+        display: inline-block;
+        background: var(--yellow);
+        padding: 10px 15px;
+        color: var(--ink);
+      }
+    </style>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!-- GOV.UK black masthead -->
+    <header>
+      <div class="masthead">
+        <div class="width-container">
+          <div class="masthead__inner">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"
+              />
+              <path d="M5 21h14" />
+            </svg>
+            <span class="masthead__wordmark">GOV.UK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- service navigation -->
+      <div class="service-nav">
+        <div class="width-container">
+          <div class="service-nav__inner">
+            <a href="./" class="service-nav__name">Patch</a>
+            <a href="./" class="service-nav__link">Resident</a>
+            <a href="ops" class="service-nav__link">Council Ops</a>
+            <a href="performance" class="service-nav__link">Public Dashboard</a>
+            <a href="presentation.html" class="service-nav__link" aria-current="page" style="border-bottom-color: var(--blue); color: var(--ink)"
+              >The thinking</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- phase banner -->
+      <div class="phase">
+        <div class="width-container">
+          <div class="phase__inner">
+            <span class="phase__tag">Discovery → Alpha</span>
+            <span class="text-muted">A design &amp; product playback. All cases and data shown are illustrative.</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="width-container">
+      <span class="caption">Patch — Right to Repair</span>
+      <h1>The thinking behind it</h1>
+      <p class="lead measure">
+        How we went from a policy intent — every social-housing tenant has a right to a timely repair — to a working,
+        agentic service. This page is the user-centred design and product reasoning underneath the prototype.
+      </p>
+
+      <div class="button-row">
+        <a class="button" href="./">Open the prototype</a>
+        <a class="button button--secondary" href="ops">See the dispatcher view</a>
+      </div>
+
+      <div class="inset measure">
+        <p>
+          <b>One sentence:</b> we designed a single service that lets a resident report and track a repair in plain
+          English, and lets a council dispatcher approve an AI agent's live, whole-day re-balancing of the work —
+          while quietly spotting building-level problems a one-ticket-at-a-time process can't.
+        </p>
+      </div>
+
+      <!-- Contents -->
+      <nav class="contents" aria-label="Contents">
+        <h2 style="font-size: 1.1875rem; margin: 0 0 4px">Contents</h2>
+        <ol>
+          <li><a href="#discovery">Discovery: the problem we found</a></li>
+          <li><a href="#users">Who we designed for</a></li>
+          <li><a href="#needs">User needs &amp; “How might we”</a></li>
+          <li><a href="#features">Three design responses</a></li>
+          <li><a href="#principles">Agentic design principles</a></li>
+          <li><a href="#ethics">Safety, ethics &amp; accessibility</a></li>
+          <li><a href="#measure">How we'd know it worked</a></li>
+          <li><a href="#roadmap">Where this goes next</a></li>
+          <li><a href="#made">How this was made</a></li>
+        </ol>
+      </nav>
+
+      <!-- 1. Discovery -->
+      <h2 id="discovery"><span class="caption">Section 1</span>Discovery: the problem we found</h2>
+      <p class="measure">
+        Social-housing repairs are where policy meets people's homes. After Awaab Ishak's death and the strengthening
+        of the law around damp and mould, the duty is clear — but the day-to-day reality is a queue. We ran a short,
+        focused discovery against three lived realities.
+      </p>
+
+      <div class="grid grid--3">
+        <div class="card card--accent-blue">
+          <span class="tag tag--blue">Resident</span>
+          <h3>“I reported it. Then silence.”</h3>
+          <p class="text-muted">
+            People don't know how urgent the council thinks their problem is, what happens next, or when. Uncertainty
+            reads as not being taken seriously.
+          </p>
+        </div>
+        <div class="card card--accent-blue">
+          <span class="tag tag--blue">Dispatcher</span>
+          <h3>“I book one job and knock three.”</h3>
+          <p class="text-muted">
+            Slotting a new emergency into a full diary has knock-on effects the dispatcher can't see until tomorrow.
+            They optimise one ticket because that's all the tooling shows them.
+          </p>
+        </div>
+        <div class="card card--accent-blue">
+          <span class="tag tag--blue">Housing officer</span>
+          <h3>“The damp keeps coming back.”</h3>
+          <p class="text-muted">
+            Each flat is fixed in isolation. Nobody is positioned to notice that five reports in one block over a month
+            point to one structural cause.
+          </p>
+        </div>
+      </div>
+
+      <div class="warning">
+        <span class="warning__icon" aria-hidden="true">!</span>
+        <p class="warning__text measure">
+          The core insight: the work isn't a list of tickets, it's a <em>system</em> — a finite set of engineers, a
+          housing stock with shared fabric, and residents who need to trust the process. Triaging one ticket at a time
+          is structurally blind to all three.
+        </p>
+      </div>
+
+      <!-- 2. Users -->
+      <h2 id="users"><span class="caption">Section 2</span>Who we designed for</h2>
+      <p class="measure">Three primary users, one shared set of data. Designing for the seam between them was the job.</p>
+
+      <div class="grid grid--3">
+        <div class="card card--grey">
+          <h3>Aisha, 34 — resident</h3>
+          <p class="text-muted">
+            Renting with two kids, busy, phone-first. Wants to be heard quickly and to know it's in hand without
+            chasing.
+          </p>
+          <p><span class="tag">Needs certainty</span></p>
+        </div>
+        <div class="card card--grey">
+          <h3>Riverford Ops — dispatcher</h3>
+          <p class="text-muted">
+            Holds the whole day in their head. Confident, time-pressured, accountable for SLAs. Will not accept a black
+            box that books things for them.
+          </p>
+          <p><span class="tag">Needs control</span></p>
+        </div>
+        <div class="card card--grey">
+          <h3>Housing officer / asset team</h3>
+          <p class="text-muted">
+            Responsible for the stock as an asset. Thinks in blocks and budgets, not individual jobs. Wants to get ahead
+            of recurring failure.
+          </p>
+          <p><span class="tag">Needs the pattern</span></p>
+        </div>
+      </div>
+
+      <!-- 3. Needs + HMW -->
+      <h2 id="needs"><span class="caption">Section 3</span>User needs &amp; “How might we”</h2>
+      <p class="measure">We wrote needs as testable statements, then turned each into a design question.</p>
+
+      <div class="needstmt measure">
+        <b>As a resident</b> I need to know how seriously my repair is being taken and what happens next,
+        <b>so that</b> I can trust the council without having to chase.
+      </div>
+      <div class="needstmt measure">
+        <b>As a dispatcher</b> I need to see the whole day's consequences before I commit a booking,
+        <b>so that</b> I can fit urgent work in without quietly breaching another tenant's SLA.
+      </div>
+      <div class="needstmt measure">
+        <b>As a housing officer</b> I need to see problems that span homes, <b>so that</b> I can fix a cause once instead
+        of a symptom five times.
+      </div>
+
+      <h3>How might we…</h3>
+      <ul class="list measure">
+        <li>…make an AI agent feel like a trustworthy colleague the dispatcher <em>approves</em>, not an automation that acts behind them?</li>
+        <li>…reason across the whole queue and the whole building, while keeping every individual job card honest and simple?</li>
+        <li>…keep the front door open and friendly while keeping junk, off-topic reports and unsafe files out?</li>
+      </ul>
+
+      <!-- 4. Features -->
+      <h2 id="features"><span class="caption">Section 4</span>Three design responses</h2>
+      <p class="measure">
+        Each feature is a direct answer to a need above. The thread running through all three: the agent does the
+        thinking; the human keeps the decision.
+      </p>
+
+      <!-- F1 -->
+      <h3>4.1 — Cross-job schedule optimisation</h3>
+      <div class="grid grid--2">
+        <div>
+          <p class="text-muted">Answers the dispatcher's “I book one job and knock three.”</p>
+          <p>
+            The agent reasons over the <b>entire active queue</b>, not one job in isolation. When a higher-priority
+            repair needs an earlier slot, it can propose bringing it forward by moving <b>one</b> lower-priority booked
+            job — but only ever as a clear before/after trade-off, and only when the moved job <b>stays within its own
+            SLA</b>. A safer, non-disruptive option is always shown alongside. Nothing changes until the dispatcher
+            approves.
+          </p>
+          <p>
+            <span class="tag tag--green">Never silent</span> <span class="tag tag--green">Always a safe alternative</span>
+            <span class="tag tag--green">Human approves</span>
+          </p>
+        </div>
+        <div class="card card--accent-green">
+          <h4>What the dispatcher sees</h4>
+          <p style="margin-bottom: 8px"><b>Re-balanced plan</b> — brings this job forward to Fri, 08:00–10:00.</p>
+          <p style="margin-bottom: 6px" class="text-muted">To do this, the agent moves one lower-priority job:</p>
+          <div class="beforeafter">
+            <span class="tag tag--amber">Routine</span>
+            <span class="was">Fri, 08:00–10:00</span>
+            <span class="arrow">→</span>
+            <span class="now">Sat, 08:00–10:00</span>
+          </div>
+          <p style="margin: 8px 0 0; color: var(--green-dark); font-weight: 700">✓ Still within SLA by 26 days</p>
+          <hr style="margin: 16px 0" />
+          <p class="text-muted" style="margin: 0">
+            …or book a free slot and move no one. The dispatcher chooses; the agent never books behind them.
+          </p>
+        </div>
+      </div>
+
+      <!-- F2 -->
+      <h3>4.2 — Estate intelligence</h3>
+      <div class="grid grid--2">
+        <div class="card card--accent-purple">
+          <span class="tag tag--blue">Damp &amp; mould</span>
+          <h4 style="margin-top: 8px">Maple Court</h4>
+          <p class="text-muted" style="margin-bottom: 8px">3 reports · 3 homes · within 22 days</p>
+          <p style="margin-bottom: 8px">
+            Three damp reports across three flats in one block in a few weeks points to a shared cause — likely failed
+            damp-proofing, guttering or communal ventilation — rather than three coincidences.
+          </p>
+          <p style="margin: 0"><b>Recommended:</b> flag the block for a structural / damp survey.</p>
+        </div>
+        <div>
+          <p class="text-muted">Answers the officer's “the damp keeps coming back.”</p>
+          <p>
+            A background process looks for patterns <b>across</b> reports from the same building and flags a possible
+            shared cause — with its reasoning and a recommended action — as something distinct from the individual job
+            cards.
+          </p>
+          <div class="warning" style="margin: 16px 0 0">
+            <span class="warning__icon" aria-hidden="true">!</span>
+            <p class="warning__text">
+              Kept to the Ops view only. Building-level clusters are never shown on the public dashboard — surfacing
+              “these specific homes have damp” could expose residents before anything is confirmed.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- F3 -->
+      <h3>4.3 — Trust at the front door: validation &amp; scanning</h3>
+      <div class="grid grid--2">
+        <div>
+          <p class="text-muted">Answers “keep the door friendly, keep junk out.”</p>
+          <ul class="list">
+            <li>
+              <b>Relevant photos.</b> Screenshots and unrelated images are gently declined with a friendly ask to
+              re-upload something that shows the repair.
+            </li>
+            <li>
+              <b>Sufficient, on-topic text.</b> Empty, spammy or off-topic submissions (“unhappy with my landlord”) get a
+              helpful redirect — a nudge, not a hard error wall.
+            </li>
+            <li>
+              <b>A visible safety step.</b> Every file shows “Scanning for viruses and malware…”, then a clear pass — the
+              ordinary, expected trust step, not a feature being shown off.
+            </li>
+          </ul>
+        </div>
+        <div class="card card--grey">
+          <h4>Upload flow</h4>
+          <p style="margin-bottom: 6px">⟳ Scanning <b>photo.jpg</b> for viruses and malware…</p>
+          <p style="margin-bottom: 6px; color: var(--green-dark); font-weight: 700">✓ photo.jpg — no threats found</p>
+          <div class="card card--accent-blue" style="background: #fff; padding: 12px; border-left-color: var(--red)">
+            <p style="margin: 0">
+              <b>screenshot.png wasn't added.</b><br />
+              <span class="text-muted"
+                >This looks like it might not show the repair. Please upload a clear photo of the problem.</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Principles -->
+      <h2 id="principles"><span class="caption">Section 5</span>Agentic design principles</h2>
+      <p class="measure">Four rules kept the AI on the right side of the line in every screen.</p>
+      <ol class="steps">
+        <li>
+          <div class="steps__body">
+            <h4 style="margin-top: 0">Approve, don't automate</h4>
+            <p class="text-muted">
+              The agent proposes; a human commits. It earns autonomy by being right, not by being given the keys.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div class="steps__body">
+            <h4 style="margin-top: 0">Show your working</h4>
+            <p class="text-muted">
+              Every recommendation comes with its reasoning and the trade-off in plain English — including when it's
+              honest about a breach it can't avoid.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div class="steps__body">
+            <h4 style="margin-top: 0">Safe by default</h4>
+            <p class="text-muted">
+              There is always a non-disruptive option, and the agent will never move a job out of its own SLA to help
+              another.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div class="steps__body">
+            <h4 style="margin-top: 0">One service, one set of data</h4>
+            <p class="text-muted">
+              The resident, dispatcher and public views read and write the same source of truth, so what one side does
+              shows up instantly on the others.
+            </p>
+          </div>
+        </li>
+      </ol>
+
+      <!-- 6. Ethics -->
+      <h2 id="ethics"><span class="caption">Section 6</span>Safety, ethics &amp; accessibility</h2>
+      <div class="grid grid--2">
+        <div class="card">
+          <h3>Protecting residents</h3>
+          <ul class="list">
+            <li>Building-level clusters stay internal — never published in a way that could identify a home.</li>
+            <li>The agent cannot trade one tenant's SLA away to serve another without a human seeing it.</li>
+            <li>Validation declines content kindly; it never blames or shames the person reporting.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Built to GDS</h3>
+          <ul class="list">
+            <li>GOV.UK Design System patterns, palette and type — including this page.</li>
+            <li>Plain English, one thing per screen, no jargon, generous targets.</li>
+            <li>Keyboard-navigable, visible focus, semantic structure, status messages announced.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 7. Measure -->
+      <h2 id="measure"><span class="caption">Section 7</span>How we'd know it worked</h2>
+      <p class="measure">Outcomes, not output. The public dashboard makes the council accountable to its own numbers.</p>
+      <div class="grid grid--3">
+        <div class="stat">
+          <span class="stat__num">↑</span>
+          <span class="stat__label">Repairs completed within SLA — the headline outcome.</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">↓</span>
+          <span class="stat__label">Time-to-acknowledge and resident chase contacts.</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">↓</span>
+          <span class="stat__label">Repeat reports per block — proof estate intelligence is fixing causes.</span>
+        </div>
+      </div>
+
+      <table>
+        <caption>What we deliberately did and didn't build (alpha)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Built now — highest learning per effort</th>
+            <th scope="col">Parked — needs real integration / data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Resident report → triage → live tracking</td>
+            <td>Real auth, accounts and notifications</td>
+          </tr>
+          <tr>
+            <td>Whole-queue re-optimise with human approval</td>
+            <td>Live engineer GPS, vans and stock systems</td>
+          </tr>
+          <tr>
+            <td>Estate clustering across reports</td>
+            <td>Asset register &amp; survey workflow integration</td>
+          </tr>
+          <tr>
+            <td>Friendly validation + simulated virus scan</td>
+            <td>Production ML vision &amp; a real AV engine</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 8. Roadmap -->
+      <h2 id="roadmap"><span class="caption">Section 8</span>Where this goes next</h2>
+      <ul class="list measure">
+        <li><b>Private beta:</b> connect to a real repairs/asset system; replace simulated checks with production services.</li>
+        <li><b>Agent confidence:</b> let the agent auto-book only the safest, unambiguous routine jobs once it has a track record — still visible, still reversible.</li>
+        <li><b>Estate intelligence loop:</b> close the loop from “flag for survey” to a tracked structural workstream with budget.</li>
+        <li><b>Accessibility &amp; assisted digital:</b> test with assistive tech and offline/phone routes for residents who can't self-serve.</li>
+      </ul>
+
+      <!-- 9. Made -->
+      <h2 id="made"><span class="caption">Section 9</span>How this was made</h2>
+      <div class="panel">
+        <div class="panel__title">The honest version</div>
+        <div class="panel__body measure">
+          <p>
+            Every artefact in this playback — the discovery synthesis, the user needs, the service and interaction
+            design, the working prototype, and this presentation page — was produced end-to-end by <b>Claude</b>
+            (Anthropic), directed by the team in a single working session.
+          </p>
+          <p style="margin: 0">
+            It is a prototype on mock data: no backend, no real accounts, no personal data. The numbers, names and SLA
+            figures are illustrative. What's real is the thinking — and that it can be turned into a working service
+            this quickly.
+          </p>
+        </div>
+      </div>
+
+      <div class="button-row" style="margin-top: 32px">
+        <a class="button" href="./">Open the prototype</a>
+        <a class="button button--secondary" href="ops">Council Ops dispatcher</a>
+        <a class="button button--secondary" href="performance">Public dashboard</a>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="width-container site-footer__inner">
+        <div class="site-footer__crown">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"
+            />
+            <path d="M5 21h14" />
+          </svg>
+          <p style="margin: 0; font-size: 16px">
+            A prototype for discovery/alpha playback. All content is illustrative mock data, available under the
+            <a
+              href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+              rel="noopener noreferrer"
+              target="_blank"
+              >Open Government Licence v3.0</a
+            >. © Crown copyright.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

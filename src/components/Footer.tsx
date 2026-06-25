@@ -15,6 +15,9 @@ export function Footer() {
           <Link className="text-govblue underline hover:text-govblue-dark" to="/performance">
             Performance data
           </Link>
+          <a className="text-govblue underline hover:text-govblue-dark" href={`${import.meta.env.BASE_URL}presentation.html`}>
+            The thinking behind this
+          </a>
         </nav>
 
         <div className="flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-start sm:justify-between">
