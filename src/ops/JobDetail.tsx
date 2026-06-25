@@ -1,23 +1,25 @@
 import { useMemo } from 'react'
 import { MapPin, Wrench, Clock, Package, CheckCircle2 } from 'lucide-react'
 import type { Engineer, Repair } from '../types'
-import { analyzeReport, recommendBooking, type Booking } from '../lib/agent'
+import { analyzeReport, recommendBooking, proposeReoptimization, type Booking, type ReoptimizationPlan } from '../lib/agent'
 import { formatWeekday, formatTime, formatDuration, formatDate } from '../lib/format'
 import { PriorityBadge } from '../components/PriorityBadge'
 import { StatusBadge } from '../components/StatusBadge'
 import { IssueIcon } from '../components/IssueIcon'
 import { SlaCountdown } from '../components/SlaCountdown'
-import { AgentRecommendationCard, type RecoSlot } from '../components/AgentRecommendationCard'
+import { AgentRecommendationCard, type RecoSlot, type ReoptView } from '../components/AgentRecommendationCard'
 
 interface Props {
   repair: Repair
+  repairs: Repair[]
   engineers: Engineer[]
   bookings: Booking[]
   now: Date
   onApprove: (slot: RecoSlot) => void
+  onApproveOptimized: (targetRef: string, optimization: NonNullable<ReoptimizationPlan['optimization']>) => void
 }
 
-export function JobDetail({ repair, engineers, bookings, now, onApprove }: Props) {
+export function JobDetail({ repair, repairs, engineers, bookings, now, onApprove, onApproveOptimized }: Props) {
   const analysis = useMemo(
     () => analyzeReport(repair.description, { vulnerable: repair.resident.vulnerable, urgentReported: repair.urgentReported }),
     [repair.description, repair.resident.vulnerable, repair.urgentReported],
@@ -25,6 +27,12 @@ export function JobDetail({ repair, engineers, bookings, now, onApprove }: Props
 
   const reco = useMemo(
     () => recommendBooking(repair, engineers, bookings, now),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [repair.reference, repair.status, bookings],
+  )
+
+  const plan = useMemo(
+    () => proposeReoptimization(repair, repairs, engineers, bookings, now),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [repair.reference, repair.status, bookings],
   )
@@ -37,6 +45,25 @@ export function JobDetail({ repair, engineers, bookings, now, onApprove }: Props
   const alternatives: RecoSlot[] = reco.alternatives
     .map((a) => (resolve(a.engineerId) ? { engineer: resolve(a.engineerId)!, start: a.start, end: a.end } : null))
     .filter((x): x is RecoSlot => x !== null)
+
+  const opt = plan.optimization
+  const reoptView: ReoptView | null =
+    opt && resolve(opt.target.engineerId)
+      ? {
+          target: { engineer: resolve(opt.target.engineerId)!, start: opt.target.start, end: opt.target.end, withinSlaHours: opt.target.withinSlaHours },
+          bump: {
+            ref: opt.bump.ref,
+            residentName: opt.bump.residentName,
+            priority: opt.bump.priority,
+            fromStart: opt.bump.from.start,
+            fromEnd: opt.bump.from.end,
+            toStart: opt.bump.to.start,
+            toEnd: opt.bump.to.end,
+            withinSlaHours: opt.bump.withinSlaHours,
+          },
+          savedHours: opt.savedHours,
+        }
+      : null
 
   const booked = !!repair.appointment?.start
 
@@ -116,7 +143,13 @@ export function JobDetail({ repair, engineers, bookings, now, onApprove }: Props
             </p>
           </div>
         ) : (
-          <AgentRecommendationCard recommended={recommended} alternatives={alternatives} onApprove={onApprove} />
+          <AgentRecommendationCard
+            recommended={recommended}
+            alternatives={alternatives}
+            onApprove={onApprove}
+            reoptimization={reoptView}
+            onApproveOptimized={() => opt && onApproveOptimized(repair.reference, opt)}
+          />
         )}
       </div>
     </div>

@@ -3,19 +3,20 @@ import type { Priority } from '../types'
 import { useRepairs } from '../state/RepairsContext'
 import { useToast } from '../components/Toast'
 import { useNow } from '../lib/useNow'
-import { bookingsFromRepairs, calendarDays, predictSlaRisk } from '../lib/agent'
+import { bookingsFromRepairs, calendarDays, predictSlaRisk, type ReoptimizationPlan } from '../lib/agent'
 import { seedEngineerBookings } from '../data/engineers'
 import { formatWeekday, formatTime } from '../lib/format'
 import { JobQueue, type QueueItem } from './JobQueue'
 import { JobDetail } from './JobDetail'
 import { EngineerCalendars } from './EngineerCalendars'
+import { EstateIntelligence } from '../components/EstateIntelligence'
 import type { RecoSlot } from '../components/AgentRecommendationCard'
 
 const priorityRank: Record<Priority, number> = { Emergency: 0, Urgent: 1, Routine: 2 }
 const panel = 'flex flex-col border border-line bg-white lg:h-[calc(100vh-13rem)] lg:min-h-[30rem]'
 
 export function OpsView() {
-  const { repairs, engineers, approveBooking } = useRepairs()
+  const { repairs, engineers, approveBooking, setAppointment, addNote, getEngineer } = useRepairs()
   const { showToast } = useToast()
   const now = useNow(1000)
 
@@ -80,6 +81,34 @@ export function OpsView() {
     setTimeout(() => setHighlightRef(null), 4000)
   }
 
+  // Feature 1 — apply a whole-queue re-balance: book the focused job into the
+  // freed slot AND reschedule the bumped lower-priority job. Both moves at once,
+  // only after the dispatcher approves the before/after trade-off.
+  function handleApproveOptimized(targetRef: string, opt: NonNullable<ReoptimizationPlan['optimization']>) {
+    const te = getEngineer(opt.target.engineerId)
+    if (!te) return
+    approveBooking(targetRef, {
+      engineerId: opt.target.engineerId,
+      engineerName: te.name,
+      trade: te.trade,
+      start: opt.target.start,
+      end: opt.target.end,
+    })
+    const be = getEngineer(opt.bump.to.engineerId)
+    setAppointment(opt.bump.ref, {
+      date: opt.bump.to.start,
+      window: `${formatTime(opt.bump.to.start)}–${formatTime(opt.bump.to.end)}`,
+      engineerId: opt.bump.to.engineerId,
+      start: opt.bump.to.start,
+      end: opt.bump.to.end,
+      note: be ? `${be.name} (${be.trade})` : undefined,
+    })
+    addNote(opt.bump.ref, `Rescheduled to bring forward higher-priority job ${targetRef}. Still within SLA.`)
+    showToast('Schedule re-balanced. Resident notified.', `${te.name} booked · ${opt.bump.ref} moved`)
+    setHighlightRef(targetRef)
+    setTimeout(() => setHighlightRef(null), 4000)
+  }
+
   return (
     <div>
       <div className="mb-4">
@@ -89,6 +118,8 @@ export function OpsView() {
         </p>
       </div>
 
+      <EstateIntelligence repairs={repairs} now={now} />
+
       <div className="grid gap-4 lg:grid-cols-12">
         <section className={`${panel} lg:col-span-4`} aria-label="Live job queue">
           <JobQueue items={decorated} selectedRef={selected?.reference ?? null} onSelect={setSelectedRef} now={now} />
@@ -96,7 +127,15 @@ export function OpsView() {
 
         <section className={`${panel} lg:col-span-5`} aria-label="Job detail">
           {selected ? (
-            <JobDetail repair={selected} engineers={engineers} bookings={bookings} now={now} onApprove={handleApprove} />
+            <JobDetail
+              repair={selected}
+              repairs={repairs}
+              engineers={engineers}
+              bookings={bookings}
+              now={now}
+              onApprove={handleApprove}
+              onApproveOptimized={handleApproveOptimized}
+            />
           ) : (
             <p className="p-6 text-sm text-midgrey">No open jobs. The queue is clear.</p>
           )}

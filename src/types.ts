@@ -46,6 +46,8 @@ export interface EvidenceFile {
   sizeLabel: string
   uploadedBy: 'resident' | 'officer'
   caption?: string
+  /** True once the file has passed the simulated virus/malware scan. */
+  scanned?: boolean
 }
 
 export interface TimelineEvent {

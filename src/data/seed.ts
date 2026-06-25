@@ -180,6 +180,17 @@ export function createSeedRepairs(now: Date): Repair[] {
       acknowledgedOffset: -24 * H,
       riskFlags: ['Vulnerable household', 'Child with health condition'],
     }),
+    // Second damp report in the SAME block — feeds the estate-intelligence
+    // cluster for Maple Court (Feature 2).
+    build({
+      reference: 'RR-2026-0496',
+      resident: { name: 'Janet Cole', address: '12 Maple Court, Flat 4', email: 'j.cole@example.com', phone: '07700 900455' },
+      description: 'Black mould keeps coming back on the bedroom wall and around the window, worse over winter.',
+      priority: 'Urgent',
+      status: 'Acknowledged',
+      submittedOffset: -6 * D,
+      acknowledgedOffset: -6 * D + 3 * H,
+    }),
     build({
       reference: 'RR-2026-0505',
       resident: { name: 'Tom Fletcher', address: '23 Cedar Avenue', email: 't.fletcher@example.com', phone: '07700 900233' },
@@ -218,6 +229,20 @@ export function createSeedRepairs(now: Date): Repair[] {
       acknowledgedOffset: -9.5 * H,
       appointment: slot('eng-patel', 0, 10, 12),
       assignedTo: 'Sara Patel (Electrical)',
+    }),
+    // A low-priority job booked into an early General/Structural slot. It's the
+    // job the agent proposes bumping to bring a higher-priority repair forward
+    // (Feature 1 — the re-optimise before/after trade-off).
+    build({
+      reference: 'RR-2026-0476',
+      resident: { name: 'Derek Lowe', address: '5 Oak Rise', email: 'd.lowe@example.com', phone: '07700 900812' },
+      description: 'The internal door between the kitchen and hall keeps sticking and will not close properly.',
+      priority: 'Routine',
+      status: 'Appointment booked',
+      submittedOffset: -4 * D,
+      acknowledgedOffset: -4 * D + 5 * H,
+      appointment: slot('eng-obrien', 1, 8, 10),
+      assignedTo: "Michael O'Brien (General/Structural)",
     }),
     // --- Completed history: feeds public metrics ---
     build({
@@ -259,6 +284,18 @@ export function createSeedRepairs(now: Date): Repair[] {
       submittedOffset: -15 * D,
       acknowledgedOffset: -15 * D + 5 * H,
       completedOffset: -9 * D,
+    }),
+    // Third (recently resolved) damp report in Maple Court — completes the
+    // estate-intelligence cluster of 3 homes in one block (Feature 2).
+    build({
+      reference: 'RR-2026-0492',
+      resident: { name: 'Paul Whitman', address: '3 Maple Court, Flat 1', email: 'p.whitman@example.com', phone: '07700 900430' },
+      description: 'Damp patch spreading on the back bedroom ceiling and the plaster is blistering.',
+      priority: 'Urgent',
+      status: 'Completed',
+      submittedOffset: -22 * D,
+      acknowledgedOffset: -22 * D + 4 * H,
+      completedOffset: -16 * D,
     }),
   ]
 }

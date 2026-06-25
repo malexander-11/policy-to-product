@@ -228,6 +228,127 @@ export function predictSlaRisk(
   return new Date(rec.recommended.end).getTime() > new Date(repair.estimatedCompletion).getTime()
 }
 
+// ---------------------------------------------------------------------------
+// 3. Whole-queue re-optimisation (Feature 1)
+//
+// Reason across the ENTIRE active queue, not one job in isolation. For a focused
+// high-priority job, propose bumping ONE lower-priority *booked* job to bring the
+// focused job forward — but only when the bumped job still stays within its own
+// SLA. Always pair it with the safe, non-disruptive booking so the dispatcher
+// approves a clear before/after trade-off, never a silent change.
+// ---------------------------------------------------------------------------
+
+const priorityRank: Record<Priority, number> = { Emergency: 0, Urgent: 1, Routine: 2 }
+
+export interface ReoptimizationPlan {
+  /** Earliest slot the focused job can take without moving anyone. */
+  safe: (SlotOption & { withinSlaHours: number }) | null
+  /** A faster plan that bumps one lower-priority booked job, or null if none helps. */
+  optimization: {
+    target: SlotOption & { withinSlaHours: number }
+    bump: {
+      ref: string
+      residentName: string
+      priority: Priority
+      from: SlotOption
+      to: SlotOption
+      /** Slack the bumped job keeps before its own SLA after moving. */
+      withinSlaHours: number
+    }
+    /** How much earlier the focused job lands versus the safe path (hours). */
+    savedHours: number
+  } | null
+}
+
+/** Earliest free crew slot strictly after `after`, computed against `bookings`. */
+function earliestSlotAfter(
+  crew: Engineer[],
+  bookings: Booking[],
+  after: Date,
+  now: Date,
+): SlotOption | null {
+  for (const slot of candidateSlots(now)) {
+    if (new Date(slot.start).getTime() <= after.getTime()) continue
+    for (const e of crew) {
+      if (isFree(e.id, slot.start, slot.end, bookings)) {
+        return { engineerId: e.id, start: slot.start, end: slot.end }
+      }
+    }
+  }
+  return null
+}
+
+export function proposeReoptimization(
+  target: Repair,
+  repairs: Repair[],
+  engineers: Engineer[],
+  bookings: Booking[],
+  now: Date = new Date(),
+): ReoptimizationPlan {
+  const trade = target.suggestedTrade ?? 'General/Structural'
+  const crew = engineers.filter((e) => e.trade === trade)
+  const targetDeadline = new Date(target.estimatedCompletion).getTime()
+
+  // Safe path: earliest free slot, move no one.
+  const safeRec = recommendBooking(target, engineers, bookings, now).recommended
+  const safe: (SlotOption & { withinSlaHours: number }) | null = safeRec
+    ? { engineerId: safeRec.engineerId, start: safeRec.start, end: safeRec.end, withinSlaHours: safeRec.withinSlaHours }
+    : null
+  const safeStart = safe ? new Date(safe.start).getTime() : Infinity
+
+  // Candidate victims: open, booked, same-trade, strictly lower priority.
+  const victims = repairs
+    .filter(
+      (r) =>
+        r.reference !== target.reference &&
+        r.status !== 'Completed' &&
+        r.appointment?.engineerId &&
+        r.appointment.start &&
+        r.appointment.end &&
+        (r.suggestedTrade ?? 'General/Structural') === trade &&
+        priorityRank[r.priority] > priorityRank[target.priority],
+    )
+    .sort((a, b) => (a.appointment!.start! < b.appointment!.start! ? -1 : 1))
+
+  for (const victim of victims) {
+    const freed: SlotOption = {
+      engineerId: victim.appointment!.engineerId!,
+      start: victim.appointment!.start!,
+      end: victim.appointment!.end!,
+    }
+    if (new Date(freed.start).getTime() <= now.getTime()) continue
+    // Worthwhile only if it brings the target forward and keeps the target in SLA.
+    if (new Date(freed.start).getTime() >= safeStart) continue
+    if (new Date(freed.end).getTime() > targetDeadline) continue
+
+    // Re-home the victim: earliest free slot for its trade after the freed slot,
+    // computed with the victim's own booking removed.
+    const bookingsWithoutVictim = bookings.filter((b) => b.ref !== victim.reference)
+    const reloc = earliestSlotAfter(crew, bookingsWithoutVictim, new Date(freed.start), now)
+    if (!reloc) continue
+    const victimDeadline = new Date(victim.estimatedCompletion).getTime()
+    if (new Date(reloc.end).getTime() > victimDeadline) continue // never breach the bumped job's SLA
+
+    return {
+      safe,
+      optimization: {
+        target: { ...freed, withinSlaHours: (targetDeadline - new Date(freed.end).getTime()) / 3_600_000 },
+        bump: {
+          ref: victim.reference,
+          residentName: victim.resident.name,
+          priority: victim.priority,
+          from: freed,
+          to: reloc,
+          withinSlaHours: (victimDeadline - new Date(reloc.end).getTime()) / 3_600_000,
+        },
+        savedHours: safeStart === Infinity ? 0 : (safeStart - new Date(freed.start).getTime()) / 3_600_000,
+      },
+    }
+  }
+
+  return { safe, optimization: null }
+}
+
 /** Bookings derived from repairs that already have a calendar appointment. */
 export function bookingsFromRepairs(repairs: Repair[]): Booking[] {
   return repairs

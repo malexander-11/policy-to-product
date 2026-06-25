@@ -42,5 +42,13 @@ export function seedEngineerBookings(now: Date): Booking[] {
     at(2, 13, 15, 'eng-obrien', 'Plaster repair'),
     at(3, 10, 12, 'eng-khan', 'Stopcock repair'),
     at(3, 13, 15, 'eng-patel', 'Consumer unit'),
+    // O'Brien's day is otherwise full — this is what forces the re-optimise
+    // trade-off (Feature 1): a higher-priority structural job can only come
+    // forward by bumping a lower-priority booked job.
+    at(0, 8, 10, 'eng-obrien', 'Communal door inspection'),
+    at(0, 10, 12, 'eng-obrien', 'Void property clearance'),
+    at(0, 13, 15, 'eng-obrien', 'Fire-door check — Block C'),
+    at(0, 15, 17, 'eng-obrien', 'Fencing repair'),
+    at(1, 15, 17, 'eng-obrien', 'Roof inspection'),
   ]
 }

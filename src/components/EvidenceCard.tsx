@@ -1,4 +1,4 @@
-import { ImageIcon, Play, User, Building2 } from 'lucide-react'
+import { ImageIcon, Play, User, Building2, ShieldCheck } from 'lucide-react'
 import type { EvidenceFile } from '../types'
 
 export function EvidenceCard({ file, onRemove }: { file: EvidenceFile; onRemove?: () => void }) {
@@ -44,6 +44,12 @@ export function EvidenceCard({ file, onRemove }: { file: EvidenceFile; onRemove?
           )}
           {file.sizeLabel} · {file.uploadedBy === 'resident' ? 'Resident' : 'Council'}
         </p>
+        {file.scanned && (
+          <p className="mt-0.5 flex items-center gap-1 text-xs font-semibold text-govgreen">
+            <ShieldCheck className="h-3 w-3" aria-hidden="true" />
+            Scanned
+          </p>
+        )}
       </figcaption>
     </figure>
   )

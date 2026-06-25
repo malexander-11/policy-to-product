@@ -10,10 +10,14 @@ import {
   ShieldCheck,
   MessageSquare,
   Building2,
+  Loader2,
+  AlertTriangle,
+  X,
 } from 'lucide-react'
 import type { EvidenceFile, Repair } from '../types'
 import { useRepairs, nextReference } from '../state/RepairsContext'
 import { analyzeReport } from '../lib/agent'
+import { validateDescription, scanFileForThreats, validateEvidenceRelevance } from '../lib/validation'
 import { deadlinesFrom, SLA_POLICY } from '../lib/policy'
 import { formatDate, formatDateTime, relativeTime } from '../lib/format'
 import { Card, CardHeader } from '../components/Card'
@@ -140,34 +144,79 @@ export function ResidentView() {
 // Step 1 — Report
 // ---------------------------------------------------------------------------
 
+/** An upload mid-flight through the simulated virus scan + relevance check. */
+interface PendingFile {
+  id: string
+  name: string
+  type: 'image' | 'video'
+  sizeLabel: string
+  status: 'scanning' | 'passed' | 'rejected'
+  message?: string
+}
+
 function ReportStep({ onSubmit }: { onSubmit: (description: string, evidence: EvidenceFile[]) => void }) {
   const [description, setDescription] = useState('')
   const [evidence, setEvidence] = useState<EvidenceFile[]>([])
+  const [pending, setPending] = useState<PendingFile[]>([])
   const [error, setError] = useState<string | undefined>()
+
+  const scanning = pending.some((p) => p.status === 'scanning')
+
+  // Decide a pending file's fate once its (simulated) scan completes.
+  function resolveScan(id: string, name: string, type: 'image' | 'video') {
+    const virus = scanFileForThreats(name)
+    const relevance = virus.ok ? validateEvidenceRelevance(name, type) : { ok: true, message: undefined }
+    if (!virus.ok || !relevance.ok) {
+      const message = !virus.ok ? virus.message : relevance.message
+      setPending((xs) => xs.map((x) => (x.id === id ? { ...x, status: 'rejected', message } : x)))
+    } else {
+      setPending((xs) => xs.map((x) => (x.id === id ? { ...x, status: 'passed' } : x)))
+    }
+  }
+
+  function ingest(items: { name: string; type: 'image' | 'video'; sizeLabel: string }[]) {
+    const created: PendingFile[] = items.map((it) => ({ id: `up-${(evId += 1)}`, ...it, status: 'scanning' }))
+    setPending((xs) => [...xs, ...created])
+    // Simulate the scan taking a moment so the trust step is visible.
+    created.forEach((p) => window.setTimeout(() => resolveScan(p.id, p.name, p.type), 1300))
+  }
+
+  // After the brief "no threats found" confirmation, move passed files into the
+  // evidence list (marked as scanned).
+  useEffect(() => {
+    if (!pending.some((p) => p.status === 'passed')) return
+    const t = setTimeout(() => {
+      setEvidence((ev) => [
+        ...ev,
+        ...pending
+          .filter((p) => p.status === 'passed')
+          .map<EvidenceFile>((p) => ({ id: p.id, name: p.name, type: p.type, sizeLabel: p.sizeLabel, uploadedBy: 'resident', scanned: true })),
+      ])
+      setPending((xs) => xs.filter((p) => p.status !== 'passed'))
+    }, 700)
+    return () => clearTimeout(t)
+  }, [pending])
 
   function addFiles(files: FileList | null) {
     if (!files) return
-    const next = Array.from(files).map<EvidenceFile>((f) => ({
-      id: `ev-${(evId += 1)}`,
-      name: f.name,
-      type: f.type.startsWith('video') ? 'video' : 'image',
-      sizeLabel: bytesLabel(f.size),
-      uploadedBy: 'resident',
-    }))
-    setEvidence((xs) => [...xs, ...next])
-  }
-
-  function addSample() {
-    setEvidence((xs) => [
-      ...xs,
-      { id: `ev-${(evId += 1)}`, name: `photo-${xs.length + 1}.jpg`, type: 'image', sizeLabel: '1.8 MB', uploadedBy: 'resident' },
-    ])
+    ingest(
+      Array.from(files).map((f) => ({
+        name: f.name,
+        type: f.type.startsWith('video') ? 'video' : 'image',
+        sizeLabel: bytesLabel(f.size),
+      })),
+    )
   }
 
   function submit(e: React.FormEvent) {
     e.preventDefault()
-    if (description.trim().length < 8) {
-      setError('Please describe the repair in a little more detail.')
+    const check = validateDescription(description)
+    if (!check.ok) {
+      setError(check.message)
+      return
+    }
+    if (scanning) {
+      setError('Please wait for your upload to finish scanning.')
       return
     }
     onSubmit(description.trim(), evidence)
@@ -211,13 +260,68 @@ function ReportStep({ onSubmit }: { onSubmit: (description: string, evidence: Ev
                 </label>
                 <button
                   type="button"
-                  onClick={addSample}
+                  onClick={() => ingest([{ name: `repair-photo-${evidence.length + 1}.jpg`, type: 'image', sizeLabel: '1.8 MB' }])}
                   className="inline-flex items-center gap-2 rounded border border-line bg-white px-3 py-2 text-sm font-semibold text-ink hover:bg-slate-50"
                 >
                   <Camera className="h-4 w-4" aria-hidden="true" />
                   Add example photo
                 </button>
+                <button
+                  type="button"
+                  onClick={() => ingest([{ name: `screenshot-2026-01-12.png`, type: 'image', sizeLabel: '420 KB' }])}
+                  className="inline-flex items-center gap-2 rounded border border-line bg-white px-3 py-2 text-sm font-semibold text-ink hover:bg-slate-50"
+                >
+                  <ImagePlus className="h-4 w-4" aria-hidden="true" />
+                  Add a screenshot
+                </button>
               </div>
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-midgrey">
+                <ShieldCheck className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                Files are scanned for viruses and checked before they're added.
+              </p>
+
+              {pending.length > 0 && (
+                <ul className="mt-3 space-y-2" aria-live="polite">
+                  {pending.map((p) => (
+                    <li key={p.id}>
+                      {p.status === 'scanning' && (
+                        <div className="flex items-center gap-2 rounded border border-line/70 bg-slate-50 px-3 py-2 text-sm text-ink">
+                          <Loader2 className="h-4 w-4 shrink-0 animate-spin text-govblue" aria-hidden="true" />
+                          <span className="min-w-0 truncate">
+                            Scanning <span className="font-semibold">{p.name}</span> for viruses and malware…
+                          </span>
+                        </div>
+                      )}
+                      {p.status === 'passed' && (
+                        <div className="flex items-center gap-2 rounded border border-govgreen/40 bg-govgreen/5 px-3 py-2 text-sm text-ink">
+                          <ShieldCheck className="h-4 w-4 shrink-0 text-govgreen" aria-hidden="true" />
+                          <span className="min-w-0 truncate">
+                            <span className="font-semibold">{p.name}</span> — no threats found
+                          </span>
+                        </div>
+                      )}
+                      {p.status === 'rejected' && (
+                        <div className="flex items-start gap-2 rounded border border-l-4 border-line/70 border-l-urgent bg-urgent-light px-3 py-2 text-sm">
+                          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-urgent-dark" aria-hidden="true" />
+                          <div className="min-w-0 flex-1">
+                            <p className="font-semibold text-ink">{p.name} wasn't added</p>
+                            <p className="text-midgrey">{p.message}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setPending((xs) => xs.filter((x) => x.id !== p.id))}
+                            className="shrink-0 text-midgrey hover:text-ink"
+                            aria-label={`Dismiss ${p.name}`}
+                          >
+                            <X className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
               {evidence.length > 0 && (
                 <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {evidence.map((f) => (
@@ -233,9 +337,9 @@ function ReportStep({ onSubmit }: { onSubmit: (description: string, evidence: Ev
             </div>
           </div>
           <div className="flex items-center justify-end border-t border-line/60 px-5 py-4">
-            <Button type="submit">
+            <Button type="submit" disabled={scanning}>
               <Send className="h-4 w-4" aria-hidden="true" />
-              Send to council
+              {scanning ? 'Scanning upload…' : 'Send to council'}
             </Button>
           </div>
         </Card>
