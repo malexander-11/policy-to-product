@@ -1,21 +1,16 @@
 import type { RepairStatus } from '../types'
 
+// GOV.UK tag colours mapped to repair statuses.
 const styles: Record<RepairStatus, string> = {
-  Submitted: 'bg-slate-100 text-ink ring-line/60',
-  Acknowledged: 'bg-govblue/10 text-govblue-dark ring-govblue/30',
-  Triaged: 'bg-govblue/10 text-govblue-dark ring-govblue/30',
-  'Appointment booked': 'bg-govblue/15 text-govblue-dark ring-govblue/40',
-  'In progress': 'bg-govblue/15 text-govblue-dark ring-govblue/40',
-  'Awaiting information': 'bg-urgent-light text-urgent-dark ring-urgent/40',
-  Completed: 'bg-govgreen/10 text-govgreen-dark ring-govgreen/30',
+  Submitted: 'bg-[#eeefef] text-[#383f43]',
+  Acknowledged: 'bg-[#d2e2f1] text-[#144e81]',
+  Triaged: 'bg-[#d2e2f1] text-[#144e81]',
+  'Appointment booked': 'bg-[#bfe3e0] text-[#10403c]',
+  'In progress': 'bg-[#fff7bf] text-[#594d00]',
+  'Awaiting information': 'bg-[#fcd6c3] text-[#6e3619]',
+  Completed: 'bg-[#cce2d8] text-[#005a30]',
 }
 
 export function StatusBadge({ status }: { status: RepairStatus }) {
-  return (
-    <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${styles[status]}`}
-    >
-      {status}
-    </span>
-  )
+  return <span className={`inline-block px-2 py-1 text-sm font-bold ${styles[status]}`}>{status}</span>
 }

@@ -1,12 +1,12 @@
 export function PhaseBanner() {
   return (
-    <div className="border-b border-slate-200 bg-white">
+    <div className="border-b border-line bg-white">
       <div className="container-page flex items-center gap-3 py-2">
-        <span className="rounded bg-govblue px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-white">
+        <span className="inline-block bg-govblue px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-white">
           Alpha
         </span>
-        <p className="text-sm text-midgrey">
-          This is a prototype for a council discovery/alpha playback. All cases and data shown are mock data.
+        <p className="text-sm text-ink">
+          This is a new service – your feedback will help us to improve it. All data shown is mock data.
         </p>
       </div>
     </div>

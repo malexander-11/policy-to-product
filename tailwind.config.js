@@ -4,13 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Official-feeling masthead navy (retained for existing surfaces)
         navy: {
           DEFAULT: '#0b2545',
           light: '#13315c',
           dark: '#071a33',
         },
-        // GOV.UK palette
         govgreen: {
           DEFAULT: '#00703c',
           dark: '#005a30',
@@ -19,6 +17,7 @@ export default {
           DEFAULT: '#1d70b8',
           dark: '#155087',
         },
+        govpurple: '#4c2c92', // visited links
         emergency: {
           DEFAULT: '#d4351c',
           dark: '#aa2a16',
@@ -32,37 +31,41 @@ export default {
         ink: '#0b0c0c',
         midgrey: '#505a5f',
         line: '#b1b4b6',
+        lightgrey: '#f3f2f1', // GDS surface / secondary button
         focus: '#ffdd00',
       },
       fontFamily: {
-        sans: [
-          'Inter',
-          'system-ui',
-          '-apple-system',
-          'Segoe UI',
-          'Roboto',
-          'Helvetica',
-          'Arial',
-          'sans-serif',
-        ],
+        // GDS Transport is licence-restricted off gov.uk; Arial is the compliant substitute.
+        sans: ['"GDS Transport"', 'arial', 'helvetica', 'sans-serif'],
       },
-      // GOV.UK-style minimal radii — tightens every existing rounded-* utility
+      // GOV.UK type scale (desktop) mapped onto Tailwind's text-* utilities.
+      fontSize: {
+        xs: ['0.875rem', { lineHeight: '1.25' }], // 14px
+        sm: ['1rem', { lineHeight: '1.25' }], // 16px
+        base: ['1.1875rem', { lineHeight: '1.32' }], // 19px — GDS body
+        lg: ['1.5rem', { lineHeight: '1.25' }], // 24px — heading-m
+        xl: ['1.5rem', { lineHeight: '1.25' }], // 24px
+        '2xl': ['2.25rem', { lineHeight: '1.11' }], // 36px — heading-l
+        '3xl': ['3rem', { lineHeight: '1.04' }], // 48px — heading-xl
+        '4xl': ['3rem', { lineHeight: '1.04' }], // 48px
+        '5xl': ['3.5rem', { lineHeight: '1.04' }], // 56px
+      },
+      // GDS is square.
       borderRadius: {
         none: '0',
-        sm: '2px',
-        DEFAULT: '2px',
-        md: '4px',
-        lg: '4px',
-        xl: '6px',
-        '2xl': '8px',
-        '3xl': '10px',
+        sm: '0',
+        DEFAULT: '0',
+        md: '0',
+        lg: '0',
+        xl: '0',
+        '2xl': '0',
+        '3xl': '0',
         full: '9999px',
       },
       boxShadow: {
         card: '0 1px 2px rgba(11, 12, 12, 0.06), 0 1px 3px rgba(11, 12, 12, 0.08)',
       },
       keyframes: {
-        // Soft ring pulse for newly-arrived / at-risk job cards
         attention: {
           '0%, 100%': { boxShadow: '0 0 0 0 rgba(29,112,184,0)' },
           '50%': { boxShadow: '0 0 0 3px rgba(29,112,184,0.30)' },

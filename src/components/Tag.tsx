@@ -2,12 +2,13 @@ import type { ReactNode } from 'react'
 
 type Tone = 'neutral' | 'red' | 'amber' | 'green' | 'blue'
 
+// GOV.UK tag colours.
 const tones: Record<Tone, string> = {
-  neutral: 'bg-slate-100 text-midgrey ring-line/50',
-  red: 'bg-emergency-light text-emergency-dark ring-emergency/30',
-  amber: 'bg-urgent-light text-urgent-dark ring-urgent/40',
-  green: 'bg-govgreen/10 text-govgreen-dark ring-govgreen/30',
-  blue: 'bg-govblue/10 text-govblue-dark ring-govblue/30',
+  neutral: 'bg-[#eeefef] text-[#383f43]',
+  red: 'bg-[#f6d7d2] text-[#942514]',
+  amber: 'bg-[#fcd6c3] text-[#6e3619]',
+  green: 'bg-[#cce2d8] text-[#005a30]',
+  blue: 'bg-[#d2e2f1] text-[#144e81]',
 }
 
 export function Tag({
@@ -20,9 +21,7 @@ export function Tag({
   className?: string
 }) {
   return (
-    <span
-      className={`inline-flex items-center gap-1 rounded px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${tones[tone]} ${className}`}
-    >
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-sm font-bold ${tones[tone]} ${className}`}>
       {children}
     </span>
   )

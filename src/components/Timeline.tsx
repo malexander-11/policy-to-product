@@ -33,7 +33,7 @@ export function Timeline({ events, newestFirst = true }: { events: TimelineEvent
           </div>
           <div className="min-w-0 flex-1 pb-1">
             <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-              <p className="font-semibold text-navy">{ev.title}</p>
+              <p className="font-semibold text-ink">{ev.title}</p>
               <time className="text-xs text-midgrey" dateTime={ev.timestamp}>
                 {formatDateTime(ev.timestamp)}
               </time>

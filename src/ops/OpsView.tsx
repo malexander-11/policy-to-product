@@ -12,7 +12,7 @@ import { EngineerCalendars } from './EngineerCalendars'
 import type { RecoSlot } from '../components/AgentRecommendationCard'
 
 const priorityRank: Record<Priority, number> = { Emergency: 0, Urgent: 1, Routine: 2 }
-const panel = 'flex flex-col rounded border border-line bg-white shadow-card lg:h-[calc(100vh-13rem)] lg:min-h-[30rem]'
+const panel = 'flex flex-col border border-line bg-white lg:h-[calc(100vh-13rem)] lg:min-h-[30rem]'
 
 export function OpsView() {
   const { repairs, engineers, approveBooking } = useRepairs()

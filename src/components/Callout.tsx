@@ -1,31 +1,25 @@
 import type { ReactNode } from 'react'
-import { AlertTriangle, Info, Phone, CheckCircle2 } from 'lucide-react'
 
 type Tone = 'info' | 'warning' | 'emergency' | 'success'
 
-const config: Record<Tone, { wrap: string; icon: ReactNode; title: string }> = {
-  info: {
-    wrap: 'border-govblue bg-govblue/5',
-    icon: <Info className="h-5 w-5 text-govblue" aria-hidden="true" />,
-    title: 'text-ink',
-  },
-  warning: {
-    wrap: 'border-urgent bg-urgent-light',
-    icon: <AlertTriangle className="h-5 w-5 text-urgent-dark" aria-hidden="true" />,
-    title: 'text-urgent-dark',
-  },
-  emergency: {
-    wrap: 'border-emergency bg-emergency-light',
-    icon: <Phone className="h-5 w-5 text-emergency" aria-hidden="true" />,
-    title: 'text-emergency-dark',
-  },
-  success: {
-    wrap: 'border-govgreen bg-govgreen/5',
-    icon: <CheckCircle2 className="h-5 w-5 text-govgreen" aria-hidden="true" />,
-    title: 'text-govgreen-dark',
-  },
+function WarningIcon({ className }: { className: string }) {
+  return (
+    <span
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white ${className}`}
+      aria-hidden="true"
+    >
+      <span className="text-xl font-bold leading-none">!</span>
+    </span>
+  )
 }
 
+/**
+ * GDS-flavoured callouts:
+ *  - info     → inset text (10px grey left border)
+ *  - warning  → warning text (black "!" + bold)
+ *  - emergency→ warning text (red "!")
+ *  - success  → notification banner (green)
+ */
 export function Callout({
   tone = 'info',
   title,
@@ -39,16 +33,31 @@ export function Callout({
   role?: 'alert' | 'status'
   className?: string
 }) {
-  const c = config[tone]
-  return (
-    <div className={`rounded-r-md border-l-4 p-4 ${c.wrap} ${className}`} role={role}>
-      <div className="flex gap-3">
-        <div className="mt-0.5 shrink-0">{c.icon}</div>
-        <div className="min-w-0 flex-1">
-          {title && <p className={`font-bold ${c.title}`}>{title}</p>}
-          {children && <div className={`text-sm text-ink ${title ? 'mt-1' : ''}`}>{children}</div>}
+  if (tone === 'success') {
+    return (
+      <div className={`border-4 border-govgreen ${className}`} role={role}>
+        <div className="bg-govgreen px-4 py-2 text-base font-bold text-white">{title ?? 'Success'}</div>
+        <div className="p-4 text-base text-ink">{children}</div>
+      </div>
+    )
+  }
+
+  if (tone === 'warning' || tone === 'emergency') {
+    return (
+      <div className={`flex items-start gap-3 ${className}`} role={role}>
+        <WarningIcon className={tone === 'emergency' ? 'bg-emergency' : 'bg-ink'} />
+        <div className="min-w-0 font-bold text-ink">
+          {title && <p>{title}</p>}
+          {children && <div className={`text-base ${title ? 'mt-0.5' : ''}`}>{children}</div>}
         </div>
       </div>
+    )
+  }
+
+  return (
+    <div className={`border-l-[10px] border-line py-1 pl-4 ${className}`} role={role}>
+      {title && <p className="font-bold text-ink">{title}</p>}
+      {children && <div className={`text-base text-ink ${title ? 'mt-1' : ''}`}>{children}</div>}
     </div>
   )
 }

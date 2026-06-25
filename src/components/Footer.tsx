@@ -1,33 +1,40 @@
 import { Link } from 'react-router-dom'
+import { Crown } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer className="mt-16 border-t-4 border-govblue bg-white">
+    <footer className="mt-12 border-t border-line bg-lightgrey">
       <div className="container-page py-8">
-        <div className="flex flex-col gap-6 sm:flex-row sm:justify-between">
-          <div className="max-w-md">
-            <p className="font-bold text-ink">Patch — Right to Repair</p>
-            <p className="mt-1 text-sm text-midgrey">
-              A prototype social housing repairs service delivered by Riverford Borough Council under the national
-              Right to Repair digital initiative.
+        <nav aria-label="Footer" className="mb-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          <Link className="text-govblue underline hover:text-govblue-dark" to="/">
+            Report a repair
+          </Link>
+          <Link className="text-govblue underline hover:text-govblue-dark" to="/ops">
+            Council Ops
+          </Link>
+          <Link className="text-govblue underline hover:text-govblue-dark" to="/performance">
+            Performance data
+          </Link>
+        </nav>
+
+        <div className="flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-2">
+            <Crown className="h-6 w-6 shrink-0 text-ink" aria-hidden="true" />
+            <p className="max-w-2xl text-sm text-ink">
+              All content is available under the{' '}
+              <a
+                className="text-govblue underline hover:text-govblue-dark"
+                href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Open Government Licence v3.0
+              </a>
+              , except where otherwise stated. This is a prototype — all cases and data shown are mock data.
             </p>
           </div>
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 gap-y-2 text-sm">
-            <Link className="text-govblue hover:underline" to="/">
-              Report a repair
-            </Link>
-            <Link className="text-govblue hover:underline" to="/ops">
-              Council Ops
-            </Link>
-            <Link className="text-govblue hover:underline" to="/performance">
-              Performance data
-            </Link>
-          </nav>
+          <p className="shrink-0 text-sm text-ink">© Crown copyright</p>
         </div>
-        <p className="mt-8 border-t border-slate-200 pt-4 text-xs text-midgrey">
-          Prototype only · No real personal data · Built for a council discovery/alpha playback. Emergency phone
-          numbers shown are illustrative.
-        </p>
       </div>
     </footer>
   )

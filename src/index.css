@@ -9,26 +9,59 @@
 
   body {
     @apply bg-white font-sans text-ink antialiased;
+    font-size: 1.1875rem; /* GDS body — 19px */
+    line-height: 1.3157;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    @apply font-bold tracking-tight text-ink;
+    @apply font-bold text-ink;
+  }
+  h1 {
+    font-size: 3rem;
+    line-height: 1.0416;
+  }
+  h2 {
+    font-size: 2.25rem;
+    line-height: 1.1111;
+  }
+  h3 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+  h4 {
+    font-size: 1.1875rem;
+    line-height: 1.25;
   }
 
-  /* GOV.UK-style high-visibility focus state for accessibility */
+  /* GOV.UK focus states ----------------------------------------------------- */
+
+  /* Default: yellow outline (keeps buttons' drop-shadows intact). */
   *:focus-visible {
     outline: 3px solid theme('colors.focus');
     outline-offset: 0;
-    box-shadow: 0 0 0 1px theme('colors.ink');
   }
 
-  /* Don't double up the focus ring on elements that draw their own */
-  a:focus-visible,
-  button:focus-visible {
-    box-shadow: none;
+  /* Form controls: GDS yellow outline + inner black box. */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 3px solid theme('colors.focus');
+    outline-offset: 0;
+    box-shadow: inset 0 0 0 2px theme('colors.ink');
+  }
+
+  /* Links: GDS yellow highlight with the black underline bar. */
+  a:focus-visible {
+    background-color: theme('colors.focus');
+    color: theme('colors.ink');
+    text-decoration: none;
+    box-shadow:
+      0 -2px theme('colors.focus'),
+      0 4px theme('colors.ink');
+    outline: 3px solid transparent;
   }
 }
 
@@ -41,6 +74,6 @@
     @apply sr-only;
   }
   .skip-link:focus {
-    @apply not-sr-only fixed left-2 top-2 z-50 rounded bg-focus px-4 py-2 font-semibold text-ink;
+    @apply not-sr-only fixed left-2 top-2 z-50 bg-focus px-4 py-2 font-semibold text-ink;
   }
 }

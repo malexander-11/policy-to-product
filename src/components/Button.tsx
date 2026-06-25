@@ -2,14 +2,19 @@ import type { ButtonHTMLAttributes } from 'react'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost'
 
+// GDS button: square, bold 19px, with the signature 2px shadow that "presses"
+// down on :active.
 const base =
-  'inline-flex items-center justify-center gap-2 rounded px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50'
+  'inline-flex items-center justify-center gap-2 px-4 py-2 text-base font-bold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-50'
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-govblue text-white hover:bg-govblue-dark',
-  secondary: 'bg-white text-ink ring-1 ring-inset ring-line hover:bg-slate-50',
-  danger: 'bg-emergency text-white hover:bg-emergency-dark',
-  ghost: 'text-govblue hover:bg-slate-100',
+  primary:
+    'bg-govgreen text-white shadow-[0_2px_0_#002d18] hover:bg-govgreen-dark active:translate-y-[2px] active:shadow-none',
+  secondary:
+    'bg-lightgrey text-ink shadow-[0_2px_0_#929191] hover:bg-[#dbdad9] active:translate-y-[2px] active:shadow-none',
+  danger:
+    'bg-emergency text-white shadow-[0_2px_0_#55150b] hover:bg-emergency-dark active:translate-y-[2px] active:shadow-none',
+  ghost: 'text-govblue underline hover:text-govblue-dark hover:no-underline',
 }
 
 export function buttonClasses(variant: ButtonVariant = 'primary', extra = ''): string {

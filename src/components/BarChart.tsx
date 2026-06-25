@@ -28,7 +28,7 @@ export function BarChart({ data, ariaLabel }: { data: BarDatum[]; ariaLabel?: st
               style={{ width: `${Math.round((d.value / max) * 100)}%` }}
             />
           </div>
-          <span className="w-12 shrink-0 text-right text-sm font-semibold tabular-nums text-navy">
+          <span className="w-12 shrink-0 text-right text-sm font-semibold tabular-nums text-ink">
             {d.display ?? d.value}
           </span>
         </li>

@@ -17,7 +17,7 @@ export function MetricCard({
   to?: string
 }) {
   const accent: Record<string, string> = {
-    default: 'text-navy',
+    default: 'text-ink',
     red: 'text-red-700',
     amber: 'text-amber-700',
     green: 'text-govgreen',
@@ -25,7 +25,7 @@ export function MetricCard({
   }
 
   const inner = (
-    <div className="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-card">
+    <div className="flex h-full flex-col border border-line bg-white p-5">
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-medium text-midgrey">{label}</p>
         {icon && <div className="shrink-0 text-slate-400">{icon}</div>}
@@ -37,10 +37,8 @@ export function MetricCard({
 
   if (to) {
     return (
-      <Link
-        to={to}
-        className="block rounded-xl transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
-      >
+      <Link to={to} className="block">
+
         {inner}
       </Link>
     )

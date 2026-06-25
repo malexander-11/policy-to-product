@@ -23,6 +23,7 @@ import { EvidenceCard } from '../components/EvidenceCard'
 import { PriorityBadge } from '../components/PriorityBadge'
 import { Callout } from '../components/Callout'
 import { IssueIcon } from '../components/IssueIcon'
+import { ErrorSummary } from '../components/ErrorSummary'
 
 // The simulated signed-in resident.
 const ME = {
@@ -179,7 +180,11 @@ function ReportStep({ onSubmit }: { onSubmit: (description: string, evidence: Ev
         Tell us what's wrong and Patch will work out how urgent it is and what needs to happen next.
       </p>
 
-      <form onSubmit={submit} className="mt-6">
+      <div className="mt-6">
+        <ErrorSummary errors={error ? [{ id: 'description', text: error }] : []} />
+      </div>
+
+      <form onSubmit={submit}>
         <Card>
           <div className="space-y-5 p-5">
             <TextArea
