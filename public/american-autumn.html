@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>An American Autumn — Interactive Route</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  :root{
+    --rust:#B7410E; --rust-dk:#7A2C0A; --ink:#1A1A1A;
+    --parch:#F3E8DF; --paper:#FBF7F2; --line:#D8C3B3; --navy:#2E4A6B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--paper);}
+  header{border-bottom:3px solid var(--rust);padding:14px 20px;}
+  h1{margin:0 0 3px;color:var(--rust-dk);font-size:24px;}
+  .sub{color:#8A6D5B;font-style:italic;font-size:14px;}
+  .shell{position:relative;height:calc(100vh - 64px);min-height:520px;overflow:hidden;}
+  #map{position:absolute;inset:0;}
+  #panel{
+    position:absolute;top:0;right:0;height:100%;width:380px;max-width:88vw;
+    background:var(--paper);border-left:1px solid var(--line);
+    box-shadow:-6px 0 24px rgba(0,0,0,.18);
+    transform:translateX(100%);transition:transform .32s ease;
+    overflow-y:auto;z-index:1000;
+  }
+  #panel.open{transform:translateX(0);}
+  .p-head{position:sticky;top:0;background:var(--rust);color:#fff;padding:16px 18px;}
+  .p-num{display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;
+    background:#fff;color:var(--rust-dk);border-radius:50%;font-family:Arial;font-size:13px;font-weight:bold;margin-right:8px;}
+  .p-title{font-size:20px;font-weight:bold;vertical-align:middle;}
+  .p-dates{font-size:13px;opacity:.92;margin-top:5px;font-style:italic;}
+  .p-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.2);border:none;color:#fff;
+    width:26px;height:26px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1;}
+  .p-body{padding:16px 18px 40px;}
+  .p-tag{display:inline-block;background:var(--parch);color:var(--rust-dk);font-size:11px;
+    font-family:Arial;padding:3px 9px;border-radius:10px;margin-bottom:12px;}
+  .p-lead{font-size:14.5px;line-height:1.6;margin:0 0 14px;}
+  .sect{margin:14px 0 4px;font-size:13px;font-weight:bold;color:var(--rust-dk);
+    border-bottom:1px solid var(--line);padding-bottom:3px;font-family:Arial;text-transform:uppercase;letter-spacing:.3px;}
+  ul.do{margin:6px 0 0;padding-left:18px;}
+  ul.do li{font-size:13.5px;line-height:1.5;margin-bottom:5px;}
+  .drive{font-size:12.5px;color:#6B5847;background:#FAF3EC;border-radius:6px;padding:7px 10px;margin:4px 0 12px;}
+  .drive b{color:var(--rust-dk);}
+  .check{font-size:12.5px;color:var(--navy);background:#EAF0F6;border-radius:6px;padding:7px 10px;margin-top:6px;line-height:1.5;}
+  .check b{color:var(--navy);}
+  .hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:600;
+    background:var(--rust-dk);color:#fff;font-size:12.5px;padding:7px 14px;border-radius:16px;
+    box-shadow:0 2px 8px rgba(0,0,0,.3);font-family:Arial;}
+  .leaflet-popup-content{font-family:Georgia,serif;}
+</style>
+</head>
+<body>
+<header>
+  <h1>An American Autumn</h1>
+  <div class="sub">Washington DC &#8594; Boston &#183; 27 Sept &#8211; 10 Oct 2026 &#183; tap any stop for the plan</div>
+</header>
+<div class="shell">
+  <div id="map"></div>
+  <div class="hint" id="hint">Tap a numbered pin to see the plans &#8594;</div>
+  <aside id="panel">
+    <div class="p-head">
+      <button class="p-close" onclick="closePanel()">&#215;</button>
+      <span class="p-num" id="pNum"></span><span class="p-title" id="pTitle"></span>
+      <div class="p-dates" id="pDates"></div>
+    </div>
+    <div class="p-body" id="pBody"></div>
+  </aside>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const stops = [
+  {
+    name:"Washington DC", lat:38.9072873, lng:-77.0369274, dates:"Sat 27 \u2013 Wed 30 Sept \u00b7 4 nights",
+    tag:"Fly in \u00b7 political heritage",
+    lead:"The political pilgrimage. Base on Capitol Hill or Penn Quarter and walk into it \u2014 park the car and leave it until you head north.",
+    arrive:null,
+    plans:["Day 1: arrive, walk the National Mall at dusk \u2014 Lincoln Memorial, the war memorials, Washington Monument",
+      "Capitol Hill day \u2014 Capitol tour, Library of Congress (Jefferson Building), Supreme Court",
+      "National Archives at opening \u2014 the Constitution, Declaration, Bill of Rights",
+      "American History museum; White House view from Lafayette Square",
+      "One heavy museum: Holocaust Memorial or African American History & Culture",
+      "Ford's Theatre ties the Lincoln thread together; Jefferson & FDR memorials after dark"],
+    check:"Live music \u2014 first of two shots. Watch the 9:30 Club (930.com) & The Anthem from ~6 weeks out."
+  },
+  {
+    name:"Gettysburg", lat:39.8309293, lng:-77.2310955, dates:"Wed 30 Sept \u00b7 afternoon",
+    tag:"Battlefield + national park",
+    lead:"The heritage capstone, en route north. You read the Address in marble on day one; here you stand where Lincoln spoke it.",
+    arrive:["DC \u2192 Gettysburg","~85 mi","1h 45m"],
+    plans:["Museum & Visitor Center \u2014 the film and the Cyclorama",
+      "Auto tour of the battlefield \u2014 Little Round Top, the High Water Mark, the Soldiers' National Cemetery",
+      "A licensed battlefield guide who rides in your car is the splurge-worthy way to do it"],
+    check:"Book the in-car licensed guide ahead \u2014 they fill up."
+  },
+  {
+    name:"Harrisburg", lat:40.2731911, lng:-76.8867008, dates:"Wed 30 Sept \u00b7 overnight",
+    tag:"Overnight + PA State Capitol",
+    lead:"A short hop on from Gettysburg, and a relaxed overnight before the long drive north.",
+    arrive:["Gettysburg \u2192 Harrisburg","~40 mi","50m"],
+    plans:["Pennsylvania State Capitol in the morning \u2014 a genuinely spectacular building",
+      "A small state-government bookend to the federal heritage of DC, then point north"]
+  },
+  {
+    name:"Hudson Valley (Cold Spring)", lat:41.4200937, lng:-73.954583, dates:"Thu 1 Oct \u00b7 overnight",
+    tag:"The buffer night",
+    lead:"The extra day's buffer \u2014 rather than rush all the way to Hanover, you stop here on the Hudson and arrive relaxed for West Point.",
+    arrive:["Harrisburg \u2192 Hudson Valley","~180 mi","3h 15m"],
+    plans:["Handsome riverside village \u2014 Cold Spring or Beacon \u2014 good dinners",
+      "Optional: Storm King outdoor sculpture park or Dia Beacon if you've a sliver of time"]
+  },
+  {
+    name:"West Point", lat:41.3889257, lng:-73.9571178, dates:"Fri 2 Oct \u00b7 morning",
+    tag:"Military Academy tour",
+    lead:"The one piece of military-political heritage that bridges your themes \u2014 moved to Friday so Saturday isn't a dash to the game.",
+    arrive:["Hudson Valley \u2192 West Point","~10 mi","20m"],
+    plans:["Guided tour (booked ahead, photo ID required \u2014 you can't drive on without it)",
+      "Oldest continuously occupied military post in America",
+      "Trophy Point \u2014 extraordinary Hudson views in autumn"],
+    check:"Tour is advance-booking only with limited slots \u2014 reserve early."
+  },
+  {
+    name:"Woodstock, Vermont", lat:43.6242442, lng:-72.5185112, dates:"Fri 2 Oct \u00b7 overnight",
+    tag:"Scenic Vermont night",
+    lead:"The longest drive of the trip ends here \u2014 one of the quintessential New England foliage villages, and a first taste of Vermont colour the night before the game.",
+    arrive:["West Point \u2192 Woodstock","~200 mi","4h"],
+    plans:["Covered-bridge town green, dairy farms, galleries",
+      "Billings Farm & Museum \u2014 a lovely working-farm stop",
+      "Only ~50 min from Hanover, so an easy Saturday morning"],
+    check:"Small popular village in foliage season \u2014 book the one night early."
+  },
+  {
+    name:"Hanover, NH \u2014 Dartmouth", lat:43.7044406, lng:-72.2886934, dates:"Sat 3 Oct \u00b7 the centrepiece",
+    tag:"Dartmouth Homecoming game",
+    lead:"The day the whole route is built around \u2014 Dartmouth host Penn at Memorial Field for Homecoming, college green at peak colour, full bonfire-and-alumni Fall ritual.",
+    arrive:["Woodstock \u2192 Hanover","~40 mi","50m"],
+    plans:["Walk the Dartmouth green and Baker Library before kickoff",
+      "11,000-seat stadium \u2014 you'll actually get tickets; tailgating on the green",
+      "Everything 'classic American autumn' in one afternoon"],
+    check:"Buy tickets the moment general sale opens via Dartmouth Athletics \u2014 Homecoming sells fastest."
+  },
+  {
+    name:"White Mountains (Conway)", lat:44.0542221, lng:-71.1644119, dates:"Sun 4 \u2013 Wed 7 Oct \u00b7 3 nights",
+    tag:"Peak foliage",
+    lead:"The heart of the trip \u2014 base near Jackson, North Conway or Bretton Woods (the Omni Mount Washington is the memorable-hotel option). Your timing is close to perfect for peak colour.",
+    arrive:["Hanover \u2192 White Mountains","~75 mi","1h 45m"],
+    plans:["The Kancamagus Highway ('the Kanc') \u2014 the most famous foliage drive in New England (fuel up; no petrol stations)",
+      "Mount Washington \u2014 Cog Railway or Auto Road to the summit",
+      "Franconia Notch \u2014 Flume Gorge & Cannon Mountain tramway",
+      "A Vermont day to the Northeast Kingdom, or a longer hike (Mount Willard, Artist's Bluff)",
+      "Consider leaving one day completely unplanned \u2014 just follow the prettiest road"],
+    check:"Peak-foliage week is the busiest of the NE year \u2014 book lodging now. Sandwich Fair may fall near these dates (thesandwichfair.com)."
+  },
+  {
+    name:"Portland, Maine", lat:43.670822, lng:-70.2843825, dates:"Wed 7 \u2013 Thu 8 Oct \u00b7 2 nights",
+    tag:"Coast + campaign trail",
+    lead:"Southern Maine \u2014 good food city, walkable Old Port, lobster everywhere, and the centre of a contested midterm autumn.",
+    arrive:["White Mtns \u2192 Portland","~65 mi","1h 30m"],
+    plans:["Portland Head Light at Cape Elizabeth \u2014 the classic lighthouse morning",
+      "Old Port, the working waterfront, lobster shacks",
+      "Kennebunkport (Bush family's Walker's Point) 40 min south, if you want more coast",
+      "Campaign trail: Maine has live Senate (Collins vs Platner) AND Governor (open seat) races"],
+    check:"Drive passes through Fryeburg \u2014 Maine's biggest fair may be on (fryeburgfair.org). Campaign events: candidate socials, Portland Press Herald, Maine Public ~1\u20132 weeks out."
+  },
+  {
+    name:"Boston", lat:42.3555076, lng:-71.0565364, dates:"Fri 9 \u2013 Sat 10 Oct \u00b7 2 nights",
+    tag:"The Revolutionary finish \u00b7 fly home",
+    lead:"Barely 2 hours from Portland \u2014 the loop closes with no backtracking. You opened in the capital the Founders built; you close where the Revolution began.",
+    arrive:["Portland \u2192 Boston","~110 mi","2h"],
+    plans:["Drop the car (Boston's walkable; Logan's on the subway)",
+      "The Freedom Trail \u2014 State House, Old State House & Boston Massacre site, Faneuil Hall, Old North Church, Paul Revere's house",
+      "Last morning: Bunker Hill Monument & USS Constitution in Charlestown",
+      "Optional: Boston Public Library, Isabella Stewart Gardner Museum",
+      "Then a short subway ride to Logan and home"],
+    check:"Second music shot (House of Blues, MGM, Roadrunner, Symphony Hall). Salem Haunted Happenings in full swing \u2014 easy rail/ferry day trip. Red Sox playoff baseball a long shot \u2014 check on arrival."
+  }
+];
+
+const map = L.map('map');
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+  {attribution:'\u00a9 OpenStreetMap, \u00a9 CARTO', maxZoom:19}).addTo(map);
+
+const latlngs = stops.map(s=>[s.lat,s.lng]);
+L.polyline(latlngs,{color:'#B7410E',weight:3.5,opacity:.85}).addTo(map);
+
+const markers = [];
+stops.forEach((s,i)=>{
+  const icon = L.divIcon({className:'',
+    html:'<div style="background:#7A2C0A;color:#fff;width:28px;height:28px;border-radius:50%;'+
+          'display:flex;align-items:center;justify-content:center;font-family:Arial;font-size:14px;'+
+          'font-weight:bold;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);cursor:pointer">'+(i+1)+'</div>',
+    iconSize:[28,28], iconAnchor:[14,14]});
+  const m = L.marker([s.lat,s.lng],{icon}).addTo(map);
+  m.on('click',()=>openPanel(i));
+  markers.push(m);
+});
+
+for(let i=0;i<stops.length-1;i++){
+  const a=latlngs[i], b=latlngs[i+1];
+  const mid=[(a[0]+b[0])/2,(a[1]+b[1])/2];
+  const t=stops[i+1].arrive[2];
+  const lbl=L.divIcon({className:'',
+    html:'<div style="background:#FBF7F2;border:1px solid #B7410E;color:#7A2C0A;padding:1px 6px;'+
+          'border-radius:10px;font-family:Arial;font-size:11px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.25)">'+t+'</div>',
+    iconSize:[0,0], iconAnchor:[18,8]});
+  L.marker(mid,{icon:lbl,interactive:false}).addTo(map);
+}
+
+map.fitBounds(latlngs,{padding:[40,60]});
+
+function openPanel(i){
+  const s = stops[i];
+  document.getElementById('pNum').textContent = i+1;
+  document.getElementById('pTitle').textContent = s.name;
+  document.getElementById('pDates').textContent = s.dates;
+  let html = '<div class="p-tag">'+s.tag+'</div><p class="p-lead">'+s.lead+'</p>';
+  if(s.arrive){
+    html += '<div class="drive">\uD83D\uDE97 Drive in \u2014 <b>'+s.arrive[0]+'</b>: '+s.arrive[1]+' \u00b7 <b>'+s.arrive[2]+'</b></div>';
+  }
+  html += '<div class="sect">What you\'re doing</div><ul class="do">';
+  s.plans.forEach(p=> html += '<li>'+p+'</li>');
+  html += '</ul>';
+  if(s.check){
+    html += '<div class="check"><b>\u2713 Check / book:</b> '+s.check+'</div>';
+  }
+  document.getElementById('pBody').innerHTML = html;
+  document.getElementById('panel').classList.add('open');
+  document.getElementById('hint').style.display='none';
+  map.panTo([s.lat,s.lng],{animate:true});
+}
+function closePanel(){
+  document.getElementById('panel').classList.remove('open');
+}
+</script>
+</body>
+</html>
