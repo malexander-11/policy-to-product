@@ -44,6 +44,9 @@
   .drive b{color:var(--rust-dk);}
   .check{font-size:12.5px;color:var(--navy);background:#EAF0F6;border-radius:6px;padding:7px 10px;margin-top:6px;line-height:1.5;}
   .check b{color:var(--navy);}
+  .maybe{font-size:12.5px;color:var(--rust-dk);background:var(--parch);border:1px dashed var(--line);
+    border-radius:6px;padding:7px 10px;margin-top:6px;line-height:1.5;}
+  .maybe b{color:var(--rust-dk);}
   .hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:600;
     background:var(--rust-dk);color:#fff;font-size:12.5px;padding:7px 14px;border-radius:16px;
     box-shadow:0 2px 8px rgba(0,0,0,.3);font-family:Arial;}
@@ -81,7 +84,8 @@ const stops = [
       "National Archives at opening \u2014 the Constitution, Declaration, Bill of Rights",
       "American History museum; White House view from Lafayette Square",
       "One heavy museum: Holocaust Memorial or African American History & Culture",
-      "Ford's Theatre ties the Lincoln thread together; Jefferson & FDR memorials after dark"],
+      "Ford's Theatre ties the Lincoln thread together; Jefferson & FDR memorials after dark",
+      "⚾ Sun 27 Sept is the MLB regular-season finale — Nationals vs Mets, a short Metro ride from the Mall. Usually a mid-afternoon start, so it lives or dies on your landing time"],
     check:"Three full days now, so pick ruthlessly \u2014 don't try to 'do the Smithsonian'. Optional extra gig: 9:30 Club (930.com) or The Anthem."
   },
   {
@@ -99,12 +103,16 @@ const stops = [
   {
     name:"Hudson Valley (Cold Spring)", lat:41.4200937, lng:-73.954583, dates:"Wed 30 Sept \u2013 Thu 1 Oct \u00b7 2 nights",
     tag:"River base for West Point",
-    lead:"Skipping Harrisburg buys you a proper day on the Hudson instead of a motel stop. Two nights here, so Thursday is yours after the Academy tour.",
+    lead:"Skipping Harrisburg buys you a proper day on the Hudson instead of a motel stop. Two nights here, so Thursday is yours after the Academy tour \u2014 and Manhattan is a direct train away.",
     arrive:["Gettysburg \u2192 Hudson Valley","~250 mi","4h 30m"],
-    plans:["Handsome riverside village \u2014 Cold Spring or Beacon \u2014 good dinners",
+    plans:["\ud83c\udfd2 Thu 1 Oct \u2014 RANGERS HOME OPENER vs Tampa Bay at Madison Square Garden",
+      "Cold Spring is on the Metro-North Hudson Line: direct to Grand Central (~1h15), MSG a short hop from there. No car, and trains run back up the Hudson past 1am",
+      "Handsome riverside village \u2014 Cold Spring or Beacon \u2014 good dinners",
       "Storm King outdoor sculpture park \u2014 you now have the time to do it properly",
       "Dia Beacon if the weather turns",
-      "The Hudson is already turning in early October \u2014 a first taste of the colour"]
+      "The Hudson is already turning in early October \u2014 a first taste of the colour"],
+    maybe:"Same evening, the MLB Wild Card decider could be at Yankee Stadium \u2014 the Hudson Line stops at Yankees\u2013E 153rd St. Only happens if the Yankees host and the series goes to game 3; you'd be choosing between the two, and the Rangers is the certain one.",
+    check:"Rangers tickets are on sale now \u2014 a home opener sells fastest of the season."
   },
   {
     name:"West Point", lat:41.3889257, lng:-73.9571178, dates:"Thu 1 Oct \u00b7 morning",
@@ -124,13 +132,14 @@ const stops = [
     plans:["Drive east after breakfast \u2014 arrive early afternoon, no rush",
       "Gillette's lots open early and tailgating is very much the done thing",
       "Sleep in Providence (~25 min south) \u2014 far easier after the show than fighting north into Boston, and a good dinner town",
-      "Alternative: Foxborough or Mansfield, but those sell out for stadium shows"],
+      "Alternative: Foxborough or Mansfield, but those sell out for stadium shows",
+      "No Patriots home game falls inside the trip — they're home 11 and 18 Oct, both after you fly. The concert is what Gillette gives you"],
     check:"Tickets and the bed on the same day \u2014 Providence and Foxborough lodging both go fast for a Gillette night."
   },
   {
     name:"White Mountains (Conway)", lat:44.0542221, lng:-71.1644119, dates:"Sat 3 \u2013 Wed 7 Oct \u00b7 4 nights",
     tag:"Peak foliage \u00b7 the heart of it",
-    lead:"Dropping the Dartmouth game buys you a fourth night here, in the week the colour peaks. Base near Jackson, North Conway or Bretton Woods \u2014 the Omni Mount Washington is the memorable-hotel option.",
+    lead:"Four nights in the week the colour peaks \u2014 the longest stay of the trip, and rightly so. Saturday is a relaxed drive north arriving early afternoon, with the whole weekend in the mountains ahead. Base near Jackson, North Conway or Bretton Woods \u2014 the Omni Mount Washington is the memorable-hotel option.",
     arrive:["Foxborough \u2192 White Mountains","~200 mi","3h 30m"],
     plans:["The Kancamagus Highway ('the Kanc') \u2014 the most famous foliage drive in New England (fuel up; no petrol stations)",
       "Mount Washington \u2014 Cog Railway or Auto Road to the summit",
@@ -152,16 +161,18 @@ const stops = [
     check:"Drive passes through Fryeburg \u2014 Maine's biggest fair may be on (fryeburgfair.org). Campaign events: candidate socials, Portland Press Herald, Maine Public ~1\u20132 weeks out."
   },
   {
-    name:"Boston", lat:42.3555076, lng:-71.0565364, dates:"Fri 9 \u2013 Sat 10 Oct \u00b7 2 nights",
+    name:"Boston", lat:42.3555076, lng:-71.0565364, dates:"Fri 9 \u2013 Sat 10 Oct \u00b7 1 night",
     tag:"The Revolutionary finish \u00b7 fly home",
-    lead:"Barely 2 hours from Portland \u2014 the loop closes with no backtracking. You opened in the capital the Founders built; you close where the Revolution began.",
+    lead:"Barely 2 hours from Portland \u2014 the loop closes with no backtracking. You opened in the capital the Founders built; you close where the Revolution began, with an Original Six matinee before the flight.",
     arrive:["Portland \u2192 Boston","~110 mi","2h"],
-    plans:["Drop the car (Boston's walkable; Logan's on the subway)",
-      "The Freedom Trail \u2014 State House, Old State House & Boston Massacre site, Faneuil Hall, Old North Church, Paul Revere's house",
-      "Last morning: Bunker Hill Monument & USS Constitution in Charlestown",
-      "Optional: Boston Public Library, Isabella Stewart Gardner Museum",
-      "Then a short subway ride to Logan and home"],
-    check:"Salem Haunted Happenings in full swing \u2014 easy rail/ferry day trip. Red Sox playoff baseball a long shot \u2014 check on arrival. Optional second gig: House of Blues, Roadrunner or Symphony Hall."
+    plans:["Fri: drop the car (Boston's walkable; Logan's on the subway)",
+      "Fri: the Freedom Trail \u2014 State House, Old State House & Boston Massacre site, Faneuil Hall, Old North Church, Paul Revere's house",
+      "Fri evening options: Boston Public Library, Isabella Stewart Gardner Museum, or a gig (House of Blues, Roadrunner, Symphony Hall)",
+      "Sat morning: Bunker Hill Monument & USS Constitution in Charlestown \u2014 a 15-min walk from TD Garden",
+      "\ud83c\udfd2 Sat 1pm: BRUINS vs FLYERS at TD Garden \u2014 walk back over the bridge for it",
+      "~3:45pm final horn, then ~15 min to Logan for the 21:50 flight"],
+    maybe:"If the Red Sox make the ALDS they'd host games 3 and 4 on 7\u20138 and 8\u20139 Oct \u2014 so Fenway on the Friday is live, and the Thursday game is drivable from Portland. Won't be known until the Wild Card round ends on 1 Oct.",
+    check:"TD Garden is North Station, ~15 min from Logan \u2014 the 1pm game leaves ~3 hours of slack before check-in. Ask the hotel to hold bags on the Saturday. Salem Haunted Happenings is also in full swing if you want a Friday day trip."
   }
 ];
 
@@ -209,6 +220,9 @@ function openPanel(i){
   html += '<div class="sect">What you\'re doing</div><ul class="do">';
   s.plans.forEach(p=> html += '<li>'+p+'</li>');
   html += '</ul>';
+  if(s.maybe){
+    html += '<div class="maybe"><b>◇ Maybe:</b> '+s.maybe+'</div>';
+  }
   if(s.check){
     html += '<div class="check"><b>\u2713 Check / book:</b> '+s.check+'</div>';
   }
