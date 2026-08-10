@@ -72,7 +72,7 @@
 <script>
 const stops = [
   {
-    name:"Washington DC", lat:38.9072873, lng:-77.0369274, dates:"Sat 27 \u2013 Wed 30 Sept \u00b7 4 nights",
+    name:"Washington DC", lat:38.9072873, lng:-77.0369274, dates:"Sun 27 \u2013 Wed 30 Sept \u00b7 3 nights",
     tag:"Fly in \u00b7 political heritage",
     lead:"The political pilgrimage. Base on Capitol Hill or Penn Quarter and walk into it \u2014 park the car and leave it until you head north.",
     arrive:null,
@@ -82,38 +82,34 @@ const stops = [
       "American History museum; White House view from Lafayette Square",
       "One heavy museum: Holocaust Memorial or African American History & Culture",
       "Ford's Theatre ties the Lincoln thread together; Jefferson & FDR memorials after dark"],
-    check:"Live music \u2014 first of two shots. Watch the 9:30 Club (930.com) & The Anthem from ~6 weeks out."
+    check:"Three full days now, so pick ruthlessly \u2014 don't try to 'do the Smithsonian'. Optional extra gig: 9:30 Club (930.com) or The Anthem."
   },
   {
-    name:"Gettysburg", lat:39.8309293, lng:-77.2310955, dates:"Wed 30 Sept \u00b7 afternoon",
+    name:"Gettysburg", lat:39.8309293, lng:-77.2310955, dates:"Wed 30 Sept \u00b7 morning",
     tag:"Battlefield + national park",
-    lead:"The heritage capstone, en route north. You read the Address in marble on day one; here you stand where Lincoln spoke it.",
+    lead:"The heritage capstone, now in morning light and far quieter for it. You read the Address in marble on day one; here you stand where Lincoln spoke it.",
     arrive:["DC \u2192 Gettysburg","~85 mi","1h 45m"],
-    plans:["Museum & Visitor Center \u2014 the film and the Cyclorama",
+    plans:["Leave DC early \u2014 aim to be at the Visitor Center for opening",
+      "Museum & Visitor Center \u2014 the film and the Cyclorama",
       "Auto tour of the battlefield \u2014 Little Round Top, the High Water Mark, the Soldiers' National Cemetery",
-      "A licensed battlefield guide who rides in your car is the splurge-worthy way to do it"],
-    check:"Book the in-car licensed guide ahead \u2014 they fill up."
+      "A licensed battlefield guide who rides in your car is the splurge-worthy way to do it",
+      "Lunch in town, then push north by ~2pm \u2014 it's a long afternoon on"],
+    check:"Book the in-car licensed guide ahead \u2014 they fill up, and the morning slots go first."
   },
   {
-    name:"Harrisburg", lat:40.2731911, lng:-76.8867008, dates:"Wed 30 Sept \u00b7 overnight",
-    tag:"Overnight + PA State Capitol",
-    lead:"A short hop on from Gettysburg, and a relaxed overnight before the long drive north.",
-    arrive:["Gettysburg \u2192 Harrisburg","~40 mi","50m"],
-    plans:["Pennsylvania State Capitol in the morning \u2014 a genuinely spectacular building",
-      "A small state-government bookend to the federal heritage of DC, then point north"]
-  },
-  {
-    name:"Hudson Valley (Cold Spring)", lat:41.4200937, lng:-73.954583, dates:"Thu 1 Oct \u00b7 overnight",
-    tag:"The buffer night",
-    lead:"The extra day's buffer \u2014 rather than rush all the way to Hanover, you stop here on the Hudson and arrive relaxed for West Point.",
-    arrive:["Harrisburg \u2192 Hudson Valley","~180 mi","3h 15m"],
+    name:"Hudson Valley (Cold Spring)", lat:41.4200937, lng:-73.954583, dates:"Wed 30 Sept \u2013 Thu 1 Oct \u00b7 2 nights",
+    tag:"River base for West Point",
+    lead:"Skipping Harrisburg buys you a proper day on the Hudson instead of a motel stop. Two nights here, so Thursday is yours after the Academy tour.",
+    arrive:["Gettysburg \u2192 Hudson Valley","~250 mi","4h 30m"],
     plans:["Handsome riverside village \u2014 Cold Spring or Beacon \u2014 good dinners",
-      "Optional: Storm King outdoor sculpture park or Dia Beacon if you've a sliver of time"]
+      "Storm King outdoor sculpture park \u2014 you now have the time to do it properly",
+      "Dia Beacon if the weather turns",
+      "The Hudson is already turning in early October \u2014 a first taste of the colour"]
   },
   {
-    name:"West Point", lat:41.3889257, lng:-73.9571178, dates:"Fri 2 Oct \u00b7 morning",
+    name:"West Point", lat:41.3889257, lng:-73.9571178, dates:"Thu 1 Oct \u00b7 morning",
     tag:"Military Academy tour",
-    lead:"The one piece of military-political heritage that bridges your themes \u2014 moved to Friday so Saturday isn't a dash to the game.",
+    lead:"The one piece of military-political heritage that bridges your themes \u2014 20 minutes from your base, and back for a free Hudson Valley afternoon.",
     arrive:["Hudson Valley \u2192 West Point","~10 mi","20m"],
     plans:["Guided tour (booked ahead, photo ID required \u2014 you can't drive on without it)",
       "Oldest continuously occupied military post in America",
@@ -121,35 +117,27 @@ const stops = [
     check:"Tour is advance-booking only with limited slots \u2014 reserve early."
   },
   {
-    name:"Woodstock, Vermont", lat:43.6242442, lng:-72.5185112, dates:"Fri 2 Oct \u00b7 overnight",
-    tag:"Scenic Vermont night",
-    lead:"The longest drive of the trip ends here \u2014 one of the quintessential New England foliage villages, and a first taste of Vermont colour the night before the game.",
-    arrive:["West Point \u2192 Woodstock","~200 mi","4h"],
-    plans:["Covered-bridge town green, dairy farms, galleries",
-      "Billings Farm & Museum \u2014 a lovely working-farm stop",
-      "Only ~50 min from Hanover, so an easy Saturday morning"],
-    check:"Small popular village in foliage season \u2014 book the one night early."
+    name:"Foxborough \u2014 Gillette Stadium", lat:42.0909458, lng:-71.2643245, dates:"Fri 2 Oct \u00b7 Zach Bryan, 7pm",
+    tag:"Stadium night \u00b7 the new centrepiece",
+    lead:"Zach Bryan's 'With Heaven On Tour' at Gillette, with Gregory Alan Isakov and Gabriella Rose supporting. Stadium-scale Americana on a Friday night \u2014 the most American evening of the trip, and it settles the live-music question in one go.",
+    arrive:["Hudson Valley \u2192 Foxborough","~175 mi","3h"],
+    plans:["Drive east after breakfast \u2014 arrive early afternoon, no rush",
+      "Gillette's lots open early and tailgating is very much the done thing",
+      "Sleep in Providence (~25 min south) \u2014 far easier after the show than fighting north into Boston, and a good dinner town",
+      "Alternative: Foxborough or Mansfield, but those sell out for stadium shows"],
+    check:"Tickets and the bed on the same day \u2014 Providence and Foxborough lodging both go fast for a Gillette night."
   },
   {
-    name:"Hanover, NH \u2014 Dartmouth", lat:43.7044406, lng:-72.2886934, dates:"Sat 3 Oct \u00b7 the centrepiece",
-    tag:"Dartmouth Homecoming game",
-    lead:"The day the whole route is built around \u2014 Dartmouth host Penn at Memorial Field for Homecoming, college green at peak colour, full bonfire-and-alumni Fall ritual.",
-    arrive:["Woodstock \u2192 Hanover","~40 mi","50m"],
-    plans:["Walk the Dartmouth green and Baker Library before kickoff",
-      "11,000-seat stadium \u2014 you'll actually get tickets; tailgating on the green",
-      "Everything 'classic American autumn' in one afternoon"],
-    check:"Buy tickets the moment general sale opens via Dartmouth Athletics \u2014 Homecoming sells fastest."
-  },
-  {
-    name:"White Mountains (Conway)", lat:44.0542221, lng:-71.1644119, dates:"Sun 4 \u2013 Wed 7 Oct \u00b7 3 nights",
-    tag:"Peak foliage",
-    lead:"The heart of the trip \u2014 base near Jackson, North Conway or Bretton Woods (the Omni Mount Washington is the memorable-hotel option). Your timing is close to perfect for peak colour.",
-    arrive:["Hanover \u2192 White Mountains","~75 mi","1h 45m"],
+    name:"White Mountains (Conway)", lat:44.0542221, lng:-71.1644119, dates:"Sat 3 \u2013 Wed 7 Oct \u00b7 4 nights",
+    tag:"Peak foliage \u00b7 the heart of it",
+    lead:"Dropping the Dartmouth game buys you a fourth night here, in the week the colour peaks. Base near Jackson, North Conway or Bretton Woods \u2014 the Omni Mount Washington is the memorable-hotel option.",
+    arrive:["Foxborough \u2192 White Mountains","~200 mi","3h 30m"],
     plans:["The Kancamagus Highway ('the Kanc') \u2014 the most famous foliage drive in New England (fuel up; no petrol stations)",
       "Mount Washington \u2014 Cog Railway or Auto Road to the summit",
       "Franconia Notch \u2014 Flume Gorge & Cannon Mountain tramway",
-      "A Vermont day to the Northeast Kingdom, or a longer hike (Mount Willard, Artist's Bluff)",
-      "Consider leaving one day completely unplanned \u2014 just follow the prettiest road"],
+      "A Vermont day \u2014 Woodstock's covered bridges and Billings Farm, or the Northeast Kingdom for the most concentrated colour",
+      "A longer hike \u2014 Mount Willard or Artist's Bluff, big views for modest effort",
+      "Leave one day completely unplanned \u2014 just follow the prettiest road"],
     check:"Peak-foliage week is the busiest of the NE year \u2014 book lodging now. Sandwich Fair may fall near these dates (thesandwichfair.com)."
   },
   {
@@ -173,7 +161,7 @@ const stops = [
       "Last morning: Bunker Hill Monument & USS Constitution in Charlestown",
       "Optional: Boston Public Library, Isabella Stewart Gardner Museum",
       "Then a short subway ride to Logan and home"],
-    check:"Second music shot (House of Blues, MGM, Roadrunner, Symphony Hall). Salem Haunted Happenings in full swing \u2014 easy rail/ferry day trip. Red Sox playoff baseball a long shot \u2014 check on arrival."
+    check:"Salem Haunted Happenings in full swing \u2014 easy rail/ferry day trip. Red Sox playoff baseball a long shot \u2014 check on arrival. Optional second gig: House of Blues, Roadrunner or Symphony Hall."
   }
 ];
 
