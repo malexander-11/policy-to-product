@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>An American Autumn — Lock It In</title>
+<style>
+  :root{
+    --rust:#B7410E; --rust-dk:#7A2C0A; --ink:#1A1A1A;
+    --parch:#F3E8DF; --paper:#FBF7F2; --line:#D8C3B3; --navy:#2E4A6B;
+    --ok:#2E6B4A; --wip:#8A6D1B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--paper);}
+  header{border-bottom:3px solid var(--rust);padding:12px 16px;}
+  h1{margin:0 0 2px;color:var(--rust-dk);font-size:21px;}
+  .sub{color:#8A6D5B;font-style:italic;font-size:12.5px;}
+  .sub a{color:var(--rust-dk);}
+  main{max-width:760px;margin:0 auto;padding:12px 12px 120px;}
+  .tabs{display:flex;gap:8px;margin:10px 0 6px;}
+  .tab{flex:1;text-align:center;padding:10px 6px;border:1px solid var(--line);border-radius:10px;background:#fff;
+    font-family:Arial,sans-serif;font-size:13.5px;font-weight:bold;color:var(--rust-dk);cursor:pointer;}
+  .tab.on{background:var(--rust-dk);color:#fff;border-color:var(--rust-dk);}
+  .progress{font-family:Arial,sans-serif;font-size:12.5px;color:#6B5847;margin:8px 2px;}
+  .bar{height:7px;background:#EDE2D6;border-radius:4px;overflow:hidden;margin-top:4px;}
+  .bar i{display:block;height:100%;background:var(--rust);border-radius:4px;transition:width .25s;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;}
+  .chead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .dnum{background:var(--rust-dk);color:#fff;border-radius:50%;width:24px;height:24px;line-height:24px;text-align:center;
+    font-family:Arial,sans-serif;font-size:12px;font-weight:bold;flex:none;}
+  .ctitle{font-weight:bold;color:var(--rust-dk);font-size:15.5px;}
+  .cdate{font-style:italic;color:#8A6D5B;font-size:12.5px;}
+  .digest{font-size:13.5px;line-height:1.5;margin:7px 0 2px;}
+  .whyline{font-size:12px;color:#6B5847;font-style:italic;margin:5px 0 8px;line-height:1.45;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0;}
+  .chip{border:1px solid var(--line);border-radius:14px;padding:5px 11px;font-family:Arial,sans-serif;font-size:12px;
+    background:#FDF9F3;color:#5A4635;cursor:pointer;user-select:none;}
+  .chip.v-agree.on{background:var(--ok);color:#fff;border-color:var(--ok);}
+  .chip.v-amend.on{background:var(--wip);color:#fff;border-color:var(--wip);}
+  .chip.v-discuss.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .chip.opt.on{background:var(--rust);color:#fff;border-color:var(--rust);}
+  .plabel{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--rust-dk);margin:8px 0 2px;}
+  input.note,textarea.note{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-family:Georgia,serif;
+    font-size:13px;background:#FFFDFB;margin-top:6px;}
+  .tier{margin:16px 0 4px;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;text-transform:uppercase;
+    letter-spacing:.4px;color:var(--rust-dk);border-bottom:1px solid var(--line);padding-bottom:3px;}
+  .tiernote{font-size:11.5px;font-weight:normal;text-transform:none;letter-spacing:0;color:#8A6D5B;font-style:italic;}
+  .brow{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;}
+  .btop{display:flex;align-items:center;gap:10px;}
+  .status{flex:none;width:74px;text-align:center;border-radius:8px;padding:6px 4px;font-family:Arial,sans-serif;
+    font-size:11px;font-weight:bold;cursor:pointer;border:1px solid var(--line);background:#FDF9F3;color:#6B5847;}
+  .status.wip{background:#FBF3D9;border-color:var(--wip);color:var(--wip);}
+  .status.done{background:#E6F1EA;border-color:var(--ok);color:var(--ok);}
+  .bname{font-size:14px;font-weight:bold;color:var(--ink);line-height:1.35;}
+  .bcon{font-size:11.5px;color:#8A6D5B;font-style:italic;}
+  .bdetail{margin-top:9px;display:none;border-top:1px dashed var(--line);padding-top:9px;}
+  .brow.open .bdetail{display:block;}
+  .frow{display:flex;gap:8px;margin:6px 0;flex-wrap:wrap;align-items:center;}
+  .frow label{font-family:Arial,sans-serif;font-size:11px;color:var(--rust-dk);width:52px;flex:none;}
+  .frow input{flex:1;min-width:120px;border:1px solid var(--line);border-radius:7px;padding:6px 8px;font-size:13px;background:#FFFDFB;}
+  .bychip{border:1px solid var(--line);border-radius:12px;padding:4px 12px;font-family:Arial,sans-serif;font-size:12px;
+    cursor:pointer;background:#FDF9F3;}
+  .bychip.on{background:var(--rust-dk);color:#fff;border-color:var(--rust-dk);}
+  .who{display:flex;align-items:center;gap:6px;font-family:Arial,sans-serif;font-size:12px;color:#6B5847;margin:6px 2px 0;}
+  .who input{width:34px;text-align:center;border:1px solid var(--line);border-radius:7px;padding:5px 0;font-size:13px;}
+  footer{position:fixed;left:0;right:0;bottom:0;background:var(--rust-dk);padding:9px 10px calc(9px + env(safe-area-inset-bottom));
+    display:flex;gap:7px;justify-content:center;z-index:50;}
+  footer button{border:none;border-radius:9px;padding:9px 10px;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;
+    background:rgba(255,255,255,.14);color:#fff;cursor:pointer;flex:1;max-width:180px;}
+  footer button:active{background:rgba(255,255,255,.3);}
+  #toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:8px 16px;border-radius:16px;font-family:Arial,sans-serif;font-size:12.5px;opacity:0;transition:opacity .25s;
+    pointer-events:none;z-index:60;max-width:88vw;text-align:center;}
+  #toast.show{opacity:.95;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+<header>
+  <h1>An American Autumn — Lock It In</h1>
+  <div class="sub">Firm up each day, then book. <a href="american-autumn.html">map</a> &#183; <a href="american-autumn-days.html">day-by-day</a></div>
+</header>
+<main>
+  <div class="tabs">
+    <div class="tab on" id="tabJ" onclick="showTab('J')">1 &#183; Firm up the journey</div>
+    <div class="tab" id="tabB" onclick="showTab('B')">2 &#183; Booking list</div>
+  </div>
+  <div id="paneJ">
+    <div class="progress" id="progJ"></div>
+    <div id="dayList"></div>
+  </div>
+  <div id="paneB" class="hidden">
+    <div class="progress" id="progB"></div>
+    <div class="who">Who&rsquo;s who:
+      <input id="who1" maxlength="2" /> &amp; <input id="who2" maxlength="2" />
+      <span style="font-style:italic">&larr; your initials, used on the &ldquo;booked by&rdquo; chips</span>
+    </div>
+    <div id="bookList"></div>
+  </div>
+</main>
+<footer>
+  <button onclick="shareLink()">&#128279; Share link</button>
+  <button onclick="waSummary()">&#128172; WhatsApp summary</button>
+  <button onclick="exportClaude()">&#129302; Export for Claude</button>
+</footer>
+<div id="toast"></div>
+
+<script>
+const DAYS = [
+ {id:'d1', date:'Sun 27 Sept', title:'Arrive DC — write-off by design',
+  digest:'Land, one train to the hotel (Silver/Blue direct to McPherson Sq). Mall at dusk only if the legs allow. Dinner near the hotel.',
+  why:'Nothing scheduled against jetlag; the Nats finale was cut for this.', prompts:[]},
+ {id:'d2', date:'Mon 28 Sept', title:'Capitol Hill',
+  digest:'Capitol tour, Library of Congress (Jefferson Building), Supreme Court — three branches in 800 yards, 10 min direct on the Metro.',
+  why:'The trip&rsquo;s thesis statement goes first, while freshest.',
+  prompts:[{id:'gig', label:'Evening gig at 9:30 Club / The Anthem?', multi:false,
+    options:[{id:'yes',label:'Yes — check listings'},{id:'maybe',label:'See how we feel'},{id:'no',label:'No'}]}]},
+ {id:'d3', date:'Tue 29 Sept', title:'The founding documents',
+  digest:'National Archives at opening — the Constitution itself. American History museum PM. Jefferson &amp; FDR memorials after dark.',
+  why:'The engrossed Constitution is the heart of the whole theme.', prompts:[]},
+ {id:'d4', date:'Wed 30 Sept', title:'Arlington',
+  digest:'Arlington National Cemetery — Changing of the Guard, Kennedy graves, Arlington House. Blue line direct.',
+  why:'Chosen over a fourth museum day — change of register. Early night: tomorrow starts 07:30.',
+  prompts:[{id:'pm', label:'Wednesday afternoon', multi:false,
+    options:[{id:'fords',label:'Ford&rsquo;s Theatre (8 min walk)'},{id:'vernon',label:'Mount Vernon'},{id:'museum',label:'Heavy museum'},{id:'loose',label:'Leave it loose'}]}]},
+ {id:'d5', date:'Thu 1 Oct', title:'Gettysburg &#8594; SteelStacks &#8594; Cold Spring',
+  digest:'07:30 rental pickup. Gettysburg 09:45&ndash;14:00. Bethlehem blast furnaces 15:50&ndash;16:50. Water Gap golden hour. Cold Spring ~19:30, table at 20:00.',
+  why:'If the day runs late the Gap drops first — political economy over scenery.',
+  prompts:[{id:'guide', label:'Gettysburg in-car licensed guide (the splurge)?', multi:false,
+    options:[{id:'yes',label:'Yes — book it'},{id:'no',label:'Self-guided auto tour'}]},
+   {id:'steel', label:'Chase a Steelwalker tour slot (ex-steelworker guide)?', multi:false,
+    options:[{id:'yes',label:'Yes — check artsquest.org'},{id:'no',label:'Trestle walk is enough'}]},
+   {id:'gap', label:'Pre-agree the drop order — Gap goes first if late?', multi:false,
+    options:[{id:'agree',label:'Agreed'},{id:'keep',label:'No — keep the Gap regardless'}]}]},
+ {id:'d6', date:'Fri 2 Oct', title:'West Point &#8594; Springwood &#8594; ZACH BRYAN',
+  digest:'Academy tour 10:00&ndash;11:30 (security 09:30). Springwood ~12:30 — house + rose-garden graves. Providence check-in 17:25. Gillette 18:30; Zach ~20:30.',
+  why:'Third draft of this day and the best: Academy-first makes the mansion a plan, not a lottery.',
+  prompts:[{id:'fallback', label:'Accept the fallback rule — if Springwood&rsquo;s next slot is 14:00+, do grounds + Library instead?', multi:false,
+    options:[{id:'yes',label:'Yes — schedule wins'},{id:'house',label:'No — wait for the house'}]},
+   {id:'tailgate', label:'If running early: tailgate, or keep the check-in stop?', multi:false,
+    options:[{id:'tailgate',label:'Skip check-in, tailgate'},{id:'checkin',label:'Bags first, always'}]}]},
+ {id:'d7', date:'Sat 3 Oct', title:'Inland to Franconia Notch',
+  digest:'I-93 north — Castle in the Clouds lunch over Winnipesaukee — Lincoln ~15:20 — Artist&rsquo;s Bluff for last light (sunset 18:22).',
+  why:'Inland beats the coast road; the Omni is Monday&rsquo;s visit, not the bed.',
+  prompts:[{id:'base', label:'Mountain base (2 nights)', multi:false,
+    options:[{id:'lincoln',label:'Lincoln / N Woodstock (position)'},{id:'bethlehem',label:'Bethlehem NH (charm)'},{id:'littleton',label:'Littleton (restaurants)'}]},
+   {id:'lunch', label:'Lunch stop', multi:false,
+    options:[{id:'castle',label:'Castle in the Clouds'},{id:'portsmouth',label:'Portsmouth seaport instead'}]}]},
+ {id:'d8', date:'Sun 4 Oct', title:'The Notch day',
+  digest:'Flume Gorge 09:00 (timed ticket) &#8594; the Basin &#8594; Lonesome Lake 11:45&ndash;14:15 (AMC hut, ridge in the water) &#8594; the Kanc 15:00&ndash;17:30.',
+  why:'Built round the walk you picked. Cannon&rsquo;s tramway is closed all 2026 — Loon gondola is the swap if legs mutiny.',
+  prompts:[{id:'shape', label:'The day&rsquo;s shape', multi:false,
+    options:[{id:'asplanned',label:'As planned'},{id:'gondola',label:'Swap the lake for Loon gondola'},{id:'ridge',label:'Go big: Franconia Ridge (6&ndash;8h)'}]},
+   {id:'extras', label:'Squeeze in (multi-pick)', multi:true,
+    options:[{id:'polly',label:'Polly&rsquo;s Pancakes'},{id:'frost',label:'The Frost Place'},{id:'none',label:'Keep it loose'}]}]},
+ {id:'d9', date:'Mon 5 Oct', title:'The Cog &amp; the Gold Room',
+  digest:'Cog Railway 09:00 to the summit (pack coat/hat/gloves — 2&deg;C, 35mph). Gold Room at Bretton Woods over lunch. Crawford Notch &#8594; Mount Willard &#8594; North Conway.',
+  why:'The thematic summit: the room where the postwar order was written, ten minutes from the train.',
+  prompts:[{id:'cogfall', label:'If the Cog is sold out', multi:false,
+    options:[{id:'auto',label:'Auto Road instead — fine'},{id:'shift',label:'Try to re-shape the day around it'}]},
+   {id:'gold', label:'The Gold Room visit', multi:false,
+    options:[{id:'lunch',label:'Lunch on the veranda'},{id:'drink',label:'Just a drink'}]}]},
+ {id:'d10', date:'Tue 6 Oct', title:'Fryeburg Fair &amp; ME-2',
+  digest:'Away ~10:30 (Jackson covered bridge optional). The fair 11:00&ndash;15:00 — ox pulling, harness racing, and the tightest House race in the Northeast. Portland ~16:00.',
+  why:'The retail-politics jackpot: open seat, LePage, four weeks out, 300,000 people.', prompts:[]},
+ {id:'d11', date:'Wed 7 Oct', title:'Portland — light, food, midnight Bean boots',
+  digest:'Portland Head Light AM. The Old Port and the food scene. Campaign events if any land.',
+  why:'Slack is the campaign strategy, not a gap in it.',
+  prompts:[{id:'bean', label:'L.L.Bean Freeport at night (24h, no locks since 1951)?', multi:false,
+    options:[{id:'yes',label:'Obviously yes'},{id:'day',label:'Daytime instead'},{id:'skip',label:'Skip'}]},
+   {id:'kbp', label:'Kennebunkport &amp; Walker&rsquo;s Point?', multi:false,
+    options:[{id:'yes',label:'Yes, 40 min south'},{id:'no',label:'No'}]}]},
+ {id:'d12', date:'Thu 8 Oct', title:'The Maine day trip — THE open pick',
+  digest:'A full free day from Portland.',
+  why:'Once the emptiest day of the trip; now it just needs its one decision made.',
+  prompts:[{id:'trip', label:'Pick one', multi:false,
+    options:[{id:'boothbay',label:'Boothbay Harbour (1h20)'},{id:'camden',label:'Camden + Mount Battie (2h)'},{id:'shaker',label:'Shaker Village (inland, 40m)'},{id:'fenway',label:'Hold for a Fenway ALDS maybe'}]}]},
+ {id:'d13', date:'Fri 9 Oct', title:'Salem &#8594; Boston',
+  digest:'Portland by 10:30 — Salem 12:05&ndash;15:15 (Haunted Happenings) — Boston 16:00, drop the car — downtown Freedom Trail before dark.',
+  why:'Salem only fits with the 10:30 rule; the Trail is split across two days on purpose.',
+  prompts:[{id:'eve', label:'Friday evening', multi:false,
+    options:[{id:'bpl',label:'Boston Public Library'},{id:'gardner',label:'Gardner Museum'},{id:'gig',label:'A gig'},{id:'rest',label:'Dinner &amp; rest'}]},
+   {id:'topsfield', label:'Topsfield Fair add-on (15 min from Salem)?', multi:false,
+    options:[{id:'yes',label:'Yes'},{id:'no',label:'One fair is enough'}]}]},
+ {id:'d14', date:'Sat 10 Oct', title:'Revolution, Bruins, home',
+  digest:'North End &#8594; Bunker Hill &amp; USS Constitution &#8594; 13:00 BRUINS vs FLYERS at TD Garden &#8594; Logan 18:50 &#8594; 21:50 wheels up.',
+  why:'The matinee was checked against the flight: ~3 hours of slack even with overtime.',
+  prompts:[{id:'fenway', label:'Fenway Park tour if the morning shrinks?', multi:false,
+    options:[{id:'yes',label:'Yes'},{id:'no',label:'Charlestown takes priority'}]}]}
+];
+
+const TIERS = [
+ {name:'Tier 1 — book today', note:'these run out first',
+  items:[{id:'cog', label:'Mount Washington Cog Railway — Mon 5 Oct, ~09:00', con:'~$95pp &#183; October sells out; summit park closes mid-month', ph:'departure time obtained'},
+         {id:'westpoint', label:'West Point 10:00 tour — Fri 2 Oct', con:'the Friday keystone &#183; photo ID required', ph:'tour time confirmed'}]},
+ {name:'Tier 2 — the Friday night', note:'tickets and the bed together',
+  items:[{id:'zach', label:'Zach Bryan tickets — Gillette, Fri 2 Oct 19:00', con:'headliner ~20:30', ph:'seats / section'},
+         {id:'providence', label:'Providence bed — Fri 2 Oct', con:'MUST have a 24-hour desk (the escape hatch)', ph:'hotel + rate'}]},
+ {name:'Tier 3 — peak-foliage beds', note:'the busiest week of the New England year',
+  items:[{id:'lincoln', label:'Lincoln / N Woodstock &times;2 — Sat 3 &#8211; Mon 5 Oct', con:'or Bethlehem/Littleton per Day 7 decision', ph:'hotel + rate'},
+         {id:'nconway', label:'North Conway &times;1 — Mon 5 Oct', con:'', ph:'hotel + rate'}]},
+ {name:'Tier 4 — the car', note:'',
+  items:[{id:'car', label:'Rental — one-way DC &#8594; Boston', con:'downtown pickup 07:30 Thu 1 Oct; drop Boston Fri 9', ph:'agency, class, pickup address'}]},
+ {name:'Tier 5 — timed entries & tickets', note:'',
+  items:[{id:'guide', label:'Gettysburg in-car licensed guide — Thu 1 Oct AM', con:'morning slots go first (if Day 5 says yes)', ph:'guide + time'},
+         {id:'flume', label:'Flume Gorge timed slot — Sun 4 Oct ~09:00', con:'$18 online vs $21 gate', ph:'slot time'},
+         {id:'capitol', label:'US Capitol tour — Mon 28 Sept', con:'free but timed', ph:'tour time'},
+         {id:'bruins', label:'Bruins vs Flyers — Sat 10 Oct 13:00, TD Garden', con:'', ph:'seats / section'}]},
+ {name:'Tier 6 — remaining beds', note:'',
+  items:[{id:'coldspring', label:'Cold Spring bed + 20:00 table — Thu 1 Oct', con:'walkable to Main St', ph:'inn + restaurant'},
+         {id:'portland', label:'Portland &times;3 — Tue 6 &#8211; Fri 9 Oct', con:'', ph:'hotel + rate'},
+         {id:'boston', label:'Boston &times;1 — Fri 9 Oct', con:'ask them to hold bags Saturday', ph:'hotel + rate'}]},
+ {name:'Done', note:'',
+  items:[{id:'dc', label:'Washington DC &times;4 — Sun 27 Sept &#8211; Thu 1 Oct', con:'Hilton Garden Inn Downtown, 815 14th St NW', ph:'confirmation ref'}]}
+];
+const ALL_BOOKINGS = TIERS.flatMap(t=>t.items);
+
+let S = {v:1, updated:null, who1:'M', who2:'F', days:{}, bookings:{}};
+DAYS.forEach(d=>S.days[d.id]={verdict:null,choices:{},note:''});
+ALL_BOOKINGS.forEach(b=>S.bookings[b.id]={status:'todo',by:'',ref:'',detail:'',cost:'',note:''});
+S.bookings.dc = {status:'done',by:'',ref:'',detail:'Hilton Garden Inn Downtown, 815 14th St NW — 27 Sept–1 Oct, 2 adults',cost:'',note:''};
+
+const KEY='aa-lockin-v1';
+function save(){ S.updated=new Date().toISOString(); try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} refreshProg(); }
+function load(){
+  try{ const raw=localStorage.getItem(KEY); if(raw){ const p=JSON.parse(raw); if(p&&p.v===1) mergeState(p); } }catch(e){}
+}
+function mergeState(p){
+  if(p.who1)S.who1=p.who1; if(p.who2)S.who2=p.who2;
+  for(const k in S.days) if(p.days&&p.days[k]) S.days[k]=Object.assign(S.days[k],p.days[k]);
+  for(const k in S.bookings) if(p.bookings&&p.bookings[k]) S.bookings[k]=Object.assign(S.bookings[k],p.bookings[k]);
+}
+function importHash(){
+  const h=location.hash;
+  if(h && h.startsWith('#s=')){
+    try{
+      const json=decodeURIComponent(escape(atob(h.slice(3))));
+      const p=JSON.parse(json);
+      if(p&&p.v===1){ mergeState(p); save(); toast('Progress imported from shared link ✓'); }
+    }catch(e){ toast('Could not read the shared link'); }
+    history.replaceState(null,'',location.pathname);
+  }
+}
+
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+
+function renderDays(){
+  const el=document.getElementById('dayList');
+  el.innerHTML = DAYS.map((d,i)=>{
+    const st=S.days[d.id];
+    const verd=['agree','amend','discuss'].map(v=>{
+      const lbl=v==='agree'?'✅ Agree as-is':v==='amend'?'✏️ Agree, amended':'💬 Discuss';
+      return '<span class="chip v-'+v+(st.verdict===v?' on':'')+'" onclick="setVerdict(\''+d.id+'\',\''+v+'\')">'+lbl+'</span>';
+    }).join('');
+    const prompts=d.prompts.map(p=>{
+      const chosen=st.choices[p.id];
+      const opts=p.options.map(o=>{
+        const on=p.multi ? Array.isArray(chosen)&&chosen.includes(o.id) : chosen===o.id;
+        return '<span class="chip opt'+(on?' on':'')+'" onclick="setChoice(\''+d.id+'\',\''+p.id+'\',\''+o.id+'\','+p.multi+')">'+o.label+'</span>';
+      }).join('');
+      return '<div class="plabel">'+p.label+'</div><div class="chips">'+opts+'</div>';
+    }).join('');
+    return '<div class="card"><div class="chead"><span class="dnum">'+(i+1)+'</span>'+
+      '<span class="ctitle">'+d.title+'</span><span class="cdate">'+d.date+'</span></div>'+
+      '<div class="digest">'+d.digest+'</div><div class="whyline">Why: '+d.why+'</div>'+
+      '<div class="chips">'+verd+'</div>'+prompts+
+      '<input class="note" placeholder="note / amendment…" value="'+esc(st.note)+'" onchange="setDayNote(\''+d.id+'\',this.value)" />'+
+      '</div>';
+  }).join('');
+}
+function setVerdict(id,v){ S.days[id].verdict = (S.days[id].verdict===v?null:v); save(); renderDays(); }
+function setChoice(id,pid,oid,multi){
+  const c=S.days[id].choices;
+  if(multi){ let a=Array.isArray(c[pid])?c[pid]:[]; a=a.includes(oid)?a.filter(x=>x!==oid):a.concat(oid); c[pid]=a; }
+  else{ c[pid] = (c[pid]===oid?null:oid); }
+  save(); renderDays();
+}
+function setDayNote(id,v){ S.days[id].note=v; save(); }
+
+function renderBookings(){
+  const el=document.getElementById('bookList');
+  el.innerHTML = TIERS.map(t=>{
+    const rows=t.items.map(b=>{
+      const st=S.bookings[b.id];
+      const cls=st.status==='done'?'done':st.status==='wip'?'wip':'';
+      const stLbl=st.status==='done'?'✅ booked':st.status==='wip'?'🔍 in progress':'☐ to do';
+      const by=[S.who1,S.who2].map(w=>'<span class="bychip'+(st.by===w?' on':'')+'" onclick="setBy(\''+b.id+'\',\''+w+'\')">'+esc(w)+'</span>').join(' ');
+      return '<div class="brow'+(st.status!=='todo'?' open':'')+'" id="row-'+b.id+'">'+
+        '<div class="btop"><span class="status '+cls+'" onclick="cycle(\''+b.id+'\')">'+stLbl+'</span>'+
+        '<div><div class="bname">'+b.label+'</div>'+(b.con?'<div class="bcon">'+b.con+'</div>':'')+'</div></div>'+
+        '<div class="bdetail">'+
+        '<div class="frow"><label>by</label>'+by+'</div>'+
+        '<div class="frow"><label>ref</label><input placeholder="confirmation ref" value="'+esc(st.ref)+'" onchange="setB(\''+b.id+'\',\'ref\',this.value)" /></div>'+
+        '<div class="frow"><label>detail</label><input placeholder="'+b.ph+'" value="'+esc(st.detail)+'" onchange="setB(\''+b.id+'\',\'detail\',this.value)" /></div>'+
+        '<div class="frow"><label>cost</label><input placeholder="optional" value="'+esc(st.cost)+'" onchange="setB(\''+b.id+'\',\'cost\',this.value)" /></div>'+
+        '</div></div>';
+    }).join('');
+    return '<div class="tier">'+t.name+(t.note?' <span class="tiernote">— '+t.note+'</span>':'')+'</div>'+rows;
+  }).join('');
+  document.getElementById('who1').value=S.who1;
+  document.getElementById('who2').value=S.who2;
+}
+function cycle(id){
+  const o={todo:'wip',wip:'done',done:'todo'};
+  S.bookings[id].status=o[S.bookings[id].status]; save(); renderBookings();
+}
+function setBy(id,w){ S.bookings[id].by=(S.bookings[id].by===w?'':w); save(); renderBookings(); }
+function setB(id,f,v){ S.bookings[id][f]=v; save(); }
+
+function refreshProg(){
+  const dv=Object.values(S.days);
+  const a=dv.filter(x=>x.verdict==='agree').length, m=dv.filter(x=>x.verdict==='amend').length, di=dv.filter(x=>x.verdict==='discuss').length;
+  const pct=Math.round((a+m)/DAYS.length*100);
+  document.getElementById('progJ').innerHTML=a+' agreed · '+m+' amended · '+di+' to discuss — of '+DAYS.length+' days'+
+    '<div class="bar"><i style="width:'+pct+'%"></i></div>';
+  const bv=Object.values(S.bookings);
+  const done=bv.filter(x=>x.status==='done').length, wip=bv.filter(x=>x.status==='wip').length;
+  document.getElementById('progB').innerHTML=done+' of '+bv.length+' booked · '+wip+' in progress'+
+    '<div class="bar"><i style="width:'+Math.round(done/bv.length*100)+'%"></i></div>';
+}
+
+function showTab(t){
+  document.getElementById('paneJ').classList.toggle('hidden',t!=='J');
+  document.getElementById('paneB').classList.toggle('hidden',t!=='B');
+  document.getElementById('tabJ').classList.toggle('on',t==='J');
+  document.getElementById('tabB').classList.toggle('on',t==='B');
+}
+
+function copyText(txt,msg){
+  const done=()=>toast(msg);
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,()=>fallbackCopy(txt,done)); }
+  else fallbackCopy(txt,done);
+}
+function fallbackCopy(txt,done){
+  const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done();
+}
+function toast(m){
+  const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show');
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+function shareLink(){
+  const b64=btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  copyText(location.origin+location.pathname+'#s='+b64,'Link copied — WhatsApp it; opening it imports this progress ✓');
+}
+function dayName(id){ const d=DAYS.find(x=>x.id===id); return d?d.date+' — '+d.title.replace(/&[^;]+;/g,'').replace(/<[^>]*>/g,''):id; }
+function waSummary(){
+  const dv=S.days;
+  const agreed=DAYS.filter(d=>dv[d.id].verdict==='agree'||dv[d.id].verdict==='amend');
+  const discuss=DAYS.filter(d=>dv[d.id].verdict==='discuss');
+  const undone=DAYS.filter(d=>!dv[d.id].verdict);
+  let t='🍁 *AMERICAN AUTUMN — STATUS*\n\n*Journey:* '+agreed.length+'/'+DAYS.length+' days locked';
+  if(discuss.length) t+='\n💬 To discuss: '+discuss.map(d=>d.date).join(', ');
+  if(undone.length) t+='\n⬜ Not reviewed: '+undone.map(d=>d.date).join(', ');
+  const bs=S.bookings;
+  const done=ALL_BOOKINGS.filter(b=>bs[b.id].status==='done');
+  const wip=ALL_BOOKINGS.filter(b=>bs[b.id].status==='wip');
+  const todo=ALL_BOOKINGS.filter(b=>bs[b.id].status==='todo');
+  t+='\n\n*Bookings:* '+done.length+'/'+ALL_BOOKINGS.length+' done';
+  if(done.length) t+='\n✅ '+done.map(b=>b.label.split(' — ')[0]+(bs[b.id].ref?' (…'+bs[b.id].ref.slice(-4)+')':'')).join('\n✅ ');
+  if(wip.length) t+='\n🔍 '+wip.map(b=>b.label.split(' — ')[0]).join('\n🔍 ');
+  if(todo.length) t+='\n☐ Still to do: '+todo.map(b=>b.label.split(' — ')[0]).join(' · ');
+  copyText(t.replace(/&[^;]+;/g,''),'Summary copied — paste into WhatsApp ✓');
+}
+function exportClaude(){
+  const txt='Paste this whole block into the Claude Code session for the policy-to-product repo. '+
+    'It is the confirmed state from the American Autumn lock-in page — fold the agreed decisions and booked details '+
+    'into public/american-autumn.html and public/american-autumn-days.html as confirmed fact, and flag anything marked discuss.\n\n'+
+    '```json\n'+JSON.stringify(S,null,1)+'\n```';
+  copyText(txt,'Export copied — paste it to Claude to update the plan ✓');
+}
+
+document.getElementById('who1').addEventListener('change',e=>{S.who1=e.target.value||'M';save();renderBookings();});
+document.getElementById('who2').addEventListener('change',e=>{S.who2=e.target.value||'F';save();renderBookings();});
+
+load(); importHash(); renderDays(); renderBookings(); refreshProg();
+</script>
+</body>
+</html>
