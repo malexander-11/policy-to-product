@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>An American Autumn — Day by Day</title>
+<style>
+  :root{
+    --rust:#B7410E; --rust-dk:#7A2C0A; --ink:#1A1A1A;
+    --parch:#F3E8DF; --paper:#FBF7F2; --line:#D8C3B3; --navy:#2E4A6B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--paper);}
+  header{border-bottom:3px solid var(--rust);padding:16px 20px;}
+  h1{margin:0 0 3px;color:var(--rust-dk);font-size:26px;}
+  .sub{color:#8A6D5B;font-style:italic;font-size:14px;}
+  .sub a{color:var(--rust-dk);}
+  main{max-width:860px;margin:0 auto;padding:20px;}
+  .intro{font-size:15.5px;line-height:1.65;border-left:3px solid var(--rust);padding:4px 0 4px 16px;margin:18px 0 22px;font-style:italic;color:#4A3B30;}
+  .facts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 26px;}
+  .fact{background:var(--parch);border-radius:8px;padding:9px 14px;font-size:13px;font-family:Arial,sans-serif;color:var(--rust-dk);}
+  .fact b{display:block;font-size:15px;}
+  h2.part{color:var(--rust-dk);font-size:20px;border-bottom:2px solid var(--line);padding-bottom:5px;margin:38px 0 6px;}
+  .day{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px 14px;margin:16px 0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+  .day-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin-bottom:4px;}
+  .dnum{display:inline-block;background:var(--rust-dk);color:#fff;border-radius:50%;width:30px;height:30px;line-height:30px;text-align:center;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;flex:none;}
+  .dtitle{font-size:19px;font-weight:bold;color:var(--rust-dk);}
+  .ddate{font-style:italic;color:#8A6D5B;font-size:14px;}
+  .dchip{margin-left:auto;background:#FAF3EC;border:1px solid var(--line);border-radius:12px;padding:2px 10px;font-family:Arial,sans-serif;font-size:11.5px;color:#6B5847;}
+  ul.plan{margin:8px 0 4px;padding-left:20px;}
+  ul.plan li{font-size:14.5px;line-height:1.55;margin-bottom:5px;}
+  table.tl{border-collapse:collapse;margin:10px 0 6px;width:100%;font-size:14px;}
+  table.tl td{padding:4px 10px 4px 0;vertical-align:top;line-height:1.5;}
+  table.tl td:first-child{white-space:nowrap;font-family:Arial,sans-serif;font-size:12.5px;color:var(--rust-dk);font-weight:bold;width:74px;}
+  .why{background:var(--parch);border-radius:8px;padding:10px 13px;margin:12px 0 0;font-size:13.5px;line-height:1.6;}
+  .why b:first-child{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--rust-dk);display:block;margin-bottom:3px;}
+  .bench{background:#FDF9F3;border:1px dashed var(--line);border-radius:8px;padding:10px 13px;margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#5A4635;}
+  .bench b:first-child{font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--rust-dk);display:block;margin-bottom:3px;}
+  .book{background:#EAF0F6;border-radius:8px;padding:9px 13px;margin:10px 0 0;font-size:13px;line-height:1.55;color:var(--navy);}
+  .book b{color:var(--navy);}
+  .star{color:var(--rust);}
+  ol.bookings{font-size:14.5px;line-height:1.8;padding-left:22px;}
+  table.wx{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0;}
+  table.wx th,table.wx td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);}
+  table.wx th{font-family:Arial,sans-serif;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--rust-dk);}
+  .wx-wrap{overflow-x:auto;}
+  .cut{font-size:14px;line-height:1.7;}
+  .cut dt{font-weight:bold;color:var(--rust-dk);margin-top:10px;}
+  .cut dd{margin:2px 0 0 0;}
+  .legend{font-size:12.5px;color:#6B5847;font-style:italic;margin:26px 0 8px;}
+  footer{border-top:2px solid var(--line);margin-top:34px;padding:14px 0 30px;font-size:12.5px;color:#8A6D5B;font-style:italic;}
+  @media print{
+    body{background:#fff;}
+    header{padding:8px 0;}
+    .day{page-break-inside:avoid;box-shadow:none;}
+    .sub a,.noprint{display:none;}
+    main{max-width:none;padding:0;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>An American Autumn — Day by Day</h1>
+  <div class="sub">Washington DC &#8594; Boston &#183; Sun 27 Sept &#8211; Sat 10 Oct 2026 &#183; <a href="american-autumn.html">&#8592; back to the interactive map</a></div>
+</header>
+<main>
+
+<p class="intro">The spine of the trip, in one line: you open among the institutions the Founders built, stand where Lincoln spoke, walk the mill that forged the postwar boom, sleep beside the New Deal, stand in the room where the postwar economic order was written, watch the politics of what came after at a county fair — and finish where the Revolution began, at a hockey game, with a flight home. Each day below carries the plan, <b>why it&rsquo;s shaped this way</b> (the decisions), and <b>what else is in reach</b> (the bench).</p>
+
+<div class="facts">
+  <div class="fact"><b>14 days</b>fly in DC &#183; fly out Boston 21:50</div>
+  <div class="fact"><b>~950 mi &#183; 18h 30m</b>no leg over 4h 30m</div>
+  <div class="fact"><b>16 map stops</b>no backtracking</div>
+  <div class="fact"><b>Nights</b>DC 4 &#10003; &#183; Cold Spring 1 &#183; Providence 1 &#183; Lincoln 2 &#183; N&nbsp;Conway 1 &#183; Portland 3 &#183; Boston 1</div>
+</div>
+
+<h2 class="part">Washington DC &#183; 4 nights &#10003; <span style="font-size:14px;font-weight:normal;font-style:italic">Hilton Garden Inn Downtown, 815 14th St NW — booked</span></h2>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">1</span><span class="dtitle">Arrive — and write the day off</span><span class="ddate">Sun 27 Sept</span></div>
+  <ul class="plan">
+    <li>Land, one train to the hotel — Silver line direct from Dulles, Blue direct from National; McPherson Square is across the street</li>
+    <li>The Mall at dusk <i>only if the legs allow</i>: Lincoln Memorial &#8594; reflecting pool &#8594; Washington Monument</li>
+    <li>Dinner near the hotel. Nothing booked, nothing scheduled</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>Deliberately empty — scheduling against jetlag ruins day two as well. The Nationals&rsquo; season finale (Nats&ndash;Mets, the last game of the MLB regular season) is on this afternoon a Metro ride away, and we cut it for exactly this reason.</div>
+</section>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">2</span><span class="dtitle">Capitol Hill — three branches in 800 yards</span><span class="ddate">Mon 28 Sept</span></div>
+  <ul class="plan">
+    <li><b>Capitol tour</b> (booked ahead), then the <b>Library of Congress</b> — the Jefferson Building is the most beautiful interior in the city; give the reading-room gallery and the Gutenberg Bible ninety minutes, not twenty</li>
+    <li><b>Supreme Court</b>, two minutes&rsquo; walk — courtroom lecture when out of session</li>
+    <li>10 minutes direct on the Metro from the hotel (McPherson Sq &#8594; Capitol South)</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>The legislative day is the trip&rsquo;s thesis statement, so it goes first while you&rsquo;re freshest.</div>
+  <div class="bench"><b>Also in reach</b>An evening gig at the 9:30 Club or The Anthem — the only DC nights left after this are museum-tired ones, so if there&rsquo;s a listing you like, tonight is the night.</div>
+</section>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">3</span><span class="dtitle">The founding documents</span><span class="ddate">Tue 29 Sept</span></div>
+  <ul class="plan">
+    <li><b>National Archives at opening</b>, before the queue — the Declaration, the Constitution, the Bill of Rights in the rotunda</li>
+    <li>Afternoon: <b>American History museum</b> — straight to the Presidency and Democracy halls and the Star-Spangled Banner</li>
+    <li>Lafayette Square and the White House view on the walk home (6 minutes from the hotel)</li>
+    <li>After dark: <b>Jefferson &amp; FDR memorials</b> — taxi round the Tidal Basin; both are best at night and empty then</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>Seeing the actual engrossed Constitution is the heart of the whole trip&rsquo;s theme — everything else in DC is commentary on it. Two museums in a day is the ceiling; we don&rsquo;t try to &ldquo;do the Smithsonian.&rdquo;</div>
+</section>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">4</span><span class="dtitle">Arlington</span><span class="ddate">Wed 30 Sept</span></div>
+  <ul class="plan">
+    <li><b>Arlington National Cemetery</b> — the Changing of the Guard at the Tomb of the Unknown Soldier, the Kennedy graves, Arlington House and its view back over the river. Blue line direct from the hotel&rsquo;s stop</li>
+    <li>Afternoon stays loose — <b>Ford&rsquo;s Theatre</b> is 8 minutes from the hotel if you want the Lincoln bookend</li>
+    <li>Early night: tomorrow starts at 07:30</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>Chosen over a fourth museum day. After three days of marble and exhibition halls the returns collapse — Arlington changes the register: outdoors, solemn, and still entirely on-theme. This day exists at all because we traded the Rangers&rsquo; home opener for a fourth DC night.</div>
+  <div class="bench"><b>Also in reach</b>Mount Vernon (Washington&rsquo;s estate, 30 min south) was the other change-of-register option &#183; Great Falls Park (30 min) for something genuinely wild &#183; the Holocaust Museum or NMAAHC if you&rsquo;d rather have the heavy museum after all — both need timed passes.</div>
+</section>
+
+<h2 class="part">The long Thursday &#183; DC &#8594; the Hudson</h2>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">5</span><span class="dtitle">Gettysburg, the steel, the Gap</span><span class="ddate">Thu 1 Oct</span><span class="dchip">~310 mi &#183; 5h 45m</span></div>
+  <table class="tl">
+    <tr><td>07:30</td><td>Collect the rental from a downtown agency (one-way DC&#8594;Boston) and drive north</td></tr>
+    <tr><td>09:45&ndash;14:00</td><td><b>Gettysburg</b> — the film and Cyclorama, then the battlefield auto tour: Little Round Top, the High Water Mark, the Soldiers&rsquo; National Cemetery where Lincoln spoke the Address you read in marble on day one</td></tr>
+    <tr><td>15:50&ndash;16:50</td><td><b>Bethlehem SteelStacks</b> — the Hoover-Mason Trestle, 2,000 ft of elevated walkway along the preserved blast furnaces of America&rsquo;s second-largest steelmaker. Then a drink in the ArtsQuest glass atrium facing the stacks</td></tr>
+    <tr><td>~17:30</td><td><b>Delaware Water Gap</b> overlook — golden hour; sunset 18:43</td></tr>
+    <tr><td>~19:30</td><td><b>Cold Spring</b> — table booked for 20:00, two minutes&rsquo; walk from the bed</td></tr>
+  </table>
+  <div class="why"><b>Why it&rsquo;s like this</b>Gettysburg gets morning light and empty roads. Bethlehem is the answer to &ldquo;where&rsquo;s the peak post-war boom?&rdquo; — New England&rsquo;s mills are the wrong era (they died <i>during</i> the boom), but steel <i>was</i> the boom, and the mill that put the beams in the Golden Gate Bridge sits directly on this road. It pairs deliberately with Bretton Woods on Monday: the rules were written there, cashed in here. If the day runs late, the Gap drops first — this trip runs on political economy, not scenery. You also drive through three battleground House districts today (PA-10, PA-7, NJ-7): expect yard signs, not rallies.</div>
+  <div class="bench"><b>Also in reach</b>A licensed battlefield guide who rides in your car (book ahead — the splurge-worthy way to do Gettysburg) &#183; a <b>Steelwalker tour</b> of the furnaces led by former steelworkers runs Thursdays — if a late-afternoon slot exists, it beats everything else on the campus &#183; the Smithsonian-affiliated industrial museum at the stacks&rsquo; base closes 17:00, so it&rsquo;s a sprint at best.</div>
+  <div class="book"><b>&#10003; Book:</b> rental car (07:30 downtown pickup) &#183; Gettysburg in-car guide &#183; Cold Spring bed + 20:00 table.</div>
+</section>
+
+<h2 class="part">The Hudson &amp; the stadium</h2>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">6</span><span class="dtitle">West Point, Springwood, Zach Bryan</span><span class="ddate">Fri 2 Oct</span><span class="dchip">~205 mi &#183; 3h 55m</span></div>
+  <table class="tl">
+    <tr><td>09:00</td><td>Leave Cold Spring — the Academy gate is twenty minutes away</td></tr>
+    <tr><td>09:30</td><td>Security at the Highland Falls Visitor Center (photo ID)</td></tr>
+    <tr><td>10:00&ndash;11:30</td><td><b>West Point tour</b> — the oldest continuously occupied military post in America; Trophy Point&rsquo;s Hudson view in autumn</td></tr>
+    <tr><td>11:45</td><td>North over the Mid-Hudson Bridge, 45 minutes</td></tr>
+    <tr><td>12:30</td><td><b>Hyde Park</b> — tickets at the Visitor Center for the next Springwood tour (same-day, first-come, no cash). The house FDR was born in, lived in all his life, and is buried behind, in the rose garden</td></tr>
+    <tr><td>~14:30</td><td>East — through Hartford ahead of the Friday rush</td></tr>
+    <tr><td>~17:25</td><td>Providence check-in <i>en route</i> — bags in the room</td></tr>
+    <tr><td>~18:30</td><td><b>Gillette Stadium</b> — parked and in before the openers</td></tr>
+    <tr><td>19:00&ndash;late</td><td>Gabriella Rose &#8594; Gregory Alan Isakov &#8594; <b class="star">ZACH BRYAN</b> ~20:30. Back to Providence after</td></tr>
+  </table>
+  <div class="why"><b>Why it&rsquo;s like this</b>This order is the third draft, and the best one. FDR-first forced a race against a security cutoff and made Springwood a lottery — you had to win the <i>first</i> tour slot of the day. Academy-first turns the mansion into a plan: any early-afternoon slot works. It&rsquo;s one thing at Hyde Park by choice — the house over the Library, born-lived-buried there — and the fallback is built in: if the slot offered is 14:00 or later, walk the grounds to the graves (free) and do the Library (no ticket) instead. FDR&rsquo;s administration convened Bretton Woods; you&rsquo;ll stand in the Gold Room on Monday.</div>
+  <div class="bench"><b>Also in reach</b>The FDR Presidential Library — the first ever built, he designed it himself — if the tour times gift you a gap &#183; tailgating properly if you skip the Providence check-in stop (the 24-hour desk is the escape hatch for exactly this call).</div>
+  <div class="book"><b>&#10003; Book:</b> West Point 10:00 tour (the keystone — book first) &#183; Zach Bryan tickets &#183; Providence bed <b>with a 24-hour desk</b>.</div>
+</section>
+
+<h2 class="part">New Hampshire &#183; the mountains</h2>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">7</span><span class="dtitle">Inland to the Notch</span><span class="ddate">Sat 3 Oct</span><span class="dchip">~200 mi &#183; 3h 40m</span></div>
+  <ul class="plan">
+    <li>~09:00 north on I-93 — two minutes of the mile-long red-brick <b>Amoskeag Millyard</b> from the car at Manchester</li>
+    <li>11:40&ndash;14:00 <b>Castle in the Clouds</b> — the 1913 Lucknow mansion, lunch on the terrace above Lake Winnipesaukee</li>
+    <li>~15:20 into <b>Lincoln / North Woodstock</b>, the two-night base</li>
+    <li><b>Artist&rsquo;s Bluff</b> for the last light — 45 minutes, steep but short, a huge view straight down Franconia Notch. Sunset 18:22</li>
+    <li>Dinner at the Woodstock Inn Brewery</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>Inland beats the coast: I-93 is the better road, marginally shorter, and it passes the castle. Amoskeag gets a drive-by and an honest label — its boom was Gilded Age, dead by 1935; the wrong era for our post-war thread, but a striking two minutes. We sleep in Lincoln, not at the Omni: the grand hotel is Monday&rsquo;s visit, not the bed — it&rsquo;s eye-watering, and you only need an hour of it.</div>
+  <div class="bench"><b>Also in reach</b>Portsmouth NH as an alternative lunch stop if you&rsquo;d rather a colonial seaport than a mansion &#183; Bethlehem NH or Littleton as prettier (if less convenient) bases, 20&ndash;30 min north.</div>
+  <div class="book"><b>&#10003; Book:</b> Lincoln/N Woodstock &times;2 — peak-foliage week is the busiest of the New England year.</div>
+</section>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">8</span><span class="dtitle">Franconia Notch — the full day</span><span class="ddate">Sun 4 Oct</span><span class="dchip">local driving only</span></div>
+  <ul class="plan">
+    <li>09:00 <b>Flume Gorge</b> — two-mile boardwalk loop through the granite gorge (timed ticket, $18 online)</li>
+    <li>11:00 <b>The Basin</b> (free, 10 minutes) and the Old Man of the Mountain Profile Plaza</li>
+    <li>11:45&ndash;14:15 <b class="star">Lonesome Lake</b> — the picked walk: 3.2 miles, 2h30 round, up to the AMC hut, cocoa on the porch, Franconia Ridge reflected in the water</li>
+    <li>15:00&ndash;17:30 <b>the Kancamagus Highway</b> west-to-east in the low gold light — Hancock Overlook, Sabbaday Falls, Rocky Gorge. Fuel up first; no petrol the whole way</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>Lonesome Lake was the walk you picked, so the day is built around it. The Cannon Mountain tramway — the obvious Notch headline — is <b>closed for all of 2026</b> for replacement, which is why it appears nowhere in the plan. Cold nights and mild days this week are exactly what drives the colour; the Kanc at 15:00&ndash;17:30 is the best light of the day.</div>
+  <div class="bench"><b>Also in reach</b>Loon Mountain gondola (NH&rsquo;s longest, 10 min from the bed) if legs mutiny &#183; The Frost Place — Robert Frost&rsquo;s farmhouse; the porch view and poetry trail are open even if the museum shut early for building work &#183; Franconia Ridge Loop (8.9 mi, 6&ndash;8h) if you want the full mountain day and will sacrifice everything else &#183; rain: Lost River Gorge boulder caves, or Littleton&rsquo;s candy counter and the brewery in the 18th-century mill.</div>
+  <div class="book"><b>&#10003; Book:</b> Flume Gorge timed slot.</div>
+</section>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">9</span><span class="dtitle">The Cog, the Gold Room, Crawford Notch</span><span class="ddate">Mon 5 Oct</span><span class="dchip">~40 mi + the mountain</span></div>
+  <table class="tl">
+    <tr><td>09:00</td><td><b class="star">Mount Washington Cog Railway</b> to the summit of the Northeast — just under 3h round trip. Pack coat, hat and gloves: the summit averages 2&deg;C with 35 mph wind in October, and is in cloud most days</td></tr>
+    <tr><td>12:30</td><td><b>The Gold Room</b>, Mount Washington Hotel, Bretton Woods — where 44 nations signed the IMF and World Bank into existence on 22 July 1944. Taken over lunch or a drink on the veranda facing the Presidentials — a visit, not a stay</td></tr>
+    <tr><td>14:00</td><td>East on Rt 302 through <b>Crawford Notch</b> — Silver Cascade and the Willey House are roadside</td></tr>
+    <tr><td>14:30&ndash;16:00</td><td><b>Mount Willard</b> from Crawford Depot — 1.6 mi return, gentle, the best view-for-effort in the Whites</td></tr>
+    <tr><td>~16:30</td><td>Into <b>North Conway</b> for the night; Diana&rsquo;s Baths if the light holds</td></tr>
+  </table>
+  <div class="why"><b>Why it&rsquo;s like this</b>The thematic summit of the trip: four days after Washington&rsquo;s marble and four days into the boom-and-bust thread, you stand in the room where the postwar order was written — ten minutes from the Cog. Sleeping at the Omni was cut on cost; a drink on the veranda buys the whole experience that matters. Ring ahead: the Gold Room occasionally closes for functions.</div>
+  <div class="bench"><b>Also in reach</b>The Mount Washington <b>Auto Road</b> from Pinkham Notch — same summit, cheaper, no booking lottery — if the Cog sells out &#183; Arethusa Falls (NH&rsquo;s tallest, 2h) &#183; the Wildcat gondola for the best view <i>of</i> Mount Washington &#183; the Conway Scenic Railroad&rsquo;s Notch Train if the weather closes in.</div>
+  <div class="book"><b>&#10003; Book:</b> <b>the Cog — first booking of the whole trip</b>; October sells out and the summit park closes mid-month &#183; North Conway &times;1.</div>
+</section>
+
+<h2 class="part">Maine &#183; the fair, the coast, the campaign</h2>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">10</span><span class="dtitle">Fryeburg Fair &amp; ME-2</span><span class="ddate">Tue 6 Oct</span><span class="dchip">~70 mi &#183; 1h 25m</span></div>
+  <ul class="plan">
+    <li>Jackson&rsquo;s covered bridge and falls first if you fancy (15 min north), away ~10:30</li>
+    <li>11:00&ndash;15:00 <b class="star">the Fryeburg Fair</b> — Maine&rsquo;s biggest agricultural fair, directly on the road: ox and horse pulling, the livestock barns, harness racing, the midway. Work the political booths</li>
+    <li>~16:00 into <b>Portland</b> — the Old Port and the working waterfront for the evening</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>The fair fell into our lap — it runs 4&ndash;11 October and the road to Portland goes through Fryeburg anyway. Then it turned out to be the sharpest political stop on the route: Fryeburg sits in <b>ME-2, the only Democratic-held House seat on defence in the whole Northeast</b> — open (Golden retired), with Paul LePage running for the Republicans, four weeks before the vote, at an event 300,000 people attend. This is the retail politics the trip was originally built to find, and it costs nothing. The Senate race (Collins vs Platner) and an open Governor&rsquo;s seat are live statewide too.</div>
+  <div class="bench"><b>Also in reach</b>The Sandwich Fair may also fall near these dates, back on the NH side.</div>
+  <div class="book"><b>&#10003; Book:</b> Portland &times;3.</div>
+</section>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">11</span><span class="dtitle">Portland — lighthouse, food, Bean boots at midnight</span><span class="ddate">Wed 7 Oct</span></div>
+  <ul class="plan">
+    <li>Morning: <b>Portland Head Light</b> at Cape Elizabeth — the classic Maine lighthouse-and-headland two hours</li>
+    <li>The city and its food the rest of the day — Eventide, Fore Street, Allagash; a genuinely excellent eating and brewing town, and a day built on that is a legitimate plan</li>
+    <li>Whatever the campaign throws up — check the Portland Press Herald, Maine Public and candidate socials this week</li>
+    <li>Evening: <b>L.L.Bean Freeport</b>, 25 minutes north — open 24 hours a day since 1951, no locks on the doors, and the rebuilt flagship campus opens this very autumn. Bean Boots (useful: the fair was muddy) and a monogrammed Boat and Tote</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>Going to L.L.Bean at eleven at night is a better story than going at two in the afternoon. The campaign leg is deliberately loose — events publish a week or two out, so slack is the strategy, not a gap in it.</div>
+  <div class="bench"><b>Also in reach</b>Kennebunkport and the Bushes&rsquo; Walker&rsquo;s Point, 40 min south, if you want more coast today.</div>
+</section>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">12</span><span class="dtitle">The Maine day trip</span><span class="ddate">Thu 8 Oct</span></div>
+  <ul class="plan">
+    <li><b>Recommended — the coast:</b> Boothbay Harbour (1h20) or Camden with the Mount Battie summit over Penobscot Bay (2h). Materially prettier water than Portland&rsquo;s own</li>
+    <li><b>Or inland:</b> Sabbathday Lake Shaker Village, 40 minutes — the last active Shaker community in the world</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>This was once the emptiest day of the whole trip — a placeholder that read &ldquo;more coast, or more politics.&rdquo; It now carries committed options; after three mountain days, the coast is the recommended contrast. The third Portland night that makes this possible was a deliberate trade (we gave back a White Mountains night for it).</div>
+  <div class="bench"><b>Also in reach</b>&#9671; <i>Maybe:</i> if the Red Sox reach the ALDS they host Game 3 tonight — Fenway is 1h50 away. Known only after the wild-card round ends 1 Oct &#183; the Bruins also host Utah tonight (a 3h40 round trip we considered and declined — the same team plays two days later, a 15-minute walk from the last hotel).</div>
+</section>
+
+<h2 class="part">Massachusetts &#183; the finish</h2>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">13</span><span class="dtitle">Salem, then Boston</span><span class="ddate">Fri 9 Oct</span><span class="dchip">~105 mi &#183; 2h 10m</span></div>
+  <ul class="plan">
+    <li>Leave Portland <b>by 10:30</b> — the whole day hinges on this one departure</li>
+    <li>12:05&ndash;15:15 <b>Salem</b> — Haunted Happenings city-wide all month, the old town, Derby Wharf, the House of the Seven Gables, in the city&rsquo;s 400th-anniversary year</li>
+    <li>~16:00 <b>Boston</b> — drop the car for good; it&rsquo;s a walking and subway city from here</li>
+    <li>Before dark (sunset 18:12): the <b>downtown half of the Freedom Trail</b> — the Common, State House, Old State House and Massacre site, Faneuil Hall</li>
+    <li>Evening: Boston Public Library, the Gardner Museum, or a gig (House of Blues, Roadrunner, Symphony Hall)</li>
+  </ul>
+  <div class="why"><b>Why it&rsquo;s like this</b>Salem is directly on the Portland&ndash;Boston road and October is its month — but it only fits alongside the Freedom Trail if you hold the 10:30 rule. Leave at 13:00 and Salem eats the afternoon, pushing the whole Trail into Saturday morning where it cannot fit. Friday crowds are busy but survivable; the crushes are weekends and Halloween. The Trail is split across two days on purpose.</div>
+  <div class="bench"><b>Also in reach</b>&#9671; <i>Maybe:</i> Red Sox ALDS Game 4 at Fenway tonight, if it exists &#183; the Topsfield Fair (America&rsquo;s oldest, 1818) is 15 minutes from Salem — though after Fryeburg it may be one fair too many.</div>
+  <div class="book"><b>&#10003; Book:</b> Boston &times;1 — and ask the hotel to hold bags on Saturday.</div>
+</section>
+
+<section class="day">
+  <div class="day-head"><span class="dnum">14</span><span class="dtitle">Revolution, hockey, home</span><span class="ddate">Sat 10 Oct</span></div>
+  <table class="tl">
+    <tr><td>morning</td><td>The <b>North End half of the Trail</b> — Paul Revere&rsquo;s house, Old North Church — then over the bridge to Charlestown: <b>Bunker Hill Monument</b> and <b>USS Constitution</b></td></tr>
+    <tr><td>12:45</td><td>Fifteen-minute walk back over the bridge — TD Garden <i>is</i> North Station</td></tr>
+    <tr><td>13:00</td><td><b class="star">BRUINS vs FLYERS</b> — an Original Six matinee to finish</td></tr>
+    <tr><td>~15:45</td><td>Final horn &#8594; collect bags</td></tr>
+    <tr><td>18:50</td><td>At Logan (~15 min from North Station)</td></tr>
+    <tr><td>21:50</td><td>Wheels up</td></tr>
+  </table>
+  <div class="why"><b>Why it&rsquo;s like this</b>The matinee was checked against the flight before it was booked into the plan: a 1pm face-off ends ~15:45 even with overtime, leaving three hours of slack before an evening international departure. You open in the capital the Founders built and close where the Revolution began — with a hockey game in between, which is the correct American ending.</div>
+  <div class="bench"><b>Also in reach</b>A Fenway Park tour (the oldest ballpark in the majors, 1912) if the morning shrinks &#183; the Celtics host Philadelphia at the same arena at 20:00 — after wheels-up, so admire the poster.</div>
+  <div class="book"><b>&#10003; Book:</b> Bruins tickets.</div>
+</section>
+
+<h2 class="part">The booking list — in order of urgency</h2>
+<ol class="bookings">
+  <li><b>Mount Washington Cog Railway</b> — sells out in October; summit park closes mid-month</li>
+  <li><b>West Point 10:00 tour</b> — the Friday chain starts here</li>
+  <li><b>Zach Bryan tickets</b> + <b>Providence bed with a 24-hour desk</b></li>
+  <li><b>Lincoln &times;2 and North Conway &times;1</b> — peak-foliage beds go first</li>
+  <li><b>Rental car</b> — one-way DC&#8594;Boston, downtown pickup 07:30 on the 1st</li>
+  <li>Gettysburg in-car guide &#183; Flume Gorge slot &#183; Capitol tour &#183; Bruins tickets</li>
+  <li>Cold Spring bed + 20:00 table &#183; Portland &times;3 &#183; Boston &times;1</li>
+  <li>Washington DC — <b>&#10003; booked</b> (Hilton Garden Inn Downtown)</li>
+</ol>
+
+<h2 class="part">Weather — pack for two climates</h2>
+<div class="wx-wrap"><table class="wx">
+  <tr><th>Where</th><th>When</th><th>Typical</th><th>Note</th></tr>
+  <tr><td>Washington DC</td><td>27 Sept&ndash;1 Oct</td><td>23&deg;C / 14&deg;C</td><td>Still summery, can be humid</td></tr>
+  <tr><td>Gettysburg &amp; the Hudson</td><td>1&ndash;2 Oct</td><td>19&deg;C / 7&deg;C</td><td>Crisp mornings; cold in the stadium after dark</td></tr>
+  <tr><td>Franconia / Lincoln</td><td>3&ndash;5 Oct</td><td>16&deg;C / 3&deg;C</td><td>Frost likely on clear mornings</td></tr>
+  <tr><td><b>Mt Washington summit</b></td><td>5 Oct</td><td><b>2&deg;C / &minus;3&deg;C</b></td><td><b>35 mph average wind, 19 in of October snow, in cloud most days — coat, hat, gloves, non-negotiable</b></td></tr>
+  <tr><td>Portland</td><td>6&ndash;9 Oct</td><td>16&deg;C / 8&deg;C</td><td>Wettest stop (~5 in across the month) — waterproof</td></tr>
+  <tr><td>Salem &amp; Boston</td><td>9&ndash;10 Oct</td><td>17&deg;C / 9&deg;C</td><td>Mildest of the northern stops</td></tr>
+</table></div>
+<p style="font-size:13.5px;font-style:italic;color:#6B5847">Cold nights plus mild days is exactly the recipe that turns the leaves — this discomfort is the point.</p>
+
+<h2 class="part">Considered &amp; cut — the decision graveyard</h2>
+<dl class="cut">
+  <dt>Dartmouth Homecoming (the original centrepiece)</dt><dd>Homecoming runs 2&ndash;3 Oct, so its Friday-night bonfire clashed head-on with Zach Bryan — and the game itself is FCS-tier. Cut rather than kept as the lesser half of a tradition.</dd>
+  <dt>All college football</dt><dd>Everything reachable on the free Saturday (UNH, Harvard) is the same tier as the Dartmouth game already rejected; BC and Army were away. No point chasing a lesser version of the thing we dropped.</dd>
+  <dt>Rangers home opener at MSG (1 Oct)</dt><dd>Traded for the fourth DC night — the Gettysburg drive lands at 19:30, quarter of an hour after face-off. The Yankee Stadium wild-card maybe died with it.</dd>
+  <dt>Harrisburg &amp; the PA State Capitol</dt><dd>Skipped to buy a proper Hudson stop instead of a motel night.</dd>
+  <dt>Rhinebeck / the FDR-first Friday</dt><dd>Two drafts of Friday died: the FDR-first version bet the day on winning the first mansion-tour slot; the 11:30-squeeze version quietly deleted the house interior. Academy-first fixed both.</dd>
+  <dt>Sleeping at the Omni Mount Washington</dt><dd>Too dear. The Gold Room and the veranda are the point, and a lunch buys them.</dd>
+  <dt>Woodstock VT &amp; the Vermont day</dt><dd>Casualties of trading a White Mountains night to Maine; Woodstock survives only as a name on the swap bench.</dd>
+  <dt>Acadia</dt><dd>Twelve hours of driving for colour that turns a week or two later than the mountains. The Whites are the better show and the shorter road.</dd>
+  <dt>The Nationals&rsquo; season finale</dt><dd>On the arrival afternoon — cut when Sunday was declared a write-off. Correctly.</dd>
+</dl>
+
+<p class="legend">&#9671; <i>Maybe</i> marks fixtures that don&rsquo;t exist until the baseball postseason resolves on 1 October. Everything else on this page is either booked, bookable, or a decision already made.</p>
+
+<footer>An American Autumn &#183; the day-by-day companion to the <a href="american-autumn.html">interactive route map</a> &#183; 16 stops &#183; ~950 miles &#183; two adults, one car, no backtracking.</footer>
+
+</main>
+</body>
+</html>
