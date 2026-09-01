@@ -123,9 +123,9 @@ const DAYS = [
   why:'Chosen over a fourth museum day — change of register. Early night: tomorrow starts 07:30.',
   prompts:[{id:'pm', label:'Wednesday afternoon', multi:false,
     options:[{id:'fords',label:'Ford&rsquo;s Theatre (8 min walk)'},{id:'vernon',label:'Mount Vernon'},{id:'museum',label:'Heavy museum'},{id:'loose',label:'Leave it loose'}]}]},
- {id:'d5', date:'Thu 1 Oct', title:'Gettysburg &#8594; SteelStacks &#8594; Cold Spring',
-  digest:'07:30 rental pickup. Gettysburg 09:45&ndash;14:00. Bethlehem blast furnaces 15:50&ndash;16:50. Water Gap golden hour. Cold Spring ~19:30, table at 20:00.',
-  why:'If the day runs late the Gap drops first — political economy over scenery.',
+ {id:'d5', date:'Thu 1 Oct', title:'Gettysburg &#8594; SteelStacks &#8594; Bear Mountain',
+  digest:'07:30 rental pickup. Gettysburg 09:45&ndash;14:00. Bethlehem blast furnaces 15:50&ndash;16:50. Water Gap golden hour. Bear Mountain Inn ~19:00 &#10003; booked — dinner at Restaurant 1915 before its 20:00 Thursday close.',
+  why:'If the day runs late the Gap drops first — political economy over scenery, and the 1915 kitchen is the real deadline.',
   prompts:[{id:'guide', label:'Gettysburg in-car licensed guide (the splurge)?', multi:false,
     options:[{id:'yes',label:'Yes — book it'},{id:'no',label:'Self-guided auto tour'}]},
    {id:'steel', label:'Chase a Steelwalker tour slot (ex-steelworker guide)?', multi:false,
@@ -133,18 +133,16 @@ const DAYS = [
    {id:'gap', label:'Pre-agree the drop order — Gap goes first if late?', multi:false,
     options:[{id:'agree',label:'Agreed'},{id:'keep',label:'No — keep the Gap regardless'}]}]},
  {id:'d6', date:'Fri 2 Oct', title:'West Point &#8594; Springwood &#8594; ZACH BRYAN',
-  digest:'Academy tour 10:00&ndash;11:30 (security 09:30). Springwood ~12:30 — house + rose-garden graves. Providence check-in 17:25. Gillette 18:30; Zach ~20:30.',
+  digest:'Academy tour 10:00&ndash;11:30 (security 09:30, twelve minutes from the bed). Springwood ~12:30 — house + rose-garden graves. Milford check-in ~17:15 &#10003; booked. Gillette 18:00; Zach ~20:30 — tickets &#10003;.',
   why:'Third draft of this day and the best: Academy-first makes the mansion a plan, not a lottery.',
   prompts:[{id:'fallback', label:'Accept the fallback rule — if Springwood&rsquo;s next slot is 14:00+, do grounds + Library instead?', multi:false,
     options:[{id:'yes',label:'Yes — schedule wins'},{id:'house',label:'No — wait for the house'}]},
    {id:'tailgate', label:'If running early: tailgate, or keep the check-in stop?', multi:false,
     options:[{id:'tailgate',label:'Skip check-in, tailgate'},{id:'checkin',label:'Bags first, always'}]}]},
  {id:'d7', date:'Sat 3 Oct', title:'Inland to Franconia Notch',
-  digest:'I-93 north — Castle in the Clouds lunch over Winnipesaukee — Lincoln ~15:20 — Artist&rsquo;s Bluff for last light (sunset 18:22).',
-  why:'Inland beats the coast road; the Omni is Monday&rsquo;s visit, not the bed.',
-  prompts:[{id:'base', label:'Mountain base (2 nights)', multi:false,
-    options:[{id:'lincoln',label:'Lincoln / N Woodstock (position)'},{id:'bethlehem',label:'Bethlehem NH (charm)'},{id:'littleton',label:'Littleton (restaurants)'}]},
-   {id:'lunch', label:'Lunch stop', multi:false,
+  digest:'North via Red Arrow Diner (~10:00 option) — Castle in the Clouds lunch over Winnipesaukee — North Woodstock ~15:20, Woodstock Inn Brewery &#10003; booked — Artist&rsquo;s Bluff for last light (sunset 18:22).',
+  why:'Inland beats the coast road; the Omni is Monday&rsquo;s visit, not the bed. Base settled by booking: you sleep above your own brewpub.',
+  prompts:[{id:'lunch', label:'Lunch stop', multi:false,
     options:[{id:'castle',label:'Castle in the Clouds'},{id:'portsmouth',label:'Portsmouth seaport instead'}]}]},
  {id:'d8', date:'Sun 4 Oct', title:'The Notch day',
   digest:'Flume Gorge 09:00 (timed ticket) &#8594; the Basin &#8594; Lonesome Lake 11:45&ndash;14:15 (AMC hut, ridge in the water) &#8594; the Kanc 15:00&ndash;17:30.',
@@ -153,15 +151,15 @@ const DAYS = [
     options:[{id:'asplanned',label:'As planned'},{id:'gondola',label:'Swap the lake for Loon gondola'},{id:'ridge',label:'Go big: Franconia Ridge (6&ndash;8h)'}]},
    {id:'extras', label:'Squeeze in (multi-pick)', multi:true,
     options:[{id:'polly',label:'Polly&rsquo;s Pancakes'},{id:'frost',label:'The Frost Place'},{id:'none',label:'Keep it loose'}]}]},
- {id:'d9', date:'Mon 5 Oct', title:'The Cog &amp; the Gold Room',
-  digest:'Cog Railway 09:00 to the summit (pack coat/hat/gloves — 2&deg;C, 35mph). Gold Room at Bretton Woods over lunch. Crawford Notch &#8594; Mount Willard &#8594; North Conway.',
-  why:'The thematic summit: the room where the postwar order was written, ten minutes from the train.',
+ {id:'d9', date:'Mon 5 Oct', title:'The Cog &amp; the Gold Room &#8594; the fair',
+  digest:'Cog Railway 09:00 to the summit (pack coat/hat/gloves — 2&deg;C, 35mph). Gold Room at Bretton Woods over lunch. Crawford Notch &#8594; Mount Willard &#8594; North Conway in passing &#8594; The Oxford House Inn, Fryeburg &#10003; booked — the fair after dark.',
+  why:'The thematic summit: the room where the postwar order was written, ten minutes from the train. The bed now sits inside fair week, a walk from the gate.',
   prompts:[{id:'cogfall', label:'If the Cog is sold out', multi:false,
     options:[{id:'auto',label:'Auto Road instead — fine'},{id:'shift',label:'Try to re-shape the day around it'}]},
    {id:'gold', label:'The Gold Room visit', multi:false,
     options:[{id:'lunch',label:'Lunch on the veranda'},{id:'drink',label:'Just a drink'}]}]},
  {id:'d10', date:'Tue 6 Oct', title:'Fryeburg Fair &amp; ME-2',
-  digest:'Away ~10:30 (Jackson covered bridge optional). The fair 11:00&ndash;15:00 — ox pulling, harness racing, and the tightest House race in the Northeast. Portland ~16:00.',
+  digest:'Wake a 15-min walk from the gate. The fair 09:00&ndash;13:30, round two — ox pulling, the barns, and the tightest House race in the Northeast. Portland ~15:00.',
   why:'The retail-politics jackpot: open seat, LePage, four weeks out, 300,000 people.', prompts:[]},
  {id:'d11', date:'Wed 7 Oct', title:'Portland — light, food, midnight Bean boots',
   digest:'Portland Head Light AM. The Old Port and the food scene. Campaign events if any land.',
@@ -176,7 +174,7 @@ const DAYS = [
   prompts:[{id:'trip', label:'Pick one', multi:false,
     options:[{id:'boothbay',label:'Boothbay Harbour (1h20)'},{id:'camden',label:'Camden + Mount Battie (2h)'},{id:'shaker',label:'Shaker Village (inland, 40m)'},{id:'fenway',label:'Hold for a Fenway ALDS maybe'}]}]},
  {id:'d13', date:'Fri 9 Oct', title:'Salem &#8594; Boston',
-  digest:'Portland by 10:30 — Salem 12:05&ndash;15:15 (Haunted Happenings) — Boston 16:00, drop the car — downtown Freedom Trail before dark.',
+  digest:'Portland by 10:30 — Salem 12:05&ndash;15:15 (Haunted Happenings) — Boston 16:00, Royal Sonesta &#10003; booked, drop the car — downtown Freedom Trail before dark.',
   why:'Salem only fits with the 10:30 rule; the Trail is split across two days on purpose.',
   prompts:[{id:'eve', label:'Friday evening', multi:false,
     options:[{id:'bpl',label:'Boston Public Library'},{id:'gardner',label:'Gardner Museum'},{id:'gig',label:'A gig'},{id:'rest',label:'Dinner &amp; rest'}]},
@@ -190,28 +188,27 @@ const DAYS = [
 ];
 
 const TIERS = [
- {name:'Tier 1 — book today', note:'these run out first',
-  items:[{id:'cog', label:'Mount Washington Cog Railway — Mon 5 Oct, ~09:00', con:'~$95pp &#183; October sells out; summit park closes mid-month', ph:'departure time obtained'},
+ {name:'Tier 1 — book now', note:'the two that run out',
+  items:[{id:'cog', label:'Mount Washington Cog Railway — Mon 5 Oct, ~09:00', con:'~$95pp &#183; October sells out; summit park closes mid-month &#183; BIODIESEL departure, not steam (steam doesn&rsquo;t summit in foliage season)', ph:'departure time obtained'},
          {id:'westpoint', label:'West Point 10:00 tour — Fri 2 Oct', con:'the Friday keystone &#183; photo ID required', ph:'tour time confirmed'}]},
- {name:'Tier 2 — the Friday night', note:'tickets and the bed together',
-  items:[{id:'zach', label:'Zach Bryan tickets — Gillette, Fri 2 Oct 19:00', con:'headliner ~20:30', ph:'seats / section'},
-         {id:'providence', label:'Providence bed — Fri 2 Oct', con:'MUST have a 24-hour desk (the escape hatch)', ph:'hotel + rate'}]},
- {name:'Tier 3 — peak-foliage beds', note:'the busiest week of the New England year',
-  items:[{id:'lincoln', label:'Lincoln / N Woodstock &times;2 — Sat 3 &#8211; Mon 5 Oct', con:'or Bethlehem/Littleton per Day 7 decision', ph:'hotel + rate'},
-         {id:'nconway', label:'North Conway &times;1 — Mon 5 Oct', con:'', ph:'hotel + rate'}]},
- {name:'Tier 4 — the car', note:'',
+ {name:'Tier 2 — the last beds', note:'everything else now has a roof',
+  items:[{id:'portland', label:'Portland &times;3 — Tue 6 &#8211; Fri 9 Oct', con:'the only unbooked nights left on the route', ph:'hotel + rate'}]},
+ {name:'Tier 3 — the car', note:'',
   items:[{id:'car', label:'Rental — one-way DC &#8594; Boston', con:'downtown pickup 07:30 Thu 1 Oct; drop Boston Fri 9', ph:'agency, class, pickup address'}]},
- {name:'Tier 5 — timed entries & tickets', note:'',
-  items:[{id:'guide', label:'Gettysburg in-car licensed guide — Thu 1 Oct AM', con:'morning slots go first (if Day 5 says yes)', ph:'guide + time'},
+ {name:'Tier 4 — timed entries, tables & tickets', note:'',
+  items:[{id:'table1915', label:'Restaurant 1915 table — Thu 1 Oct, ~19:15', con:'at the Bear Mountain Inn — Thursday kitchen closes 20:00, so this is the day&rsquo;s deadline &#183; OpenTable or 845-786-2731 x1915', ph:'table time'},
+         {id:'guide', label:'Gettysburg in-car licensed guide — Thu 1 Oct AM', con:'morning slots go first (if Day 5 says yes)', ph:'guide + time'},
          {id:'flume', label:'Flume Gorge timed slot — Sun 4 Oct ~09:00', con:'$18 online vs $21 gate', ph:'slot time'},
          {id:'capitol', label:'US Capitol tour — Mon 28 Sept', con:'free but timed', ph:'tour time'},
-         {id:'bruins', label:'Bruins vs Flyers — Sat 10 Oct 13:00, TD Garden', con:'', ph:'seats / section'}]},
- {name:'Tier 6 — remaining beds', note:'',
-  items:[{id:'coldspring', label:'Cold Spring bed + 20:00 table — Thu 1 Oct', con:'walkable to Main St', ph:'inn + restaurant'},
-         {id:'portland', label:'Portland &times;3 — Tue 6 &#8211; Fri 9 Oct', con:'', ph:'hotel + rate'},
-         {id:'boston', label:'Boston &times;1 — Fri 9 Oct', con:'ask them to hold bags Saturday', ph:'hotel + rate'}]},
- {name:'Done', note:'',
-  items:[{id:'dc', label:'Washington DC &times;4 — Sun 27 Sept &#8211; Thu 1 Oct', con:'Hilton Garden Inn Downtown, 815 14th St NW', ph:'confirmation ref'}]}
+         {id:'bruins', label:'Bruins vs Flyers — Sat 10 Oct 13:00, TD Garden', con:'20 min walk from the booked hotel', ph:'seats / section'}]},
+ {name:'Done — booked &#10003;', note:'add confirmation refs when handy',
+  items:[{id:'dc', label:'Washington DC &times;4 — Sun 27 Sept &#8211; Thu 1 Oct &#10003;', con:'Hilton Garden Inn Downtown, 815 14th St NW', ph:'confirmation ref'},
+         {id:'coldspring', label:'Bear Mountain Inn — Overlook Lodge &times;1 — Thu 1 Oct &#10003;', con:'west bank of the Hudson, 12 min from the Academy gate', ph:'confirmation ref'},
+         {id:'zach', label:'Zach Bryan tickets — Gillette, Fri 2 Oct 19:00 &#10003;', con:'headliner ~20:30', ph:'seats / section'},
+         {id:'providence', label:'Holiday Inn Express Boston-Milford &times;1 — Fri 2 Oct &#10003;', con:'Fortune Blvd off I-495 &#183; 24h desk &#183; 20 min from Gillette', ph:'confirmation ref'},
+         {id:'lincoln', label:'Woodstock Inn Brewery &times;2 — Sat 3 &#8211; Mon 5 Oct &#10003;', con:'North Woodstock — the bed is above the brewpub', ph:'confirmation ref'},
+         {id:'nconway', label:'The Oxford House Inn, Fryeburg &times;1 — Mon 5 Oct &#10003;', con:'15 min walk to the fair gate &#183; restaurant dark Mon&#8211;Tue, so fair food is dinner', ph:'confirmation ref'},
+         {id:'boston', label:'The Royal Sonesta Boston &times;1 — Fri 9 Oct &#10003;', con:'East Cambridge on the Charles — 20 min riverside walk to TD Garden; ask them to hold bags Saturday', ph:'confirmation ref'}]}
 ];
 const ALL_BOOKINGS = TIERS.flatMap(t=>t.items);
 
@@ -219,6 +216,12 @@ let S = {v:1, updated:null, who1:'M', who2:'F', days:{}, bookings:{}};
 DAYS.forEach(d=>S.days[d.id]={verdict:null,choices:{},note:''});
 ALL_BOOKINGS.forEach(b=>S.bookings[b.id]={status:'todo',by:'',ref:'',detail:'',cost:'',note:''});
 S.bookings.dc = {status:'done',by:'',ref:'',detail:'Hilton Garden Inn Downtown, 815 14th St NW — 27 Sept–1 Oct, 2 adults',cost:'',note:''};
+S.bookings.coldspring = {status:'done',by:'',ref:'',detail:'Bear Mountain Inn — Overlook Lodge, Thu 1 Oct',cost:'',note:''};
+S.bookings.zach = {status:'done',by:'',ref:'',detail:'Zach Bryan @ Gillette, Fri 2 Oct — tickets secured',cost:'',note:''};
+S.bookings.providence = {status:'done',by:'',ref:'',detail:'Holiday Inn Express Boston-Milford, Fri 2 Oct',cost:'',note:''};
+S.bookings.lincoln = {status:'done',by:'',ref:'',detail:'Woodstock Inn Brewery, N Woodstock — Sat 3 & Sun 4 Oct',cost:'',note:''};
+S.bookings.nconway = {status:'done',by:'',ref:'',detail:'The Oxford House Inn, Fryeburg — Mon 5 Oct',cost:'',note:''};
+S.bookings.boston = {status:'done',by:'',ref:'',detail:'The Royal Sonesta Boston — Fri 9 Oct',cost:'',note:''};
 
 const KEY='aa-lockin-v1';
 function save(){ S.updated=new Date().toISOString(); try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} refreshProg(); }
