@@ -1,0 +1,322 @@
+<title>American Autumn Scrapbook</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap">
+<style>
+  :root{
+    --paper:#F6EFE3; --card:#FFFDF8; --ink:#2B2017; --faint:#8A7561;
+    --rust:#B7410E; --rust-dk:#7A2C0A; --navy:#2E4A6B; --line:#E2D4BF;
+    --tape:rgba(206,174,120,.45); --good:#4A7A4A;
+  }
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.55;}
+  .wrap{max-width:760px;margin:0 auto;padding-block:0 80px;padding-inline:18px;}
+  .hand{font-family:'Caveat','Comic Sans MS',cursive;}
+  a{color:var(--navy);}
+  button{font:inherit;cursor:pointer;}
+  :focus-visible{outline:3px solid var(--navy);outline-offset:2px;}
+
+  /* ---------- gate ---------- */
+  #gate{min-height:82vh;display:flex;align-items:center;justify-content:center;padding:18px;}
+  .gate-card{background:var(--card);border:1px solid var(--line);max-width:400px;width:100%;
+    padding:34px 28px 30px;text-align:center;box-shadow:0 10px 30px rgba(70,45,20,.12);position:relative;}
+  .gate-card::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);
+    width:120px;height:26px;background:var(--tape);}
+  .gate-card h1{font-family:'Caveat',cursive;color:var(--rust-dk);font-size:44px;margin:6px 0 0;line-height:1.05;}
+  .gate-card .sub{font-style:italic;color:var(--faint);margin:6px 0 22px;font-size:14.5px;}
+  .gate-card label{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:6px;}
+  #pw{width:100%;box-sizing:border-box;padding:10px 12px;font:inherit;border:1.5px solid var(--line);
+    background:#FFFEFB;border-radius:4px;text-align:center;}
+  #unlockBtn{margin-top:12px;width:100%;padding:10px;background:var(--rust);color:#fff;border:none;
+    border-radius:4px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:.04em;}
+  #unlockBtn:hover{background:var(--rust-dk);}
+  #gateMsg{min-height:20px;font-size:13.5px;color:var(--rust-dk);margin-top:10px;font-style:italic;}
+
+  /* ---------- hero ---------- */
+  header.hero{text-align:center;padding:44px 10px 8px;}
+  .hero .over{font-family:Arial,sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  .hero h1{font-family:'Caveat',cursive;font-weight:700;color:var(--rust-dk);
+    font-size:clamp(46px,9vw,72px);margin:2px 0 0;line-height:1;text-wrap:balance;}
+  .hero .dates{font-style:italic;color:var(--faint);margin-top:6px;}
+  .daychip{display:inline-block;margin-top:14px;background:var(--rust);color:#fff;border-radius:999px;
+    padding:5px 16px;font-family:Arial,sans-serif;font-size:12.5px;letter-spacing:.05em;}
+  .daychip.done{background:var(--navy);}
+
+  /* ---------- sections ---------- */
+  section{margin-top:46px;}
+  .shead{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--rust);padding-bottom:6px;margin-bottom:18px;}
+  .shead h2{font-family:'Caveat',cursive;color:var(--rust-dk);font-size:34px;margin:0;line-height:1;}
+  .shead .note{font-size:13px;font-style:italic;color:var(--faint);}
+
+  /* ---------- map ---------- */
+  .map-post{background:var(--card);border:1px solid var(--line);padding:16px 16px 8px;position:relative;
+    transform:rotate(-.7deg);box-shadow:0 8px 22px rgba(70,45,20,.14);max-width:640px;margin:0 auto;}
+  .map-post::before,.map-post::after{content:"";position:absolute;width:96px;height:24px;background:var(--tape);}
+  .map-post::before{top:-10px;left:28px;transform:rotate(-5deg);}
+  .map-post::after{top:-10px;right:28px;transform:rotate(4deg);}
+  .map-post svg{display:block;width:100%;height:auto;}
+  .map-cap{text-align:center;font-family:'Caveat',cursive;font-size:21px;color:var(--faint);padding:6px 0 8px;}
+
+  /* ---------- itinerary ---------- */
+  .stay{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);
+    border-left:5px solid var(--rust);padding:12px 16px;margin-bottom:10px;}
+  .stay .n{flex:0 0 auto;font-family:'Caveat',cursive;font-size:30px;color:var(--rust);line-height:1;min-width:26px;text-align:center;}
+  .stay b{font-size:16.5px;}
+  .stay .where{color:var(--faint);font-size:14px;font-style:italic;}
+  .stay .tag{display:inline-block;background:#EFE6D6;border-radius:999px;padding:2px 10px;
+    font-family:Arial,sans-serif;font-size:11.5px;color:var(--rust-dk);margin-left:6px;white-space:nowrap;}
+  .stay .booked{background:#E4EAD9;color:var(--good);}
+
+  /* ---------- diary ---------- */
+  .dayhead{display:flex;align-items:baseline;gap:10px;margin:30px 0 12px;}
+  .dayhead .dn{font-family:'Caveat',cursive;font-size:30px;color:var(--rust);line-height:1;}
+  .dayhead .dt{font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);}
+  .entry{background:var(--card);border:1px solid var(--line);padding:18px 20px 16px;margin-bottom:16px;
+    box-shadow:0 4px 14px rgba(70,45,20,.08);}
+  .entry h3{font-family:'Caveat',cursive;font-size:30px;color:var(--rust-dk);margin:0 0 6px;line-height:1.1;}
+  .entry .body{white-space:pre-wrap;}
+  .entry .meta{font-size:12.5px;color:var(--faint);font-style:italic;margin-top:10px;}
+  .shots{columns:2;column-gap:14px;margin-top:14px;}
+  @media (max-width:520px){.shots{columns:1;}}
+  .shot{break-inside:avoid;background:#fff;border:1px solid var(--line);padding:8px 8px 6px;margin:0 0 14px;
+    box-shadow:0 5px 14px rgba(70,45,20,.12);}
+  .shot:nth-child(odd){transform:rotate(.8deg);}
+  .shot:nth-child(even){transform:rotate(-.9deg);}
+  .shot img{display:block;width:100%;border-radius:2px;cursor:zoom-in;}
+  .shot .cap{font-family:'Caveat',cursive;font-size:19px;color:#4A3A2A;padding:5px 2px 0;line-height:1.15;}
+  .empty{background:var(--card);border:1px dashed var(--line);padding:26px;text-align:center;
+    font-style:italic;color:var(--faint);}
+
+  /* ---------- lightbox ---------- */
+  #lb{position:fixed;inset:0;background:rgba(25,15,8,.9);display:flex;align-items:center;justify-content:center;
+    z-index:60;padding:20px;cursor:zoom-out;}
+  #lb img{max-width:100%;max-height:88vh;border:6px solid #fff;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+  #lb .lbcap{position:fixed;bottom:18px;left:0;right:0;text-align:center;color:#F6EFE3;
+    font-family:'Caveat',cursive;font-size:24px;}
+
+  footer{margin-top:70px;text-align:center;font-style:italic;color:var(--faint);font-size:13.5px;}
+  footer .hand{font-size:22px;color:var(--rust-dk);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+
+<div id="gate">
+  <div class="gate-card">
+    <div class="hand" style="font-size:20px;color:var(--faint)">you've found</div>
+    <h1>An American Autumn</h1>
+    <div class="sub">Washington DC &#8594; Boston &#183; 27 Sept &#8211; 10 Oct 2026<br>a scrapbook, kept as we go</div>
+    <form id="gateForm">
+      <label for="pw">the password</label>
+      <input id="pw" type="password" autocomplete="off" placeholder="ask Matt&hellip;">
+      <button id="unlockBtn" type="submit">Open the scrapbook</button>
+    </form>
+    <div id="gateMsg"></div>
+  </div>
+</div>
+
+<main class="wrap" id="book" hidden>
+  <header class="hero">
+    <div class="over">Two Brits &#183; one car &#183; fourteen days</div>
+    <h1>An American Autumn</h1>
+    <div class="dates">Washington DC &#8594; Boston &#183; 27 September &#8211; 10 October 2026 &#183; ~900 miles</div>
+    <div class="daychip" id="daychip"></div>
+  </header>
+
+  <section aria-label="Route map">
+    <div class="map-post">
+      <svg viewBox="0 0 560 640" role="img" aria-label="Route map from Washington DC to Boston with overnight stops">
+        <rect x="6" y="6" width="548" height="628" fill="#FBF6EC" stroke="#E4D6C0"/>
+        <g fill="#D9C9AE" font-family="Georgia,serif" font-style="italic" font-size="17" opacity=".8">
+          <text x="96" y="472">Pennsylvania</text>
+          <text x="212" y="268">New York</text>
+          <text x="330" y="140">New Hampshire</text>
+          <text x="492" y="66">Maine</text>
+          <text x="330" y="332">Massachusetts</text>
+        </g>
+        <polyline points="66.6,586 54,494.2 175.3,416.2 190.4,380.7 265,346.9 267,339.3 268.6,301.7 425.8,264.6 442.2,269.5 438.1,105.3 414.9,76.3 430.8,54 451.1,74.3 460.8,77.6 506,112.4 466.2,226.9 455.8,243.2"
+          fill="none" stroke="#B7410E" stroke-width="3" stroke-dasharray="7 5" stroke-linejoin="round" stroke-linecap="round"/>
+        <g stroke="#B7410E" fill="#FBF6EC" stroke-width="2">
+          <circle cx="54" cy="494.2" r="4"><title>Gettysburg — the battlefield, morning of 1 Oct</title></circle>
+          <circle cx="175.3" cy="416.2" r="4"><title>Bethlehem PA — the SteelStacks</title></circle>
+          <circle cx="190.4" cy="380.7" r="4"><title>Delaware Water Gap</title></circle>
+          <circle cx="267" cy="339.3" r="4"><title>West Point — Academy tour</title></circle>
+          <circle cx="268.6" cy="301.7" r="4"><title>Hyde Park — FDR's Springwood</title></circle>
+          <circle cx="438.1" cy="105.3" r="4"><title>Castle in the Clouds</title></circle>
+          <circle cx="430.8" cy="54" r="4"><title>Bretton Woods — the Cog Railway &amp; the Gold Room</title></circle>
+          <circle cx="451.1" cy="74.3" r="4"><title>North Conway &amp; Crawford Notch</title></circle>
+          <circle cx="466.2" cy="226.9" r="4"><title>Salem</title></circle>
+        </g>
+        <path d="M442.2,261.5 l2.4,4.9 5.4,.8 -3.9,3.8 .9,5.4 -4.8,-2.5 -4.8,2.5 .9,-5.4 -3.9,-3.8 5.4,-.8 z"
+          fill="#2E4A6B" stroke="#FBF6EC" stroke-width="1"><title>Gillette Stadium — Zach Bryan, 2 Oct</title></path>
+        <g fill="#B7410E" stroke="#FFFDF8" stroke-width="2.5">
+          <circle cx="66.6" cy="586" r="7"><title>Washington DC — 4 nights</title></circle>
+          <circle cx="265" cy="346.9" r="7"><title>Bear Mountain Inn — 1 night</title></circle>
+          <circle cx="425.8" cy="264.6" r="7"><title>Milford MA — 1 night, concert night</title></circle>
+          <circle cx="414.9" cy="76.3" r="7"><title>North Woodstock NH — 2 nights</title></circle>
+          <circle cx="460.8" cy="77.6" r="7"><title>Fryeburg ME — 1 night, at the fair</title></circle>
+          <circle cx="506" cy="112.4" r="7"><title>Portland ME — 3 nights</title></circle>
+          <circle cx="455.8" cy="243.2" r="7"><title>Boston — 1 night, then home</title></circle>
+        </g>
+        <g font-family="Georgia,serif" font-size="15.5" fill="#2B2017">
+          <text x="80" y="591" font-weight="bold">Washington DC</text>
+          <text x="60" y="482" font-size="13" fill="#6B5847">Gettysburg</text>
+          <text x="186" y="424" font-size="13" fill="#6B5847">Bethlehem</text>
+          <text x="253" y="364" font-weight="bold" text-anchor="end">Bear Mountain</text>
+          <text x="279" y="343" font-size="13" fill="#6B5847">West Point</text>
+          <text x="280" y="305" font-size="13" fill="#6B5847">Hyde Park</text>
+          <text x="413" y="256" font-weight="bold" text-anchor="end">Milford</text>
+          <text x="455" y="284" font-size="13" fill="#2E4A6B">Gillette &#9733;</text>
+          <text x="449" y="110" font-size="13" fill="#6B5847">Castle in the Clouds</text>
+          <text x="402" y="70" font-weight="bold" text-anchor="end">N&nbsp;Woodstock</text>
+          <text x="428" y="42" font-size="13" fill="#6B5847">Bretton Woods</text>
+          <text x="470" y="93" font-weight="bold">Fryeburg</text>
+          <text x="506" y="133" font-weight="bold" text-anchor="middle">Portland</text>
+          <text x="478" y="231" font-size="13" fill="#6B5847">Salem</text>
+          <text x="467" y="252" font-weight="bold">Boston</text>
+        </g>
+        <g font-family="Georgia,serif" font-style="italic" font-size="13" fill="#8A7561">
+          <text x="36" y="620">&#9992; in: Washington, 27 Sept</text>
+          <text x="524" y="620" text-anchor="end">out: Boston, 10 Oct &#9992;</text>
+        </g>
+      </svg>
+      <div class="map-cap">fourteen days, seventeen dots, one dashed rust line &#8594;</div>
+    </div>
+  </section>
+
+  <section aria-label="Itinerary">
+    <div class="shead"><h2>Where we're sleeping</h2><span class="note">the beds &amp; the one big ticket &#8212; all booked</span></div>
+    <div class="stay"><span class="n">1</span><div><b>Hilton Garden Inn Downtown</b> <span class="tag booked">&#10003; booked</span><div class="where">Washington DC &#183; Sun 27 Sept &#8211; Thu 1 Oct &#183; 4 nights &#183; three blocks from the White House</div></div></div>
+    <div class="stay"><span class="n">2</span><div><b>Bear Mountain Inn &#8212; Overlook Lodge</b> <span class="tag booked">&#10003; booked</span><div class="where">Bear Mountain, NY &#183; Thu 1 Oct &#183; a 1915 lodge on the Hudson, 12 minutes from West Point</div></div></div>
+    <div class="stay"><span class="n">3</span><div><b>Holiday Inn Express, Milford</b> <span class="tag booked">&#10003; booked</span><span class="tag booked">&#127903; Zach Bryan @ Gillette &#8212; tickets in hand</span><div class="where">Milford, MA &#183; Fri 2 Oct &#183; concert night: stadium 20 minutes down I-495</div></div></div>
+    <div class="stay"><span class="n">4</span><div><b>Woodstock Inn Brewery</b> <span class="tag booked">&#10003; booked</span><div class="where">North Woodstock, NH &#183; Sat 3 &#8211; Mon 5 Oct &#183; 2 nights &#183; sleeping above our own brewpub at the mouth of Franconia Notch</div></div></div>
+    <div class="stay"><span class="n">5</span><div><b>The Oxford House Inn</b> <span class="tag booked">&#10003; booked</span><div class="where">Fryeburg, ME &#183; Mon 5 Oct &#183; a 1913 inn fifteen minutes' walk from the Fryeburg Fair gate</div></div></div>
+    <div class="stay"><span class="n">6</span><div><b>Portland, Maine</b> <span class="tag">3 nights</span><div class="where">Tue 6 &#8211; Fri 9 Oct &#183; the Old Port, the lighthouses, the lobster</div></div></div>
+    <div class="stay"><span class="n">7</span><div><b>The Royal Sonesta Boston</b> <span class="tag booked">&#10003; booked</span><div class="where">on the Charles, East Cambridge &#183; Fri 9 Oct &#183; then the Saturday flight home from Logan</div></div></div>
+  </section>
+
+  <section aria-label="Diary">
+    <div class="shead"><h2>The diary</h2><span class="note">written from the road</span></div>
+    <div id="entries"></div>
+    <div class="empty" id="emptyDiary">Nothing pasted in yet &#8212; entries and photos appear here as the trip unfolds. Check back!</div>
+  </section>
+
+  <footer><span class="hand">&#8212; Matt &amp; co.</span><br>An American Autumn &#183; 2026</footer>
+</main>
+
+<script id="aa-state" type="application/json">{"v":1,"salt":"Y0OJIZczSYtrpe/fCE4KVw==","iv":"iiWCjrnysMSXJfag","ct":"2gH0lAykju4HzKRNL9fQjPp8Q95kWrUraD/IkTm4"}</script>
+<script>
+"use strict";
+/* Viewer-only page. Entries are written on the separate Writing Desk page
+   and folded into this page's aa-state block by Claude. */
+var LS_PW = 'aa-scrapbook-pw';
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+var DAYS = [
+  ['Sun 27 Sept','Wheels down in Washington'],
+  ['Mon 28 Sept','Capitol Hill'],
+  ['Tue 29 Sept','The founding documents'],
+  ['Wed 30 Sept','Arlington'],
+  ['Thu 1 Oct','Gettysburg, the steel & the Hudson'],
+  ['Fri 2 Oct','West Point, FDR & ZACH BRYAN'],
+  ['Sat 3 Oct','North into the mountains'],
+  ['Sun 4 Oct','The Cog, the Gold Room & the lake'],
+  ['Mon 5 Oct','The Kanc, the train & into the fair'],
+  ['Tue 6 Oct','Fryeburg Fair, then Maine'],
+  ['Wed 7 Oct','Portland'],
+  ['Thu 8 Oct','The Maine day trip'],
+  ['Fri 9 Oct','Salem, then Boston'],
+  ['Sat 10 Oct','Revolution, hockey, home']
+];
+
+/* ---- crypto (PBKDF2 -> AES-256-GCM) ---- */
+function b64ToBuf(b64){ var bin = atob(b64), a = new Uint8Array(bin.length); for (var i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return a; }
+function deriveKey(pw, saltB64){
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey'])
+    .then(function(km){ return crypto.subtle.deriveKey(
+      {name:'PBKDF2', salt:b64ToBuf(saltB64), iterations:150000, hash:'SHA-256'},
+      km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']); });
+}
+function openState(pw, blob){
+  return deriveKey(pw, blob.salt).then(function(key){
+    return crypto.subtle.decrypt({name:'AES-GCM', iv:b64ToBuf(blob.iv)}, key, b64ToBuf(blob.ct));
+  }).then(function(pt){ return JSON.parse(new TextDecoder().decode(pt)); });
+}
+function readBlob(){
+  try { return JSON.parse($('aa-state').textContent); } catch(e){ return null; }
+}
+
+/* ---- unlock ---- */
+var STATE = null;
+function unlock(pw, silent){
+  var blob = readBlob();
+  if (!blob){ if (!silent) $('gateMsg').textContent = 'This copy of the page is missing its contents.'; return Promise.resolve(false); }
+  return openState(pw, blob).then(function(st){
+    STATE = st && st.entries ? st : {entries:[]};
+    try { localStorage.setItem(LS_PW, pw); } catch(e){}
+    $('gate').hidden = true;
+    $('book').hidden = false;
+    renderDiary();
+    renderDaychip();
+    return true;
+  }).catch(function(){
+    if (!silent) $('gateMsg').textContent = 'That’s not it — try again (hint: one word, very patriotic).';
+    return false;
+  });
+}
+$('gateForm').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var pw = $('pw').value.trim();
+  if (pw) unlock(pw, false);
+});
+(function autoUnlock(){
+  var saved = null;
+  try { saved = localStorage.getItem(LS_PW); } catch(e){}
+  if (saved) unlock(saved, true).then(function(ok){ if (!ok){ try{ localStorage.removeItem(LS_PW); }catch(e){} } });
+})();
+
+/* ---- rendering ---- */
+function renderDaychip(){
+  var start = new Date('2026-09-27T00:00:00');
+  var now = new Date();
+  var n = Math.floor((now - start) / 86400000) + 1;
+  var chip = $('daychip');
+  if (n < 1){ chip.textContent = 'Departure soon — ' + Math.abs(n-1) + ' days to go'; }
+  else if (n > 14){ chip.textContent = 'The trip that was · 27 Sept – 10 Oct 2026'; chip.className = 'daychip done'; }
+  else { chip.textContent = 'Live · Day ' + n + ' of 14 — ' + DAYS[n-1][1]; }
+}
+function renderDiary(){
+  var box = $('entries');
+  var entries = (STATE.entries || []).slice().sort(function(a,b){ return (a.day - b.day) || (a.ts - b.ts); });
+  $('emptyDiary').hidden = entries.length > 0;
+  var html = '';
+  var lastDay = -1;
+  entries.forEach(function(e){
+    if (e.day !== lastDay){
+      lastDay = e.day;
+      var d = DAYS[e.day-1] || ['',''];
+      html += '<div class="dayhead"><span class="dn">Day ' + e.day + '</span><span class="dt">' + esc(d[0]) + ' · ' + esc(d[1]) + '</span></div>';
+    }
+    html += '<article class="entry">';
+    if (e.title) html += '<h3>' + esc(e.title) + '</h3>';
+    if (e.text) html += '<div class="body">' + esc(e.text) + '</div>';
+    if (e.photos && e.photos.length){
+      html += '<div class="shots">';
+      e.photos.forEach(function(p){
+        html += '<figure class="shot"><img loading="lazy" alt="' + esc(p.cap || 'trip photo') + '" src="' + p.src + '">' +
+                (p.cap ? '<figcaption class="cap">' + esc(p.cap) + '</figcaption>' : '') + '</figure>';
+      });
+      html += '</div>';
+    }
+    html += '<div class="meta">' + esc(DAYS[e.day-1] ? DAYS[e.day-1][0] : '') + (e.by ? ' · ' + esc(e.by) : '') + '</div>';
+    html += '</article>';
+  });
+  box.innerHTML = html;
+  box.querySelectorAll('.shot img').forEach(function(img){
+    img.addEventListener('click', function(){ openLightbox(img.src, img.alt); });
+  });
+}
+function openLightbox(src, cap){
+  var lb = document.createElement('div'); lb.id = 'lb';
+  lb.innerHTML = '<img alt="' + esc(cap) + '" src="' + src + '">' + (cap && cap !== 'trip photo' ? '<div class="lbcap">' + esc(cap) + '</div>' : '');
+  lb.addEventListener('click', function(){ lb.remove(); });
+  document.body.appendChild(lb);
+}
+</script>

@@ -1,0 +1,473 @@
+<title>American Autumn Writing Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap">
+<style>
+  :root{
+    --paper:#EFEAE0; --card:#FFFDF8; --ink:#232A33; --faint:#6E7887;
+    --navy:#2E4A6B; --navy-dk:#1F3550; --rust:#B7410E; --line:#D6D0C2;
+    --tape:rgba(150,168,190,.4); --good:#4A7A4A;
+  }
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.55;}
+  .wrap{max-width:680px;margin:0 auto;padding-block:0 90px;padding-inline:18px;}
+  .hand{font-family:'Caveat','Comic Sans MS',cursive;}
+  button{font:inherit;cursor:pointer;}
+  :focus-visible{outline:3px solid var(--rust);outline-offset:2px;}
+
+  /* ---------- gate ---------- */
+  #gate{min-height:82vh;display:flex;align-items:center;justify-content:center;padding:18px;}
+  .gate-card{background:var(--card);border:1px solid var(--line);max-width:400px;width:100%;
+    padding:34px 28px 30px;text-align:center;box-shadow:0 10px 30px rgba(30,45,70,.14);position:relative;}
+  .gate-card::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);
+    width:120px;height:26px;background:var(--tape);}
+  .gate-card h1{font-family:'Caveat',cursive;color:var(--navy-dk);font-size:40px;margin:6px 0 0;line-height:1.05;}
+  .gate-card .sub{font-style:italic;color:var(--faint);margin:6px 0 22px;font-size:14.5px;}
+  .gate-card label{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:6px;}
+  #pw{width:100%;box-sizing:border-box;padding:10px 12px;font:inherit;border:1.5px solid var(--line);
+    background:#FFFEFB;border-radius:4px;text-align:center;}
+  #unlockBtn{margin-top:12px;width:100%;padding:10px;background:var(--navy);color:#fff;border:none;
+    border-radius:4px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:.04em;}
+  #unlockBtn:hover{background:var(--navy-dk);}
+  #gateMsg{min-height:20px;font-size:13.5px;color:var(--rust);margin-top:10px;font-style:italic;}
+
+  /* ---------- header ---------- */
+  header.top{text-align:center;padding:38px 10px 4px;}
+  .top .over{font-family:Arial,sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  .top h1{font-family:'Caveat',cursive;font-weight:700;color:var(--navy-dk);
+    font-size:clamp(40px,8vw,58px);margin:2px 0 0;line-height:1;text-wrap:balance;}
+  .top .sub{font-style:italic;color:var(--faint);margin-top:4px;font-size:14.5px;}
+  .savechip{display:inline-block;margin-top:12px;border-radius:999px;padding:5px 16px;
+    font-family:Arial,sans-serif;font-size:12.5px;letter-spacing:.03em;background:#DEE5DA;color:var(--good);}
+  .savechip.dirty{background:#F3E3CE;color:#8A5A16;}
+
+  /* ---------- desk ---------- */
+  .panel{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--navy);
+    padding:18px 18px 16px;margin-top:26px;box-shadow:0 6px 18px rgba(30,45,70,.08);}
+  .panel h2{font-family:'Caveat',cursive;color:var(--navy-dk);font-size:30px;margin:0 0 10px;line-height:1;}
+  .frow{margin-bottom:12px;}
+  .frow label{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:4px;}
+  .frow input[type=text],.frow textarea,.frow select{width:100%;box-sizing:border-box;font:inherit;
+    padding:9px 10px;border:1.5px solid var(--line);border-radius:4px;background:#FFFEFB;}
+  .frow textarea{min-height:130px;resize:vertical;}
+  #picks{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+  .pick{width:112px;background:#fff;border:1px solid var(--line);padding:5px;}
+  .pick img{display:block;width:100%;height:76px;object-fit:cover;}
+  .pick input{width:100%;box-sizing:border-box;font-family:'Caveat',cursive;font-size:16px;border:none;
+    border-bottom:1px dashed var(--line);background:none;padding:3px 1px;}
+  .pick button{width:100%;margin-top:4px;border:none;background:#E7E2D5;font-size:11px;padding:3px;border-radius:3px;}
+  .abtns{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:4px;}
+  .primary{background:var(--navy);color:#fff;border:none;border-radius:4px;padding:11px 18px;
+    font-family:Arial,sans-serif;font-size:13.5px;}
+  .primary:hover{background:var(--navy-dk);}
+  .primary:disabled{opacity:.5;cursor:default;}
+  .primary.save{background:var(--rust);}
+  #meter{font-family:Arial,sans-serif;font-size:12px;color:var(--faint);}
+  #meter b{color:var(--navy-dk);}
+  #editNote{font-size:13px;font-style:italic;color:var(--rust);min-height:18px;margin-top:6px;}
+
+  .mine{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#fff;
+    border:1px solid var(--line);padding:8px 10px;margin-bottom:6px;font-size:14px;}
+  .mine button{border:none;background:#E7E2D5;border-radius:3px;padding:5px 10px;font-size:12px;margin-left:6px;}
+  .mine .em{font-style:italic;color:var(--faint);}
+
+  .how{background:#E9EDF2;border:1px solid #C9D3DF;border-radius:6px;padding:12px 14px;margin-top:26px;
+    font-size:13.5px;line-height:1.55;color:#33414F;}
+  .how b{color:var(--navy-dk);}
+
+  /* ---------- preview (matches the scrapbook) ---------- */
+  .pvhead{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--navy);padding-bottom:6px;margin:40px 0 14px;}
+  .pvhead h2{font-family:'Caveat',cursive;color:var(--navy-dk);font-size:30px;margin:0;line-height:1;}
+  .pvhead .note{font-size:13px;font-style:italic;color:var(--faint);}
+  .dayhead{display:flex;align-items:baseline;gap:10px;margin:26px 0 10px;}
+  .dayhead .dn{font-family:'Caveat',cursive;font-size:28px;color:var(--rust);line-height:1;}
+  .dayhead .dt{font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);}
+  .entry{background:var(--card);border:1px solid var(--line);padding:16px 18px 14px;margin-bottom:14px;}
+  .entry h3{font-family:'Caveat',cursive;font-size:28px;color:var(--rust);margin:0 0 6px;line-height:1.1;}
+  .entry .body{white-space:pre-wrap;}
+  .entry .meta{font-size:12.5px;color:var(--faint);font-style:italic;margin-top:10px;}
+  .shots{columns:2;column-gap:12px;margin-top:12px;}
+  @media (max-width:520px){.shots{columns:1;}}
+  .shot{break-inside:avoid;background:#fff;border:1px solid var(--line);padding:7px 7px 5px;margin:0 0 12px;
+    box-shadow:0 4px 12px rgba(30,45,70,.1);}
+  .shot img{display:block;width:100%;border-radius:2px;}
+  .shot .cap{font-family:'Caveat',cursive;font-size:18px;color:#3F4A58;padding:4px 2px 0;line-height:1.15;}
+  .empty{background:var(--card);border:1px dashed var(--line);padding:22px;text-align:center;
+    font-style:italic;color:var(--faint);}
+  #roWarn{background:#F6E3E0;border:1px solid #E0B8B0;border-radius:6px;padding:12px 14px;margin-top:26px;
+    font-size:14px;color:#7A2C0A;}
+  #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));
+    background:var(--ink);color:#EFEAE0;padding:10px 18px;border-radius:6px;font-family:Arial,sans-serif;
+    font-size:13.5px;z-index:70;max-width:86vw;}
+  footer{margin-top:60px;text-align:center;font-style:italic;color:var(--faint);font-size:13px;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+
+<div id="gate">
+  <div class="gate-card">
+    <div class="hand" style="font-size:20px;color:var(--faint)">the private side of</div>
+    <h1>The Writing Desk</h1>
+    <div class="sub">where the American Autumn scrapbook gets written<br>same password as the scrapbook</div>
+    <form id="gateForm">
+      <label for="pw">password</label>
+      <input id="pw" type="password" autocomplete="off">
+      <button id="unlockBtn" type="submit">Sit down</button>
+    </form>
+    <div id="gateMsg"></div>
+  </div>
+</div>
+
+<main class="wrap" id="desk" hidden>
+  <header class="top">
+    <div class="over">An American Autumn &#183; admin</div>
+    <h1>The Writing Desk</h1>
+    <div class="sub">write here &#8594; it lands in the family scrapbook</div>
+    <div class="savechip" id="saveChip">All saved</div>
+  </header>
+
+  <div id="roWarn" hidden>This view can&rsquo;t save &#8212; it looks like you&rsquo;re not signed in as the desk&rsquo;s owner. Reading works; writing won&rsquo;t.</div>
+
+  <section class="panel" aria-label="New entry">
+    <h2 id="composerTitle">New entry</h2>
+    <div class="frow"><label for="aDay">Which day</label><select id="aDay"></select></div>
+    <div class="frow"><label for="aTitle">Title</label><input type="text" id="aTitle" placeholder="e.g. The Gold Room, finally"></div>
+    <div class="frow"><label for="aText">Entry</label><textarea id="aText" placeholder="What happened, what it was like, who ate the biggest lobster&hellip;"></textarea></div>
+    <div class="frow"><label for="aFiles">Photos &#8212; auto-shrunk to travel size, captions optional</label>
+      <input type="file" id="aFiles" accept="image/*" multiple><div id="picks"></div></div>
+    <div class="abtns">
+      <button class="primary" id="aAdd" type="button">Add entry</button>
+      <button class="primary save" id="aSave" type="button" disabled>Save to the desk</button>
+      <span id="meter"></span>
+    </div>
+    <div id="editNote"></div>
+  </section>
+
+  <section class="panel" aria-label="Entries">
+    <h2>Entries on the desk</h2>
+    <div id="mine"></div>
+  </section>
+
+  <div class="how"><b>How it reaches the family:</b> <b>Save to the desk</b> stores everything here, safely.
+    Claude then folds the desk into the scrapbook page on the <b>morning and evening runs</b> (US Eastern) &#8212;
+    or message Claude <i>&ldquo;sync the scrapbook&rdquo;</i> and it goes out straight away.
+    Photos and words are sealed with the trip password before they&rsquo;re stored.</div>
+
+  <div class="pvhead"><h2>Preview</h2><span class="note">what the family will see, minus the map &amp; itinerary</span></div>
+  <div id="entries"></div>
+  <div class="empty" id="emptyDiary">Nothing written yet &#8212; the desk is clean.</div>
+
+  <footer>The Writing Desk &#183; private companion to the American Autumn scrapbook</footer>
+</main>
+
+<script id="aa-state" type="application/json">{"v":1,"salt":"Y0OJIZczSYtrpe/fCE4KVw==","iv":"iiWCjrnysMSXJfag","ct":"2gH0lAykju4HzKRNL9fQjPp8Q95kWrUraD/IkTm4"}</script>
+<script>
+"use strict";
+var STATE_OPEN = '<scr'+'ipt id="aa-state" type="application/json">';
+var STATE_CLOSE = '</scr'+'ipt>';
+var LS_PW = 'aa-scrapbook-pw';
+var MAX_PUBLISH = 15.2 * 1024 * 1024;
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function toast(m, ms){
+  var t = $('toast'); if (t) t.remove();
+  t = document.createElement('div'); t.id='toast'; t.textContent = m; document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, ms || 3400);
+}
+var DAYS = [
+  ['Sun 27 Sept','Wheels down in Washington'],
+  ['Mon 28 Sept','Capitol Hill'],
+  ['Tue 29 Sept','The founding documents'],
+  ['Wed 30 Sept','Arlington'],
+  ['Thu 1 Oct','Gettysburg, the steel & the Hudson'],
+  ['Fri 2 Oct','West Point, FDR & ZACH BRYAN'],
+  ['Sat 3 Oct','North into the mountains'],
+  ['Sun 4 Oct','The Cog, the Gold Room & the lake'],
+  ['Mon 5 Oct','The Kanc, the train & into the fair'],
+  ['Tue 6 Oct','Fryeburg Fair, then Maine'],
+  ['Wed 7 Oct','Portland'],
+  ['Thu 8 Oct','The Maine day trip'],
+  ['Fri 9 Oct','Salem, then Boston'],
+  ['Sat 10 Oct','Revolution, hockey, home']
+];
+
+/* ---- crypto (PBKDF2 -> AES-256-GCM) — identical to the scrapbook ---- */
+function b64ToBuf(b64){ var bin = atob(b64), a = new Uint8Array(bin.length); for (var i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return a; }
+function bufToB64(buf){ var a = new Uint8Array(buf), s=''; for (var i=0;i<a.length;i++) s += String.fromCharCode(a[i]); return btoa(s); }
+function deriveKey(pw, saltB64){
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey'])
+    .then(function(km){ return crypto.subtle.deriveKey(
+      {name:'PBKDF2', salt:b64ToBuf(saltB64), iterations:150000, hash:'SHA-256'},
+      km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']); });
+}
+function sealState(pw, obj){
+  var salt = crypto.getRandomValues(new Uint8Array(16));
+  var iv = crypto.getRandomValues(new Uint8Array(12));
+  var saltB64 = bufToB64(salt);
+  return deriveKey(pw, saltB64).then(function(key){
+    return crypto.subtle.encrypt({name:'AES-GCM', iv:iv}, key, new TextEncoder().encode(JSON.stringify(obj)));
+  }).then(function(ct){
+    return JSON.stringify({v:1, salt:saltB64, iv:bufToB64(iv), ct:bufToB64(ct)});
+  });
+}
+function openState(pw, blob){
+  return deriveKey(pw, blob.salt).then(function(key){
+    return crypto.subtle.decrypt({name:'AES-GCM', iv:b64ToBuf(blob.iv)}, key, b64ToBuf(blob.ct));
+  }).then(function(pt){ return JSON.parse(new TextDecoder().decode(pt)); });
+}
+function readBlob(){
+  try { return JSON.parse($('aa-state').textContent); } catch(e){ return null; }
+}
+
+/* ---- unlock ---- */
+var STATE = null, PASSWORD = null, DIRTY = 0;
+function unlock(pw, silent){
+  var blob = readBlob();
+  if (!blob){ if (!silent) $('gateMsg').textContent = 'This copy of the page is missing its contents.'; return Promise.resolve(false); }
+  return openState(pw, blob).then(function(st){
+    STATE = st && st.entries ? st : {entries:[]};
+    PASSWORD = pw;
+    try { localStorage.setItem(LS_PW, pw); } catch(e){}
+    $('gate').hidden = true;
+    $('desk').hidden = false;
+    buildDayOptions();
+    restoreDraft();
+    renderAll();
+    checkWriter();
+    return true;
+  }).catch(function(){
+    if (!silent) $('gateMsg').textContent = 'Not it — it’s the same password as the scrapbook.';
+    return false;
+  });
+}
+$('gateForm').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var pw = $('pw').value.trim();
+  if (pw) unlock(pw, false);
+});
+(function autoUnlock(){
+  var saved = null;
+  try { saved = localStorage.getItem(LS_PW); } catch(e){}
+  if (saved) unlock(saved, true).then(function(ok){ if (!ok){ try{ localStorage.removeItem(LS_PW); }catch(e){} } });
+})();
+function checkWriter(){
+  var claudeUse = (window.claude && window.claude.use) ? window.claude.use.bind(window.claude) : null;
+  if (!claudeUse) return;
+  claudeUse('user').then(function(user){ return user ? user.canEdit() : null; })
+    .then(function(ce){ if (ce === false) $('roWarn').hidden = false; })
+    .catch(function(){});
+}
+
+/* ---- composer ---- */
+function buildDayOptions(){
+  var start = new Date('2026-09-27T00:00:00');
+  var todayIdx = Math.floor((new Date() - start) / 86400000) + 1;
+  $('aDay').innerHTML = DAYS.map(function(d, i){
+    var n = i + 1;
+    return '<option value="' + n + '"' + (n === Math.min(Math.max(todayIdx,1),14) ? ' selected' : '') + '>Day ' + n + ' · ' + d[0] + ' — ' + d[1] + '</option>';
+  }).join('');
+}
+var PENDING_PHOTOS = [];
+var EDITING_ID = null;
+$('aFiles').addEventListener('change', function(ev){
+  var files = Array.prototype.slice.call(ev.target.files || []);
+  files.forEach(function(f){
+    shrink(f).then(function(dataUrl){
+      PENDING_PHOTOS.push({src:dataUrl, cap:''});
+      renderPicks();
+    }).catch(function(){ toast('Couldn’t read ' + f.name + ' — try a JPEG/PNG export of it.'); });
+  });
+  ev.target.value = '';
+});
+function shrink(file){
+  return new Promise(function(res, rej){
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function(){
+      try {
+        var MAXE = 1600;
+        var w = img.naturalWidth, h = img.naturalHeight;
+        var k = Math.min(1, MAXE / Math.max(w, h));
+        var c = document.createElement('canvas');
+        c.width = Math.round(w * k); c.height = Math.round(h * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        res(c.toDataURL('image/jpeg', 0.82));
+      } catch(e){ rej(e); }
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); rej(new Error('decode')); };
+    img.src = url;
+  });
+}
+function renderPicks(){
+  $('picks').innerHTML = PENDING_PHOTOS.map(function(p, i){
+    return '<div class="pick"><img alt="" src="' + p.src + '">' +
+      '<input placeholder="caption…" value="' + esc(p.cap) + '" data-i="' + i + '">' +
+      '<button type="button" data-x="' + i + '">remove</button></div>';
+  }).join('');
+  $('picks').querySelectorAll('input').forEach(function(inp){
+    inp.addEventListener('input', function(){ PENDING_PHOTOS[+inp.dataset.i].cap = inp.value; });
+  });
+  $('picks').querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){ PENDING_PHOTOS.splice(+b.dataset.x, 1); renderPicks(); });
+  });
+  updateMeter();
+}
+function stashDraft(){
+  try { sessionStorage.setItem('aa-desk-draft', JSON.stringify({d:$('aDay').value, t:$('aTitle').value, x:$('aText').value})); } catch(e){}
+}
+function restoreDraft(){
+  try {
+    var d = JSON.parse(sessionStorage.getItem('aa-desk-draft') || 'null');
+    if (d){ if (d.t) $('aTitle').value = d.t; if (d.x) $('aText').value = d.x; }
+    sessionStorage.removeItem('aa-desk-draft');
+  } catch(e){}
+}
+function markDirty(){
+  DIRTY++;
+  $('aSave').disabled = false;
+  $('aSave').textContent = 'Save to the desk — ' + DIRTY + ' change' + (DIRTY>1?'s':'');
+  var c = $('saveChip'); c.textContent = 'Unsaved changes'; c.className = 'savechip dirty';
+}
+function markClean(){
+  DIRTY = 0;
+  $('aSave').disabled = true;
+  $('aSave').textContent = 'Save to the desk';
+  var c = $('saveChip'); c.textContent = 'All saved'; c.className = 'savechip';
+}
+$('aAdd').addEventListener('click', function(){
+  var title = $('aTitle').value.trim();
+  var text = $('aText').value.trim();
+  if (!title && !text && !PENDING_PHOTOS.length){ toast('Nothing to add yet — write a line or pick a photo.'); return; }
+  if (EDITING_ID){
+    var e = STATE.entries.find(function(x){ return x.id === EDITING_ID; });
+    if (e){ e.day = +$('aDay').value; e.title = title; e.text = text; e.photos = PENDING_PHOTOS.splice(0); }
+    EDITING_ID = null;
+    $('composerTitle').textContent = 'New entry';
+    $('editNote').textContent = '';
+    $('aAdd').textContent = 'Add entry';
+  } else {
+    STATE.entries.push({
+      id: 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+      day: +$('aDay').value, title: title, text: text, ts: Date.now(),
+      photos: PENDING_PHOTOS.splice(0)
+    });
+  }
+  $('aTitle').value = ''; $('aText').value = '';
+  renderPicks(); renderAll(); markDirty();
+  toast('On the desk — hit Save when you’re done writing.');
+});
+
+/* ---- entry list ---- */
+function renderMine(){
+  var box = $('mine');
+  var es = (STATE.entries || []).slice().sort(function(a,b){ return (a.day-b.day)||(a.ts-b.ts); });
+  box.innerHTML = es.length ? es.map(function(e){
+    return '<div class="mine"><span>Day ' + e.day + ' · <b>' + esc(e.title || '(untitled)') + '</b>' +
+      (e.photos && e.photos.length ? ' · ' + e.photos.length + ' photo' + (e.photos.length>1?'s':'') : '') + '</span>' +
+      '<span><button type="button" data-ed="' + e.id + '">edit</button><button type="button" data-del="' + e.id + '">delete</button></span></div>';
+  }).join('') : '<div class="mine"><span class="em">No entries yet.</span></div>';
+  box.querySelectorAll('[data-ed]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var e = STATE.entries.find(function(x){ return x.id === b.dataset.ed; });
+      if (!e) return;
+      EDITING_ID = e.id;
+      $('aDay').value = String(e.day);
+      $('aTitle').value = e.title || '';
+      $('aText').value = e.text || '';
+      PENDING_PHOTOS = (e.photos || []).slice();
+      renderPicks();
+      $('composerTitle').textContent = 'Editing: ' + (e.title || '(untitled)');
+      $('editNote').textContent = 'Editing an existing entry — “Update entry” puts it back.';
+      $('aAdd').textContent = 'Update entry';
+      $('composerTitle').scrollIntoView();
+    });
+  });
+  box.querySelectorAll('[data-del]').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (b.textContent !== 'sure?'){ b.textContent = 'sure?'; setTimeout(function(){ b.textContent='delete'; }, 2500); return; }
+      STATE.entries = STATE.entries.filter(function(e){ return e.id !== b.dataset.del; });
+      renderAll(); markDirty();
+    });
+  });
+}
+
+/* ---- preview ---- */
+function renderPreview(){
+  var box = $('entries');
+  var entries = (STATE.entries || []).slice().sort(function(a,b){ return (a.day - b.day) || (a.ts - b.ts); });
+  $('emptyDiary').hidden = entries.length > 0;
+  var html = '', lastDay = -1;
+  entries.forEach(function(e){
+    if (e.day !== lastDay){
+      lastDay = e.day;
+      var d = DAYS[e.day-1] || ['',''];
+      html += '<div class="dayhead"><span class="dn">Day ' + e.day + '</span><span class="dt">' + esc(d[0]) + ' · ' + esc(d[1]) + '</span></div>';
+    }
+    html += '<article class="entry">';
+    if (e.title) html += '<h3>' + esc(e.title) + '</h3>';
+    if (e.text) html += '<div class="body">' + esc(e.text) + '</div>';
+    if (e.photos && e.photos.length){
+      html += '<div class="shots">';
+      e.photos.forEach(function(p){
+        html += '<figure class="shot"><img loading="lazy" alt="' + esc(p.cap || 'trip photo') + '" src="' + p.src + '">' +
+                (p.cap ? '<figcaption class="cap">' + esc(p.cap) + '</figcaption>' : '') + '</figure>';
+      });
+      html += '</div>';
+    }
+    html += '<div class="meta">' + esc(DAYS[e.day-1] ? DAYS[e.day-1][0] : '') + '</div></article>';
+  });
+  box.innerHTML = html;
+}
+function renderAll(){ renderMine(); renderPreview(); updateMeter(); }
+
+/* ---- size meter ---- */
+var BASE_LEN = null;
+function fetchSelf(){
+  return fetch('index.html', {cache:'no-store'}).then(function(r){
+    if (!r.ok) throw new Error('fetch');
+    return r.text();
+  });
+}
+function updateMeter(){
+  var m = $('meter'); if (!m || !STATE) return;
+  var stateLen = JSON.stringify(STATE).length * 1.37 + 500;
+  var show = function(base){
+    var mb = (base + stateLen) / 1048576;
+    m.innerHTML = 'Desk size ≈ <b>' + mb.toFixed(1) + ' MB</b> of 15 — ' +
+      (mb > 12 ? 'getting full: keep new photos to the best ones' : 'plenty of room');
+  };
+  if (BASE_LEN !== null){ show(BASE_LEN); }
+  else fetchSelf().then(function(src){ BASE_LEN = src.length; show(BASE_LEN); }).catch(function(){ show(60000); });
+}
+
+/* ---- save: republish this page with the new sealed state ---- */
+$('aSave').addEventListener('click', function(){
+  var btn = $('aSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  stashDraft();
+  var claudeUse = (window.claude && window.claude.use) ? window.claude.use.bind(window.claude) : null;
+  if (!claudeUse){ btn.disabled = false; btn.textContent = 'Save to the desk'; toast('Saving isn’t available in this view.'); return; }
+  Promise.all([claudeUse('artifact'), sealState(PASSWORD, STATE), fetchSelf()]).then(function(rs){
+    var artifact = rs[0], sealed = rs[1], src = rs[2];
+    if (!artifact) throw {code:'not_granted'};
+    var i = src.indexOf(STATE_OPEN);
+    var j = i >= 0 ? src.indexOf(STATE_CLOSE, i + STATE_OPEN.length) : -1;
+    if (i < 0 || j < 0) throw {code:'no_marker'};
+    var doc = src.slice(0, i + STATE_OPEN.length) + sealed + src.slice(j);
+    if (doc.length > MAX_PUBLISH) throw {code:'too_large_local'};
+    return artifact.publish(doc);
+  }).then(function(){
+    /* view reloads to the saved version */
+  }).catch(function(err){
+    var code = err && err.code;
+    if (code === 'conflict'){ toast('A newer save exists — reloading to it…'); return; }
+    if (code === 'not_writer' || code === 'not_granted'){ $('roWarn').hidden = false; toast('This view can’t save — sign in as the owner.'); }
+    else if (code === 'too_large' || code === 'too_large_local'){ toast('Over the size limit — remove a few photos and save again.'); }
+    else if (code === 'rate_limited'){ toast('Saving too fast — wait a moment and try once more.'); }
+    else if (code === 'no_marker'){ toast('Couldn’t find the page’s storage block — tell Claude.'); }
+    else { toast('Save failed (' + (code || 'unknown') + ') — nothing lost; try again.'); }
+    btn.disabled = false;
+    btn.textContent = 'Save to the desk — ' + DIRTY + ' change' + (DIRTY>1?'s':'');
+  });
+});
+</script>
