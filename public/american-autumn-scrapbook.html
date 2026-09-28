@@ -93,40 +93,6 @@
   #lb .lbcap{position:fixed;bottom:18px;left:0;right:0;text-align:center;color:#F6EFE3;
     font-family:'Caveat',cursive;font-size:24px;}
 
-  /* ---------- admin ---------- */
-  #adminBar{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:50;}
-  #adminOpen{background:var(--navy);color:#fff;border:none;border-radius:999px;padding:11px 18px;
-    font-family:Arial,sans-serif;font-size:13.5px;box-shadow:0 6px 18px rgba(20,30,50,.35);}
-  #admin{background:#F0E9DB;border:2px solid var(--navy);border-radius:8px;padding:18px;margin-top:40px;}
-  #admin h2{font-family:'Caveat',cursive;color:var(--navy);font-size:32px;margin:0 0 4px;}
-  #admin .hint{font-size:13px;color:var(--faint);font-style:italic;margin:0 0 14px;}
-  .frow{margin-bottom:12px;}
-  .frow label{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--faint);margin-bottom:4px;}
-  .frow input[type=text],.frow textarea,.frow select{width:100%;box-sizing:border-box;font:inherit;
-    padding:8px 10px;border:1.5px solid var(--line);border-radius:4px;background:#FFFEFB;}
-  .frow textarea{min-height:110px;resize:vertical;}
-  #picks{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
-  .pick{width:110px;background:#fff;border:1px solid var(--line);padding:5px;}
-  .pick img{display:block;width:100%;height:74px;object-fit:cover;}
-  .pick input{width:100%;box-sizing:border-box;font-family:'Caveat',cursive;font-size:16px;border:none;
-    border-bottom:1px dashed var(--line);background:none;padding:3px 1px;}
-  .pick button{width:100%;margin-top:4px;border:none;background:#EEE2CE;font-size:11px;padding:3px;border-radius:3px;}
-  .abtns{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px;}
-  .abtns .primary{background:var(--rust);color:#fff;border:none;border-radius:4px;padding:10px 18px;
-    font-family:Arial,sans-serif;font-size:13.5px;}
-  .abtns .primary:disabled{opacity:.5;cursor:default;}
-  .abtns .ghost{background:none;border:1.5px solid var(--navy);color:var(--navy);border-radius:4px;
-    padding:9px 14px;font-family:Arial,sans-serif;font-size:13px;}
-  #meter{font-family:Arial,sans-serif;font-size:12px;color:var(--faint);}
-  #meter b{color:var(--rust-dk);}
-  .mine{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#fff;
-    border:1px solid var(--line);padding:7px 10px;margin-bottom:6px;font-size:14px;}
-  .mine .who{color:var(--faint);font-size:12.5px;}
-  .mine button{border:none;background:#EEE2CE;border-radius:3px;padding:4px 9px;font-size:12px;margin-left:6px;}
-  #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(72px + env(safe-area-inset-bottom,0px));
-    background:var(--ink);color:#F6EFE3;padding:10px 18px;border-radius:6px;font-family:Arial,sans-serif;
-    font-size:13.5px;z-index:70;max-width:86vw;}
   footer{margin-top:70px;text-align:center;font-style:italic;color:var(--faint);font-size:13.5px;}
   footer .hand{font-size:22px;color:var(--rust-dk);}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
@@ -232,26 +198,17 @@
     <div class="empty" id="emptyDiary">Nothing pasted in yet &#8212; entries and photos appear here as the trip unfolds. Check back!</div>
   </section>
 
-  <div id="adminZone"></div>
-
   <footer><span class="hand">&#8212; Matt &amp; co.</span><br>An American Autumn &#183; 2026</footer>
 </main>
 
 <script id="aa-state" type="application/json">{"v":1,"salt":"Y0OJIZczSYtrpe/fCE4KVw==","iv":"iiWCjrnysMSXJfag","ct":"2gH0lAykju4HzKRNL9fQjPp8Q95kWrUraD/IkTm4"}</script>
 <script>
 "use strict";
-/* ============ constants & tiny helpers ============ */
-var STATE_OPEN = '<scr'+'ipt id="aa-state" type="application/json">';
-var STATE_CLOSE = '</scr'+'ipt>';
+/* Viewer-only page. Entries are written on the separate Writing Desk page
+   and folded into this page's aa-state block by Claude. */
 var LS_PW = 'aa-scrapbook-pw';
-var MAX_PUBLISH = 15.2 * 1024 * 1024;
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function toast(m, ms){
-  var t = $('toast'); if (t) t.remove();
-  t = document.createElement('div'); t.id='toast'; t.textContent = m; document.body.appendChild(t);
-  setTimeout(function(){ t.remove(); }, ms || 3200);
-}
 var DAYS = [
   ['Sun 27 Sept','Wheels down in Washington'],
   ['Mon 28 Sept','Capitol Hill'],
@@ -269,24 +226,13 @@ var DAYS = [
   ['Sat 10 Oct','Revolution, hockey, home']
 ];
 
-/* ============ crypto (PBKDF2 -> AES-256-GCM) ============ */
+/* ---- crypto (PBKDF2 -> AES-256-GCM) ---- */
 function b64ToBuf(b64){ var bin = atob(b64), a = new Uint8Array(bin.length); for (var i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return a; }
-function bufToB64(buf){ var a = new Uint8Array(buf), s=''; for (var i=0;i<a.length;i++) s += String.fromCharCode(a[i]); return btoa(s); }
 function deriveKey(pw, saltB64){
   return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey'])
     .then(function(km){ return crypto.subtle.deriveKey(
       {name:'PBKDF2', salt:b64ToBuf(saltB64), iterations:150000, hash:'SHA-256'},
       km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']); });
-}
-function sealState(pw, obj){
-  var salt = crypto.getRandomValues(new Uint8Array(16));
-  var iv = crypto.getRandomValues(new Uint8Array(12));
-  var saltB64 = bufToB64(salt);
-  return deriveKey(pw, saltB64).then(function(key){
-    return crypto.subtle.encrypt({name:'AES-GCM', iv:iv}, key, new TextEncoder().encode(JSON.stringify(obj)));
-  }).then(function(ct){
-    return JSON.stringify({v:1, salt:saltB64, iv:bufToB64(iv), ct:bufToB64(ct)});
-  });
 }
 function openState(pw, blob){
   return deriveKey(pw, blob.salt).then(function(key){
@@ -297,24 +243,18 @@ function readBlob(){
   try { return JSON.parse($('aa-state').textContent); } catch(e){ return null; }
 }
 
-/* ============ unlock flow ============ */
-var STATE = null;       /* {entries:[{id,day,title,text,ts,photos:[{src,cap}]}]} */
-var PASSWORD = null;
-var CAN_EDIT = false;
-
+/* ---- unlock ---- */
+var STATE = null;
 function unlock(pw, silent){
   var blob = readBlob();
   if (!blob){ if (!silent) $('gateMsg').textContent = 'This copy of the page is missing its contents.'; return Promise.resolve(false); }
   return openState(pw, blob).then(function(st){
     STATE = st && st.entries ? st : {entries:[]};
-    PASSWORD = pw;
     try { localStorage.setItem(LS_PW, pw); } catch(e){}
     $('gate').hidden = true;
     $('book').hidden = false;
     renderDiary();
     renderDaychip();
-    wireAdmin();
-    if (location.hash === '#admin') setTimeout(function(){ var a=$('admin'); if(a) a.scrollIntoView(); }, 300);
     return true;
   }).catch(function(){
     if (!silent) $('gateMsg').textContent = 'That’s not it — try again (hint: one word, very patriotic).';
@@ -332,7 +272,7 @@ $('gateForm').addEventListener('submit', function(ev){
   if (saved) unlock(saved, true).then(function(ok){ if (!ok){ try{ localStorage.removeItem(LS_PW); }catch(e){} } });
 })();
 
-/* ============ viewer rendering ============ */
+/* ---- rendering ---- */
 function renderDaychip(){
   var start = new Date('2026-09-27T00:00:00');
   var now = new Date();
@@ -359,8 +299,8 @@ function renderDiary(){
     if (e.text) html += '<div class="body">' + esc(e.text) + '</div>';
     if (e.photos && e.photos.length){
       html += '<div class="shots">';
-      e.photos.forEach(function(p, i){
-        html += '<figure class="shot"><img loading="lazy" alt="' + esc(p.cap || 'trip photo') + '" src="' + p.src + '" data-eid="' + e.id + '" data-pi="' + i + '">' +
+      e.photos.forEach(function(p){
+        html += '<figure class="shot"><img loading="lazy" alt="' + esc(p.cap || 'trip photo') + '" src="' + p.src + '">' +
                 (p.cap ? '<figcaption class="cap">' + esc(p.cap) + '</figcaption>' : '') + '</figure>';
       });
       html += '</div>';
@@ -372,184 +312,11 @@ function renderDiary(){
   box.querySelectorAll('.shot img').forEach(function(img){
     img.addEventListener('click', function(){ openLightbox(img.src, img.alt); });
   });
-  renderMine();
 }
 function openLightbox(src, cap){
   var lb = document.createElement('div'); lb.id = 'lb';
   lb.innerHTML = '<img alt="' + esc(cap) + '" src="' + src + '">' + (cap && cap !== 'trip photo' ? '<div class="lbcap">' + esc(cap) + '</div>' : '');
   lb.addEventListener('click', function(){ lb.remove(); });
   document.body.appendChild(lb);
-}
-
-/* ============ admin ============ */
-function wireAdmin(){
-  var claudeUse = (window.claude && window.claude.use) ? window.claude.use.bind(window.claude) : null;
-  if (!claudeUse) return;
-  claudeUse('user').then(function(user){
-    return user ? user.canEdit() : false;
-  }).then(function(ce){
-    CAN_EDIT = !!ce;
-    if (CAN_EDIT) buildAdmin();
-  }).catch(function(){});
-}
-function dayOptions(sel){
-  var start = new Date('2026-09-27T00:00:00');
-  var todayIdx = Math.floor((new Date() - start) / 86400000) + 1;
-  return DAYS.map(function(d, i){
-    var n = i + 1;
-    return '<option value="' + n + '"' + (n === Math.min(Math.max(todayIdx,1),14) ? ' selected' : '') + '>Day ' + n + ' · ' + d[0] + ' — ' + d[1] + '</option>';
-  }).join('');
-}
-var PENDING_PHOTOS = [];
-function buildAdmin(){
-  $('adminZone').innerHTML =
-    '<section id="admin" aria-label="Admin">' +
-    '<h2>The writing desk</h2>' +
-    '<p class="hint">Only you can see this. Add an entry, then hit Publish — everyone with the link gets the new version.</p>' +
-    '<div class="frow"><label for="aDay">Which day</label><select id="aDay">' + dayOptions() + '</select></div>' +
-    '<div class="frow"><label for="aTitle">Title</label><input type="text" id="aTitle" placeholder="e.g. The Gold Room, finally"></div>' +
-    '<div class="frow"><label for="aText">Entry</label><textarea id="aText" placeholder="What happened, what it was like, who ate the biggest lobster…"></textarea></div>' +
-    '<div class="frow"><label for="aFiles">Photos (auto-shrunk to travel size)</label>' +
-    '<input type="file" id="aFiles" accept="image/*" multiple><div id="picks"></div></div>' +
-    '<div class="abtns">' +
-    '<button class="primary" id="aAdd" type="button">Add entry to the book</button>' +
-    '<button class="primary" id="aPublish" type="button" disabled>Publish — 0 unpublished</button>' +
-    '<span id="meter"></span></div>' +
-    '<div style="margin-top:18px" id="mineWrap"><label style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)">Entries in this book</label><div id="mine"></div></div>' +
-    '</section>' +
-    '<div id="adminBar" hidden><button id="adminOpen" type="button">✎ Writing desk</button></div>';
-  $('aFiles').addEventListener('change', onFiles);
-  $('aAdd').addEventListener('click', addEntry);
-  $('aPublish').addEventListener('click', publishBook);
-  renderMine();
-  updateMeter();
-}
-function onFiles(ev){
-  var files = Array.prototype.slice.call(ev.target.files || []);
-  files.forEach(function(f){
-    shrink(f).then(function(dataUrl){
-      PENDING_PHOTOS.push({src:dataUrl, cap:''});
-      renderPicks();
-    }).catch(function(){ toast('Couldn’t read ' + f.name + ' — try a JPEG/PNG export of it.'); });
-  });
-  ev.target.value = '';
-}
-function shrink(file){
-  return new Promise(function(res, rej){
-    var url = URL.createObjectURL(file);
-    var img = new Image();
-    img.onload = function(){
-      try {
-        var MAXE = 1600;
-        var w = img.naturalWidth, h = img.naturalHeight;
-        var k = Math.min(1, MAXE / Math.max(w, h));
-        var c = document.createElement('canvas');
-        c.width = Math.round(w * k); c.height = Math.round(h * k);
-        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-        URL.revokeObjectURL(url);
-        res(c.toDataURL('image/jpeg', 0.82));
-      } catch(e){ rej(e); }
-    };
-    img.onerror = function(){ URL.revokeObjectURL(url); rej(new Error('decode')); };
-    img.src = url;
-  });
-}
-function renderPicks(){
-  $('picks').innerHTML = PENDING_PHOTOS.map(function(p, i){
-    return '<div class="pick"><img alt="" src="' + p.src + '">' +
-      '<input placeholder="caption…" value="' + esc(p.cap) + '" data-i="' + i + '">' +
-      '<button type="button" data-x="' + i + '">remove</button></div>';
-  }).join('');
-  $('picks').querySelectorAll('input').forEach(function(inp){
-    inp.addEventListener('input', function(){ PENDING_PHOTOS[+inp.dataset.i].cap = inp.value; });
-  });
-  $('picks').querySelectorAll('button').forEach(function(b){
-    b.addEventListener('click', function(){ PENDING_PHOTOS.splice(+b.dataset.x, 1); renderPicks(); });
-  });
-  updateMeter();
-}
-var UNPUBLISHED = 0;
-function addEntry(){
-  var title = $('aTitle').value.trim();
-  var text = $('aText').value.trim();
-  if (!title && !text && !PENDING_PHOTOS.length){ toast('Nothing to add yet — write a line or pick a photo.'); return; }
-  STATE.entries.push({
-    id: 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
-    day: +$('aDay').value, title: title, text: text, ts: Date.now(),
-    photos: PENDING_PHOTOS.splice(0)
-  });
-  UNPUBLISHED++;
-  $('aTitle').value = ''; $('aText').value = '';
-  renderPicks(); renderDiary(); updateMeter();
-  $('aPublish').disabled = false;
-  $('aPublish').textContent = 'Publish — ' + UNPUBLISHED + ' unpublished';
-  toast('Added. It’s in your copy — hit Publish when you’re ready.');
-}
-function renderMine(){
-  var box = $('mine'); if (!box) return;
-  var es = (STATE && STATE.entries || []).slice().sort(function(a,b){ return (a.day-b.day)||(a.ts-b.ts); });
-  box.innerHTML = es.length ? es.map(function(e){
-    return '<div class="mine"><span>Day ' + e.day + ' · <b>' + esc(e.title || '(untitled)') + '</b>' +
-      (e.photos && e.photos.length ? ' · ' + e.photos.length + ' photo' + (e.photos.length>1?'s':'') : '') + '</span>' +
-      '<span><button type="button" data-del="' + e.id + '">delete</button></span></div>';
-  }).join('') : '<div class="mine"><span style="font-style:italic;color:var(--faint)">No entries yet.</span></div>';
-  box.querySelectorAll('[data-del]').forEach(function(b){
-    b.addEventListener('click', function(){
-      if (b.textContent !== 'sure?'){ b.textContent = 'sure?'; setTimeout(function(){ b.textContent='delete'; }, 2500); return; }
-      STATE.entries = STATE.entries.filter(function(e){ return e.id !== b.dataset.del; });
-      UNPUBLISHED++;
-      $('aPublish').disabled = false;
-      $('aPublish').textContent = 'Publish — ' + UNPUBLISHED + ' unpublished';
-      renderDiary(); updateMeter();
-    });
-  });
-}
-var BASE_LEN = null;
-function fetchSelf(){
-  return fetch('index.html', {cache:'no-store'}).then(function(r){
-    if (!r.ok) throw new Error('fetch');
-    return r.text();
-  });
-}
-function updateMeter(){
-  var m = $('meter'); if (!m) return;
-  var stateLen = JSON.stringify(STATE).length * 1.37 + 500;
-  var show = function(base){
-    var total = base + stateLen;
-    var mb = (total / 1048576);
-    m.innerHTML = 'Book size ≈ <b>' + mb.toFixed(1) + ' MB</b> of 15 — ' +
-      (mb > 12 ? 'getting full: keep new photos to the best ones' : 'plenty of room');
-  };
-  if (BASE_LEN !== null){ show(BASE_LEN); }
-  else fetchSelf().then(function(src){ BASE_LEN = src.length - (src.length && readBlob() ? JSON.stringify(readBlob()).length : 0); show(BASE_LEN); }).catch(function(){ show(90000); });
-}
-function publishBook(){
-  var btn = $('aPublish');
-  btn.disabled = true; btn.textContent = 'Publishing…';
-  try { sessionStorage.setItem('aa-draft', JSON.stringify({t:$('aTitle').value, x:$('aText').value})); } catch(e){}
-  var claudeUse = (window.claude && window.claude.use) ? window.claude.use.bind(window.claude) : null;
-  if (!claudeUse){ btn.textContent = 'Publish'; btn.disabled = false; toast('Publishing isn’t available in this view.'); return; }
-  Promise.all([claudeUse('artifact'), sealState(PASSWORD, STATE), fetchSelf()]).then(function(rs){
-    var artifact = rs[0], sealed = rs[1], src = rs[2];
-    if (!artifact) throw {code:'not_granted'};
-    var i = src.indexOf(STATE_OPEN);
-    var j = i >= 0 ? src.indexOf(STATE_CLOSE, i + STATE_OPEN.length) : -1;
-    if (i < 0 || j < 0) throw {code:'no_marker'};
-    var doc = src.slice(0, i + STATE_OPEN.length) + sealed + src.slice(j);
-    if (doc.length > MAX_PUBLISH) throw {code:'too_large_local'};
-    return artifact.publish(doc);
-  }).then(function(){
-    /* the view reloads to the new version; nothing more to do */
-  }).catch(function(err){
-    var code = err && err.code;
-    if (code === 'conflict'){ toast('Someone published a newer version — reloading to it…'); return; }
-    if (code === 'not_writer' || code === 'not_granted'){ toast('This view is read-only — publishing is off.'); return; }
-    if (code === 'too_large' || code === 'too_large_local'){ toast('The book is over the size limit — remove a few photos and try again.'); }
-    else if (code === 'rate_limited'){ toast('Publishing too fast — wait a moment and try once more.'); }
-    else if (code === 'no_marker'){ toast('Couldn’t find the page’s own storage block — tell Claude.'); }
-    else { toast('Publish failed (' + (code || 'unknown') + ') — your entries are still here; try again.'); }
-    btn.disabled = false;
-    btn.textContent = 'Publish — ' + UNPUBLISHED + ' unpublished';
-  });
 }
 </script>
