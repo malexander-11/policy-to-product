@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Gelasio:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap">
-<script>try{if(localStorage.getItem('aa-scrapbook-pw'))document.documentElement.classList.add('booting')}catch(e){}</script>
-<!-- Served from GitHub Pages. Diary state lives in the aa-state script block,
-     sealed with the trip password. New entries are merged into that block
-     only - keep the block and its exact opening tag intact. -->
+<meta name="robots" content="noindex, noimageindex">
+<!-- Served from GitHub Pages. Diary state lives in the aa-state script block
+     as plain JSON; photos are JPEGs in scrapbook-media/. New entries are merged
+     into that block only - keep the block and its exact opening tag intact. -->
 <style>
   :root{
     --kraft:#C4A276; --page:#FCF8EE; --map-paper:#FBF4E4;
@@ -41,30 +41,6 @@
     font:13px/1 'Special Elite','Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;
     padding:6px 9px 5px;transform:rotate(-6deg);mix-blend-mode:multiply;opacity:.9;}
   .label{font:12px/1.5 'Special Elite','Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-wrap:balance;}
-
-  /* ---------- the gate ---------- */
-  #gate{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 16px;}
-  .gate-card{position:relative;width:100%;max-width:400px;padding:40px 28px 28px;text-align:center;background:var(--page);
-    box-shadow:0 12px 30px rgba(60,40,15,.35);transform:rotate(-.6deg);}
-  .gate-card .tape{top:-11px;left:50%;margin-left:-44px;transform:rotate(-3deg);}
-  .gate-card h1{margin:0;font:700 48px/1 Caveat,cursive;color:var(--rust);}
-  .gate-card .label{margin:10px 0 0;}
-  .gate-card .intro{margin:16px 0 22px;font-style:italic;}
-  .field{display:block;text-align:left;}
-  .field .label{display:block;margin:0 0 2px;}
-  .field input{width:100%;border:0;border-bottom:2px solid var(--ink);border-radius:0;background:transparent;padding:6px 2px;
-    font:24px/1.2 Caveat,cursive;color:var(--ink);outline:none;}
-  .field input:focus{border-bottom-color:var(--rust);}
-  .remember{display:flex;align-items:center;gap:8px;margin:14px 0 0;font:13px/1.4 'Special Elite','Courier New',monospace;color:var(--faint);text-align:left;}
-  .remember input{width:16px;height:16px;margin:0;accent-color:var(--rust);}
-  .btn{margin-top:22px;border:0;background:var(--rust);color:#FCF8EE;padding:12px 22px;
-    font:14px/1 'Special Elite','Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 2px 0 rgba(60,20,0,.35);}
-  .btn:hover{background:#8C2F08;}
-  .btn:disabled{opacity:.6;cursor:default;}
-  #gateMsg{min-height:30px;margin:12px 0 0;font:22px/1.25 Caveat,cursive;color:var(--rust);}
-  .opening{display:none;margin:22px 0 6px;font:28px/1.2 Caveat,cursive;}
-  html.booting #gateForm{display:none;}
-  html.booting .opening{display:block;}
 
   /* ---------- the page ---------- */
   .page{position:relative;max-width:780px;margin:18px 10px 36px;padding:34px 20px 28px;background:var(--page);box-shadow:0 12px 34px rgba(60,40,15,.38);}
@@ -149,23 +125,7 @@
 </head>
 <body>
 
-<div id="gate">
-  <div class="gate-card">
-    <span class="tape" aria-hidden="true"></span>
-    <h1>An American Autumn</h1>
-    <p class="label">A scrapbook from the road &#183; 27 Sept &#8211; 10 Oct 2026</p>
-    <form id="gateForm">
-      <p class="intro">This one&rsquo;s for family &amp; friends.</p>
-      <label class="field" for="pw"><span class="label">Password</span><input id="pw" type="password" autocomplete="off"></label>
-      <label class="remember" for="savePw"><input type="checkbox" id="savePw" checked> Remember me on this device</label>
-      <button class="btn" id="unlockBtn" type="submit">Open the scrapbook</button>
-      <p id="gateMsg" role="alert"></p>
-    </form>
-    <p class="opening" aria-live="polite">Opening the scrapbook&hellip;</p>
-  </div>
-</div>
-
-<div id="book" hidden>
+<div id="book">
   <div class="page">
     <header class="head" id="top">
       <h1>An American Autumn</h1>
@@ -226,16 +186,12 @@
   </div>
 </div>
 
-<script id="aa-state" type="application/json">{"v":1,"salt":"Jrx+UzwcJ3ex0+hV7MDz6Q==","iv":"OUkLteTKpiYAALrh","ct":"BWJGsWWFzDgvmNV54e3/VkuxcZPhYfvnZn1K/OMpW5jWk3VrugMgJavOjdomp9YZsZhj/Q3vCt6Q3HnU0hYAzBpnDFg/ntXfy+w0ecxRDdfqOFcQzIVCbxxw37bG+mcEH67bsEVE/qe1A8LSy0AonJldp+JNGSpLHEVd6W4gv8YVff/XtH0mouQyI+gxGXf6FJMxju9/2zpvhZT5VDeheIRGBCb8acp65CJPAQKUR47H0VH6+aVpk+tzRTv1BRIby5HZK8kaMg1Quw8jdWUOIVzn0O4GLC2CTxjz+If/G8F976s6d6DG8Rwc0BjtBmSr5r8nqKMdHRRPc12OQQSBtz8t7eXgF6birzT5oO5owFJOB/Dfq2r+4pQcTCDxps/7gHEYM0MPauUgBmdL5O3GXLuJCJTXl1R5DoxUfiO2cRjInazYYYFGGx8kZ6Q6JL6UAXUHHkPJ3emoB5SZxLRAqBohQ95ry/VufByxFLptXyZfjcct2mKY0E5K3gGmZ6SLikOtlDs6MTJ6A+NHxsLp7Lea32N8O0p1yKZ3giQp5FGs7Nc9o0aCPC2U/rmKBAAd8g7vuSSIE6h4OJu1e3rM5tFVykWPo/I9YFs1QtCJ3EezUcI9WHfGFPh1P311a2Yu+JkYUgFo9dLwRGwAvfgtYv7IYO36+hTQpCDpIcvX0wFSy+4GYkYNQrbFhxfRSG7j2qyojJm0+j2rkGzFWcCIwhrJoV6RUjC5n98zIdanuyopX3Tz6ugP93hDEDD2SRo5U0elXJPA9OKo7Lpdl+mCIYM2X1+VHAcA2HeCoLJNmP7oas+y90cER410QQdVcGRkDwfMeC3UFFVKZPi5dik1oes+9ttaee52bTrJTrh82+xeC7cY7u1odiN6OKYL4/x3NHN3l8AsvHfL3q9Rudw8Fmg+DXI8DeWu7ZCnF4B1Msj9iCkRgjwguQlnY8XNCU3AZSjF6H/KLMPVcv/v6I3C3xHBzafW9i6EggHuqtM28AxvjDorbMmSFnycUlKkBwwGHKTnxnuX+InnZVywHrqukOFbWbZldsSV3LsAy6mE2fW1Tku/ZUoZbiTMzFIRv/mo5OJTmcecPe/3n/Y4bK496yNesGvmobJK5GNNp1f9GHXmCDMvCYYGJy64YxBOC4fbHL5lhZjK86HEp1HKJweRElIP9nnjDZ1ktonMmA2uMSk6ZK+l2JOVQnE/wchDXAuD3XZmQEYPmNVgypkWK0nmTCXQzZW7hwEd+6h0m326Qy/ic1pgNPGR6ZALivhrjttSNDsolma/gOA+2X59+LGNGiIQM+T98KxSPoMfjeWwvy0UPRuf5y/saHrGxzVQxJU/SIFzlI/7JGXmj2sic+UdsqjjpteY8K3lReEgzABbjgmYMPVX5zXAPKl5t9hpLH3KiIqh9sYX25WqkaMLFzg/ocs6EYxrKzYfLEpU7j/Exg9CHA4S22aBBZl8A1lT/WKopMKHi/jMA0eMs1UgPVMy3pkb9P6Rc94bhLboBFSb7RD7CuWgGPrjOM3LbmlPnNC22N3cthU53Cw+txWHAcKWZZyEfymNtrSCM35f28Sr3AupTst6CfMXXLBts/lzk37GHWmlxzPFwsHEtVcyWNn2tDO7++ToPLUznveCS7u6sInxGaahxHSW1mIUfpRagUEBLSh/Yx2WVR6UfVPBtAoM3OPzKkq4+L8CdXGJ+YDbsb/0VCJlDXdgcPuwzJTEvXdIY5FS+dPIUYFWGuNSx3r5vyfwvEcwQs9s9ClEqfJJPxQDz/Cyz136dNMSCttetOCcPJ5fCMLdaW5XkZ0umYuGIemagAiQvzXTPP+/J6LIy+EUkjVutBXb6LFHDAAkSSy1pm3SoyWuxWk0w30dcGlLVvEUyPiA0aGOqmthcLbbODVOpckDyM9D/D+9BYq6P92NldaBoSi5GfgGBS6WZdryq3edj+y4IkoqC7ULi1Ybj/LUE1w6NioXUpGrzuIqdGSzeaomEg4k1Iqno5S8p1/riYWEffvDd0w4/eK9f3OWj+cc+WEIKDgb6fnHEXpw69WNKM7YC4NF0W+7510cvEirrAHA7nQL7SAQeoo8nlQcCwwL3GrFWbC3YgcQDZWdcRy8OTztMG9W1QZa0bsGIXx3GYyutmGIWHxt44dw4M3wS6jlNvGL8RuaDuRKWxvGqwrzHNfAbyN3Msdyl2EGT8rMPH5eDxarcgg6b5KEvjw6Kbyly1nFGZrk7FCsL5/hjFJF+wwsDKBAZzdPP2LS95EDZI+Xp4lAet52i9ljq4wC5LG075vtm0qXpl6YiNjhPO1nitUFmRm9zHq7tvaSXOk/3LQCMktkOwbTqslTGKiTFBTI7zEsW1sYxHi07aT8hH7dF10G7z20P2+99xeaciwsN1vPQ9wxV3a4kIQfE8xdjOG1OBCViCvNnLCB+ra6CyZmOLzip3PQeu6VM6LcrF1DaaOKb/v4U1hOQkjfG++2YwFcgJ75hTudRoWReGjsgyCB2VCOvPVlHMJ6DnRWX4dsTuZYjpWwZlcCvDBfynJz4XEoXNun5U6736LE0uQkfabZsTH0wmbnDLliUHJZMGKbUw8Xl/MWvZPgzFlSkyP8b/9NAgph1uA8Ebab7ap1XREcteT7/N9tOdLncyD0WwVGErIvvlL1Y50Xj7ug9pmXdG+ONV2bfw3K3D4guTAxlbC8lcRgEqwV53c2iJrYTTwWsphRztvpq5k+38vrEZodx3jlVSBTM/SkU2Z5SBmfIKPslf3vSDTOxDHKW0JNUBi8YwcSbIwNnMaifpS21rocnKXPheLYHLZ7VfCZEHuo4WRtJBUSkFTdVVA7c2XJqG9lrBszShQqTOocDo7A6nIw4cr4Suxy6/u5SrIdTmAuRYhyT3jbthlwbOmUB6OH/Zsff0qRWCKFuwN+pZYZGuP/vtb+aAOpSBwtmErjgHSzZ2TJoR1xp0mVYogo7ziHW6KvNwRRZ8i9u/PJ6GhywlUBak2lYRFz1AkdRsJNree2m0gdXV8RzGCyNknrfJj7fARn0VNIpre/5isSz4R7emRAzBYJyozdwBkL0fJFEaIl0ZnsSHtbC4pIYvsoTNanGkM62UUEfQdEjjcmnFx7bnkLZX3MzDWnRljJdasApV9DJtVeUimIUg41lDBbwPDGD+gd/4CEyL/7lvQ+Se9Y359CEG94nS8/YVeCzdNeJNMgv+kZoVr5sOAusvwXPK22FbCA/qlGzGELMIPj9SmIJNlElOpx1CNMGicUi+sT6N8DuV99Qg5cANj6aP1lplWiLuPO3KYRnJsCvllaeKqMyV9fAyENGJaHOqpiNo4y45H+ndxT9XycShZRpupXSZWrPC4pzil92ROh3lXHHSg2qnErliPC1X9FCZSVSd/KGsc+YfuLmXScVOlCimuV3bAbNZj6RabZPdUMHahN2lAGOZrMy6z4bdz4TX+HV3In2T11nO2T5xKECkcdOJgqvFkPAwgttf2DQxvHa+th0tGUSbHCoFi0dQYZOBUMvBsqfoMlx81qC1wge38ILrddfw7xP7cOIFP+MymIRKw8CNJaPXcaAmPKFXvTRKwklYCyb+U0ssSUVOocoyCv1gPq2sOwbc8ctLivFDT01ssxjnumyKhqY6pzGiOXuondLroW63NirEU0gYusW79/drwMzm5KSn/oJbKta8OvvhzokB8DLt2oZFDs8MByXkBzf2C8h32ah9VQJTfN3dK9nb7vikFjI29FhHNmA4gYwWcP6eulaCDuCmBdMvt/tDjasXasGdWT5tGW/bv0C6WYjG4C+yRD/71tG9mJTl8uYwj0lYFdd7wPHeNxnNgkgiiurOEVJYYPdViPwWYenAfXIQQI+fMCLuqHrlSx5jVyIVGsM/92oh75yKCCn0Gf9mRzDwLGd/GPgITt/TRyNG0cHexEjWlb8/9mhi+9xPzOifqw+BpPFe6MyXPOdprejDYEr5WhG5ACTA/1lGacs6o/iaNi031TLw/GSMQxA3z/fWiFl3LKBM51FEgCpSDPJ7ZNJuwsiejIkGUm4dP6Y9oWO+pr60nWo3m6Gj99rHiJe1CMxY8Wb+lrda/VaxFi/OgvOpCSsHz2YyFKNslRDA+EDuRev4wouVo3IgvhaGtvZmj1nFiMlYIuMq1Gdr7mwk6RLtb3Sv/LvDvjiUe7B+zYj67he61GD0ARCa4/xiKhYEqpAGT+oFwrmZaKSaWjdLwqO4iW8KtdyyryOt5iyDRX01DxHJquALFL/XnsenfmKvMDjS71JG5hES/NarGWzwCA/A6W9Zbgr2Pu+Nah3VS/rdW2583/3WGCbzYFLx/AeNHllqADafwSHCMEMLaYHRgPLc22PeQqOsRbCv9wx78fZBoYDzCCPygA32hOjWUlAr00jzCX1/YCKRP043/XvkLv7UdvjycBj24VTm9piJmcIwfpeZCYEldlbT+eAcmvdQ+vhn0Q3i1Sx4udGmHTpMkux9VSWYA6SGk4dLCDbplOM2IgsR53QfNbufj8CqZpYaw/S3vCXrpp3e6ah0Os3HwjoCwgcVXAVCCuePJMm4wm03dQtAYOIsxPT9dwIJq6yvcNDD4+mIQ8QEYf/czMBuL+rzHrwLrpQ55iDZI1v3dTWupkeZg8vIXJI79FIfmy3m1De0wNvsuYxkt74/irwTEnIA0m/BOaEzN4RE0QMuP00j0/QTLWaYauWlTMjhIVHTeUIXvdD3VLjaNaauPM9Fv1wfikSC6/wFvL0N3tV1kTtGwvfLj5fk4Linwy+dKJBNYs5KGkw/Vv6YcpagMu/NTJ4+4HPlWMeNdM27NsdTTV46knar2RFRzSmqKhNkupqkJFHf3col4t0CKxsCKVC13SoZfau+3eIYYfqk70oaov9IXXtts81Vm0DwvoiqiD/mwZmXn0TdJ4u/5vAuzUtl1WkNVwWGv6cw/CUf6lHGUNFyPYKvnWqJD53ySxOSpnGVmp7ZTwRuRquvLQtu09PfuhcYUnPnhfYiG4Nd+Rf97wtWR8czAdQrbWtrftXiMnY2uoPJWYkds7h4/fW62tDTBNjSsA4VpW1b1olLNl/xrfH0o7+0FygWuSU4zY0OKYdghQtmZSVBIQxdUWp71NbVgWWVIkDrcBq6cGT0VPmJM30DMpyFEBtNHqYb+V2spIqExEjaAA/Uj+Shnnhxk="}</script>
+<script id="aa-state" type="application/json">{"entries":[{"id":"d1-arrival","day":1,"title":"","text":"Despite the “lost passport” episode and an hour’s delay on the tarmac, our transatlantic journey was smooth. We arrived at 9pm local time and headed straight to bed.","photos":[],"ts":1790630685200},{"id":"d2-mall-and-archives","day":2,"title":"","text":"The jet lag worked in our favour: awake at 6am and ready to carpe the diem. Drip coffee and a lox bagel made for a wonderfully American start in the lovely diner pictured below.","photos":[{"thumb":"scrapbook-media/018e0320e336e4cd-t.jpg","full":"scrapbook-media/018e0320e336e4cd-f.jpg","w":1200,"h":1600,"cap":"Lox bagels at the Gallery Café"},{"thumb":"scrapbook-media/50896a59b0034500-t.jpg","full":"scrapbook-media/50896a59b0034500-f.jpg","w":1200,"h":1600,"cap":"Two lox, clearly labelled"}],"ts":1790630685201},{"id":"d2-monuments","day":2,"title":"","text":"We then spent four hours walking around DC, taking in the Washington Monument, once the world’s tallest structure, and the Reflecting Pool, sans water.\n\nThe Lincoln Memorial was awesome in the very classic sense of the word. The Vietnam Veterans Memorial was more sobering, particularly seeing two veterans clearly moved by their visit. We continued around the MLK and FDR memorials before making our way to the Jefferson portico.","photos":[{"thumb":"scrapbook-media/bb67da6ad000aacc-t.jpg","full":"scrapbook-media/bb67da6ad000aacc-f.jpg","w":1200,"h":1600,"cap":"“I have a dream” — and the Reflecting Pool, sans water"},{"thumb":"scrapbook-media/bdac3f356449b2a6-t.jpg","full":"scrapbook-media/bdac3f356449b2a6-f.jpg","w":1600,"h":1200,"cap":"The two of us, and Abe"},{"thumb":"scrapbook-media/0f2616a67cd3746b-t.jpg","full":"scrapbook-media/0f2616a67cd3746b-f.jpg","w":1200,"h":1600,"cap":"The Washington Monument"}],"ts":1790631003639},{"id":"d2-lunch","day":2,"title":"","text":"All that walking called for a substantial lunch, and my burrito certainly delivered.","photos":[{"thumb":"scrapbook-media/f148f945d2f49860-t.jpg","full":"scrapbook-media/f148f945d2f49860-f.jpg","w":1200,"h":1600,"cap":"The burrito, with Gaviscon on standby"}],"ts":1790631003640},{"id":"d2-portrait-gallery","day":2,"title":"","text":"Refuelled, we headed to the National Portrait Gallery. It was a great way to take in the grand sweep of American history, with plenty of familiar faces alongside some interesting new perspectives.","photos":[{"thumb":"scrapbook-media/b7270300db95ac4e-t.jpg","full":"scrapbook-media/b7270300db95ac4e-f.jpg","w":1200,"h":1600,"cap":"“Out of Darkness Into Light”"},{"thumb":"scrapbook-media/0d4fa88a5bc49a53-t.jpg","full":"scrapbook-media/0d4fa88a5bc49a53-f.jpg","w":1600,"h":1200,"cap":"Nixon, by Norman Rockwell"},{"thumb":"scrapbook-media/a19108c5ab11f8b4-t.jpg","full":"scrapbook-media/a19108c5ab11f8b4-f.jpg","w":1200,"h":1600,"cap":"Richard Feynman at the blackboard"},{"thumb":"scrapbook-media/790f04f7d814500e-t.jpg","full":"scrapbook-media/790f04f7d814500e-f.jpg","w":1200,"h":1600,"cap":"Obama, by Kehinde Wiley"}],"ts":1790631003641},{"id":"d2-archives","day":2,"title":"","text":"Next we headed to the National Archive, where we survived the indignity of an exhibition about the divorce between our nations 250 years ago. The archival film footage of government messaging and patents of US inventions were fascinating.\n\nWith 25,000 steps behind us, we retreated to base for a breather before our evening plans.","photos":[{"thumb":"scrapbook-media/febcf504ad9c7fba-t.jpg","full":"scrapbook-media/febcf504ad9c7fba-f.jpg","w":1200,"h":1600,"cap":"“142 years young and going strong!” — July 4th, 1918"},{"thumb":"scrapbook-media/95547edf0a13d956-t.jpg","full":"scrapbook-media/95547edf0a13d956-f.jpg","w":1200,"h":1600,"cap":"Jack Kilby’s microchip patent, 1964"}],"ts":1790631003642}]}</script>
 <script>
 "use strict";
-var LS_PW = 'aa-scrapbook-pw';
 var PAGE_UPDATED = '2026-09-28';
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
-function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
-function lsDel(k){ try { localStorage.removeItem(k); } catch(e){} }
 function safeSrc(s){ return /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(s || '') ? s : ''; }
 var BEHAVIOR = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth';
 
@@ -294,26 +250,14 @@ var DAY_MILES = {5:305,6:200,7:165,8:60,9:45,10:50,11:50,12:120,13:105};
 /* the day each of DC + 8 states is first reached */
 var STATE_DAYS = [1,5,5,5,5,6,6,7,9];
 
-/* ---- crypto (PBKDF2 -> AES-256-GCM) ---- */
-function b64ToBuf(b64){ var bin = atob(b64), a = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return a; }
-function deriveKey(pw, saltB64){
-  return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey'])
-    .then(function(km){ return crypto.subtle.deriveKey(
-      {name:'PBKDF2', salt:b64ToBuf(saltB64), iterations:150000, hash:'SHA-256'},
-      km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']); });
-}
-var KEYS = {};
-function keyFor(pw, salt){
-  var k = pw + '|' + salt;
-  if (!KEYS[k]) KEYS[k] = deriveKey(pw, salt);
-  return KEYS[k];
-}
-function openState(pw, blob){
-  return keyFor(pw, blob.salt).then(function(key){
-    return crypto.subtle.decrypt({name:'AES-GCM', iv:b64ToBuf(blob.iv)}, key, b64ToBuf(blob.ct));
-  }).then(function(pt){ return JSON.parse(new TextDecoder().decode(pt)); });
-}
-function readBlob(){ try { return JSON.parse($('aa-state').textContent); } catch(e){ return null; } }
+/* ---- the diary: plain JSON in the aa-state block ---- */
+var STATE = {entries:[]}, HERE = null;
+try {
+  var st = JSON.parse($('aa-state').textContent);
+  if (st && Array.isArray(st.entries)) STATE = st;
+} catch(e){}
+/* a password saved back when the page had one */
+try { localStorage.removeItem('aa-scrapbook-pw'); } catch(e){}
 
 /* ---- time where we are (US Eastern) ---- */
 function etNow(){
@@ -332,48 +276,8 @@ function tripDay(){
   return Math.round((Date.UTC(t.y, t.m - 1, t.d) - Date.UTC(2026, 8, 27)) / 86400000) + 1;
 }
 
-/* ---- the gate ---- */
-var STATE = null, HERE = null, BOOTED = false, PW = null;
-function unlock(pw, remember){
-  var blob = readBlob();
-  if (!blob) return Promise.reject(new Error('no-blob'));
-  return openState(pw, blob).then(function(st){
-    STATE = (st && Array.isArray(st.entries)) ? st : {entries:[]};
-    PW = pw;
-    if (remember) lsSet(LS_PW, pw); else lsDel(LS_PW);
-    $('gate').hidden = true;
-    $('book').hidden = false;
-    document.documentElement.classList.remove('booting');
-    try { window.scrollTo(0, 0); } catch(e){}
-    boot();
-  });
-}
-$('gateForm').addEventListener('submit', function(ev){
-  ev.preventDefault();
-  var pw = $('pw').value.trim();
-  if (!pw){ $('gateMsg').textContent = 'Type the password first.'; return; }
-  var btn = $('unlockBtn');
-  btn.disabled = true;
-  unlock(pw, $('savePw').checked).catch(function(){
-    btn.disabled = false;
-    $('gateMsg').textContent = 'Not quite — hint: one very patriotic word.';
-    $('pw').select();
-  });
-});
-(function autoUnlock(){
-  var saved = lsGet(LS_PW);
-  if (!saved){ document.documentElement.classList.remove('booting'); return; }
-  document.documentElement.classList.add('booting');
-  unlock(saved, true).catch(function(){
-    lsDel(LS_PW);
-    document.documentElement.classList.remove('booting');
-  });
-})();
-
 /* ---- boot ---- */
 function boot(){
-  if (BOOTED) return;
-  BOOTED = true;
   var d = tripDay();
   HERE = (d >= 1 && d <= 14) ? DAY_STOP[d] : null;
   $('status').textContent = statusLine(d);
@@ -459,34 +363,10 @@ function entriesForDay(day){
   return (STATE.entries || []).filter(function(e){ return e.day === day; })
     .sort(function(a, b){ return (a.ts || 0) - (b.ts || 0); });
 }
-var BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
-function safePath(p){ return /^scrapbook-media\/[a-f0-9]{16}-[tf]\.bin$/.test(p || '') ? p : ''; }
+function safePath(p){ return /^scrapbook-media\/[a-f0-9]{16}-[tf]\.jpg$/.test(p || '') ? p : ''; }
 function photoOk(p){ return !!(p && (safeSrc(p.src) || (safePath(p.thumb) && safePath(p.full)))); }
-var MEDIA = {};
-function mediaUrl(path){
-  if (!MEDIA[path]){
-    MEDIA[path] = Promise.all([
-      keyFor(PW, STATE.mediaSalt),
-      fetch(path).then(function(r){ if (!r.ok) throw new Error('http ' + r.status); return r.arrayBuffer(); })
-    ]).then(function(rs){
-      var buf = new Uint8Array(rs[1]);
-      return crypto.subtle.decrypt({name:'AES-GCM', iv:buf.subarray(0, 12)}, rs[0], buf.subarray(12));
-    }).then(function(pt){ return URL.createObjectURL(new Blob([pt], {type:'image/jpeg'})); });
-    MEDIA[path].catch(function(){ delete MEDIA[path]; });
-  }
-  return MEDIA[path];
-}
-var IO = ('IntersectionObserver' in window) ? new IntersectionObserver(function(list){
-  list.forEach(function(en){ if (en.isIntersecting){ IO.unobserve(en.target); loadThumb(en.target); } });
-}, {rootMargin:'600px 0px'}) : null;
-function loadThumb(img){
-  mediaUrl(img.getAttribute('data-thumb')).then(function(u){ img.src = u; }).catch(function(){ img.classList.add('missing'); });
-}
-function hydrate(root){
-  root.querySelectorAll('img[data-thumb]').forEach(function(img){ if (IO) IO.observe(img); else loadThumb(img); });
-}
 function printHtml(p, day){
-  var src = p.thumb ? 'src="' + BLANK + '" data-thumb="' + safePath(p.thumb) + '" data-full="' + safePath(p.full) + '"'
+  var src = p.thumb ? 'loading="lazy" src="' + safePath(p.thumb) + '" data-full="' + safePath(p.full) + '"'
                     : 'src="' + safeSrc(p.src) + '"';
   return '<figure class="print"><span class="tape" aria-hidden="true"></span><img alt="' + esc(p.cap || 'Trip photo') + '" ' + src + '>' +
     '<figcaption>' + (p.cap ? esc(p.cap) : '&nbsp;') + (day ? '<span class="label">Day ' + day + ' · ' + esc(DAYS[day - 1][0]) + '</span>' : '') + '</figcaption></figure>';
@@ -511,9 +391,9 @@ function setPressed(which){
 }
 function wirePanel(){
   var body = $('panelBody');
-  hydrate(body);
   body.querySelectorAll('.print img').forEach(function(img){
-    img.addEventListener('click', function(){ openLightbox(img); });
+    img.addEventListener('error', function(){ img.classList.add('missing'); });
+    img.addEventListener('click', function(){ if (!img.classList.contains('missing')) openLightbox(img); });
   });
   body.querySelectorAll('[data-to]').forEach(function(b){
     b.addEventListener('click', function(){ selectStop(+b.getAttribute('data-to'), false); });
@@ -586,15 +466,22 @@ function openLightbox(img){
   lb.setAttribute('aria-label', cap || 'Photo');
   lb.innerHTML = '<figure class="lb-print"><img alt="' + esc(cap || 'Trip photo') + '">' + (cap ? '<figcaption>' + esc(cap) + '</figcaption>' : '') + '</figure><div class="lb-hint">tap anywhere to close</div>';
   var big = lb.querySelector('img');
-  big.src = img.src;
+  big.src = img.currentSrc || img.src;
   var full = img.getAttribute('data-full');
-  if (full) mediaUrl(full).then(function(u){ big.src = u; }).catch(function(){});
+  if (full){
+    /* show the preview at once, swap in the full-size photo when it arrives */
+    var pre = new Image();
+    pre.onload = function(){ big.src = full; };
+    pre.src = full;
+  }
   lb.addEventListener('click', function(){ lb.remove(); });
   document.body.appendChild(lb);
 }
 document.addEventListener('keydown', function(ev){
   if (ev.key === 'Escape'){ var lb = $('lb'); if (lb) lb.remove(); }
 });
+
+boot();
 </script>
 </body>
 </html>
