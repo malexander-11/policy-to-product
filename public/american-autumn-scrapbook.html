@@ -165,10 +165,10 @@
           <g id="pinLayer"></g>
           <g>
             <text class="lbl" x="86" y="591">Washington DC</text>
-            <text class="lbl" x="253" y="364" text-anchor="end">Bear Mountain</text>
-            <text class="lbl" x="413" y="256" text-anchor="end">Milford</text>
+            <text class="lbl" x="253" y="364" text-anchor="end">West Point</text>
+            <text class="lbl" x="413" y="256" text-anchor="end">Gillette Stadium</text>
             <text class="lbl" x="402" y="70" text-anchor="end">N&#160;Woodstock</text>
-            <text class="lbl" x="470" y="96">Fryeburg</text>
+            <text class="lbl" x="551" y="52" text-anchor="end">Fryeburg Fair</text>
             <text class="lbl" x="498" y="142" text-anchor="end">Portland</text>
             <text class="lbl" x="467" y="253">Boston</text>
           </g>
@@ -215,31 +215,31 @@ var DAYS = [
 /* The seven beds. x/y match the map; days = diary days filed under this stop;
    ann = where the "we're here!" note sits when this is the current stop. */
 var STOPS = [
- {name:'Washington, DC', x:66.6, y:586, hit:24, days:[1,2,3,4],
+ {name:'Washington DC', x:66.6, y:586, hit:24, days:[1,2,3,4],
   stay:'Hilton Garden Inn Downtown', when:'Sun 27 Sept – Thu 1 Oct · 4 nights',
   note:'Three blocks from the White House. Marble, museums and the machinery of the republic.',
   ann:{x:92, y:546, a:'start', ax:90, ay:564}},
- {name:'Bear Mountain, NY', x:265, y:346.9, hit:24, days:[5],
+ {name:'West Point', x:265, y:346.9, hit:24, days:[5],
   stay:'Bear Mountain Inn — Overlook Lodge', when:'Thu 1 Oct · 1 night',
   note:'Reached via Gettysburg’s battlefield and Bethlehem’s blast furnaces. A 1915 lodge above Hessian Lake — the first mile of the Appalachian Trail runs through the grounds.',
   ann:{x:283, y:316, a:'start', ax:281, ay:333}},
- {name:'Milford, MA', x:425.8, y:264.6, hit:18, days:[6],
-  stay:'Holiday Inn Express', when:'Fri 2 Oct · 1 night',
+ {name:'Gillette Stadium', x:425.8, y:264.6, hit:18, days:[6],
+  stay:'Holiday Inn Express, Milford', when:'Fri 2 Oct · 1 night',
   note:'The big Friday: West Point at ten, FDR’s Springwood at lunch, then Zach Bryan at Gillette Stadium — twenty minutes from this bed.',
   ann:{x:410, y:294, a:'end', ax:413, ay:283}},
- {name:'North Woodstock, NH', x:414.9, y:76.3, hit:22, days:[7,8],
+ {name:'North Woodstock', x:414.9, y:76.3, hit:22, days:[7,8],
   stay:'Woodstock Inn Brewery', when:'Sat 3 – Mon 5 Oct · 2 nights',
   note:'Sleeping above our own brewpub at the mouth of Franconia Notch — base for the Cog Railway, the Gold Room at Bretton Woods, and Lonesome Lake.',
   ann:{x:404, y:108, a:'end', ax:407, ay:96}},
- {name:'Fryeburg, ME', x:460.8, y:77.6, hit:22, days:[9,10],
+ {name:'Fryeburg Fair', x:460.8, y:77.6, hit:22, days:[9,10],
   stay:'The Oxford House Inn', when:'Mon 5 Oct · 1 night',
   note:'A 1913 inn fifteen minutes’ walk from the Fryeburg Fair gate — we sleep inside fair week, in from the Kancamagus and the Crawford Notch train.',
-  ann:{x:478, y:52, a:'start', ax:476, ay:66}},
- {name:'Portland, ME', x:506, y:112.4, hit:22, days:[10,11,12],
+  ann:{x:422, y:30, a:'end', ax:427, ay:38}},
+ {name:'Portland', x:506, y:112.4, hit:22, days:[10,11,12],
   stay:'Somewhere in the Old Port (to be booked)', when:'Tue 6 – Fri 9 Oct · 3 nights',
   note:'Lighthouses, lobster, and the best small food city on the route.',
   ann:{x:550, y:160, a:'end', ax:514, ay:146}},
- {name:'Boston, MA', x:455.8, y:243.2, hit:18, days:[13,14],
+ {name:'Boston', x:455.8, y:243.2, hit:18, days:[13,14],
   stay:'The Royal Sonesta', when:'Fri 9 Oct · 1 night',
   note:'In via Salem’s Haunted Happenings; then the Freedom Trail, a Bruins matinee, and the flight home.',
   ann:{x:478, y:210, a:'start', ax:476, ay:226}}
