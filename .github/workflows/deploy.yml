@@ -7,9 +7,6 @@ on:
       # Temporary: gives a live preview URL before merging to main.
       # Drop this line once the work lands on main.
       - claude/zealous-euler-hzmm5n
-      # Temporary: deploys the trip pages + scrapbook during the American
-      # Autumn trip (scrapbook syncs push here). Drop after 12 Oct 2026.
-      - claude/american-adventure-schedule-5kty95
   workflow_dispatch:
 
 # Permissions required to publish to GitHub Pages via the official actions.
