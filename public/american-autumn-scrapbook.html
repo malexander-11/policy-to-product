@@ -4,201 +4,537 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>American Autumn Scrapbook</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%81%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Comic+Neue:wght@400;700&family=Gelasio:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Silkscreen:wght@400;700&family=Special+Elite&display=swap">
+<script>try{if(localStorage.getItem('aa-scrapbook-pw'))document.documentElement.classList.add('booting')}catch(e){}</script>
 <!-- Served from GitHub Pages. Diary state lives in the aa-state script block,
-     sealed with the trip password; the sync routine splices new blobs from the
-     Writing Desk artifact into that block only. Keep the block + markers intact. -->
+     sealed with the trip password. New entries are merged into that block
+     only - keep the block and its exact opening tag intact. -->
 <style>
   :root{
-    --paper:#F6EFE3; --card:#FFFDF8; --ink:#2B2017; --faint:#8A7561;
-    --rust:#B7410E; --rust-dk:#7A2C0A; --navy:#2E4A6B; --line:#E2D4BF;
-    --tape:rgba(206,174,120,.45); --good:#4A7A4A;
+    --cork:#C0935F; --ink:#2A2118; --faint:#6E5A46;
+    --rust:#B7410E; --rust-dk:#7A2C0A; --blue-ink:#1D3F9A;
+    --paper:#FFFEF6; --rule:#A9C8E6; --margin:#E7A1A1; --manila:#EBD6A0;
     color-scheme:light;
   }
   *{box-sizing:border-box;}
   [hidden]{display:none!important;}
-  body{margin:0;background:var(--paper);color:var(--ink);
-    font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.55;}
-  .wrap{max-width:760px;margin:0 auto;padding-block:0 80px;padding-inline:18px;}
-  .hand{font-family:'Caveat','Comic Sans MS',cursive;}
-  a{color:var(--navy);}
-  button{font:inherit;cursor:pointer;}
-  :focus-visible{outline:3px solid var(--navy);outline-offset:2px;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.55 Gelasio,Georgia,'Times New Roman',serif;
+    background-color:var(--cork);
+    background-image:
+      radial-gradient(circle at 30% 40%, rgba(105,66,28,.42) 0 .9px, transparent 1.4px),
+      radial-gradient(circle at 70% 25%, rgba(255,233,195,.45) 0 .8px, transparent 1.3px),
+      radial-gradient(circle at 55% 70%, rgba(92,56,20,.32) 0 1.3px, transparent 1.9px),
+      radial-gradient(circle at 20% 80%, rgba(248,218,168,.32) 0 1.1px, transparent 1.7px);
+    background-size:6px 7px, 9px 8px, 13px 11px, 17px 15px;}
+  button{font:inherit;color:inherit;cursor:pointer;}
+  :focus-visible{outline:3px solid #1D6FE0;outline-offset:2px;}
 
-  /* ---------- gate ---------- */
-  #gate{min-height:88vh;display:flex;align-items:center;justify-content:center;padding:18px;}
-  .gate-card{background:var(--card);border:1px solid var(--line);max-width:400px;width:100%;
-    padding:34px 28px 30px;text-align:center;box-shadow:0 10px 30px rgba(70,45,20,.12);position:relative;}
-  .gate-card::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);
-    width:120px;height:26px;background:var(--tape);}
-  .gate-card h1{font-family:'Caveat',cursive;color:var(--rust-dk);font-size:44px;margin:6px 0 0;line-height:1.05;}
-  .gate-card .sub{font-style:italic;color:var(--faint);margin:6px 0 22px;font-size:14.5px;}
-  .gate-card label{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--faint);margin-bottom:6px;}
-  #pw{width:100%;padding:10px 12px;font:inherit;border:1.5px solid var(--line);
-    background:#FFFEFB;border-radius:4px;text-align:center;}
-  #unlockBtn{margin-top:12px;width:100%;padding:10px;background:var(--rust);color:#fff;border:none;
-    border-radius:4px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:.04em;}
-  #unlockBtn:hover{background:var(--rust-dk);}
-  #gateMsg{min-height:20px;font-size:13.5px;color:var(--rust-dk);margin-top:10px;font-style:italic;}
+  /* ================= the gate: an XP password dialog on a green hill ================= */
+  #gate{position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px 16px 76px;overflow:hidden;
+    background:
+      radial-gradient(ellipse 34% 9% at 20% 20%, rgba(255,255,255,.92), rgba(255,255,255,0) 70%),
+      radial-gradient(ellipse 22% 6% at 64% 11%, rgba(255,255,255,.78), rgba(255,255,255,0) 70%),
+      radial-gradient(ellipse 18% 5% at 88% 30%, rgba(255,255,255,.6), rgba(255,255,255,0) 70%),
+      radial-gradient(ellipse 75% 40% at 30% 100%, #6CC23C 0, #58AE2C 55%, #4B9E24 99%, rgba(75,158,36,0) 100%),
+      radial-gradient(ellipse 45% 22% at 100% 110%, #3E8C1D 0, #3E8C1D 99%, rgba(62,140,29,0) 100%),
+      linear-gradient(#1A5FCB 0%, #3F87E0 36%, #93C3F1 60%, #D4EAFA 72%);}
+  .xp{width:100%;max-width:392px;background:#ECE9D8;border:1px solid #0831D9;border-top:0;border-radius:9px 9px 0 0;
+    box-shadow:0 12px 32px rgba(0,10,50,.45);overflow:hidden;font-family:Tahoma,Verdana,'Segoe UI',sans-serif;color:#000;}
+  .xp-title{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 6px 6px 10px;color:#fff;
+    font:700 15px/1.2 'Trebuchet MS',Tahoma,sans-serif;text-shadow:1px 1px 0 #0A1C6E;
+    background:linear-gradient(180deg,#0A5BF0 0%,#3D8BFF 6%,#0B5DE8 14%,#0654E0 50%,#0450D4 86%,#0A3FB0 100%);}
+  .xp-x{flex:0 0 auto;width:26px;height:26px;border:1px solid #fff;border-radius:4px;color:#fff;font:700 14px/1 Tahoma,sans-serif;
+    background:radial-gradient(circle at 30% 30%,#F5A48C,#E0502A 55%,#B8341A);display:grid;place-items:center;}
+  .xp-body{padding:16px 16px 14px;font-size:14px;line-height:1.45;}
+  .xp-row{display:flex;gap:12px;align-items:flex-start;}
+  .xp-icon{font-size:34px;line-height:1;}
+  .xp-row p{margin:0 0 6px;}
+  .xp-kv{border-collapse:collapse;font-size:13.5px;}
+  .xp-kv td{padding:1px 8px 1px 0;vertical-align:top;}
+  .xp-kv td:first-child{white-space:nowrap;}
+  .xp-field{display:flex;align-items:center;gap:10px;margin:14px 0 10px;}
+  .xp-field input{flex:1;min-width:0;border:1px solid #7F9DB9;padding:7px 7px;font:15px Tahoma,Verdana,sans-serif;background:#fff;color:#000;}
+  .xp-check{display:flex;gap:8px;align-items:center;font-size:13.5px;}
+  .xp-check input{width:16px;height:16px;margin:0;}
+  #gateMsg{min-height:20px;margin-top:10px;color:#B00000;font-size:13.5px;}
+  .xp-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;}
+  .xp-btn{min-width:84px;padding:6px 12px;border:1px solid #003C74;border-radius:3px;color:#000;font:14px Tahoma,Verdana,sans-serif;
+    background:linear-gradient(#FFFFFF,#F0F0EA 50%,#E3E0D3 90%,#D6D0C5);}
+  .xp-btn:hover{box-shadow:inset 0 0 0 2px #F8B636;}
+  .xp-btn:disabled{color:#8A8A8A;}
+  .xp.shake{animation:shake .38s;}
+  .xp-boot{display:none;flex-direction:column;align-items:center;gap:30px;color:#fff;}
+  .xp-boot .logo{font:italic 700 30px/1 'Trebuchet MS',Verdana,sans-serif;letter-spacing:-.01em;}
+  .xp-boot .logo sup{color:#F28A1A;font-size:.55em;margin-left:2px;}
+  .xp-boot .logo small{display:block;font:400 13px/1.4 Tahoma,Verdana,sans-serif;font-style:normal;letter-spacing:0;color:#9DA3AD;margin-top:8px;text-align:center;}
+  .xpbar{position:relative;width:172px;height:20px;border:2px solid #B4B4B4;border-radius:4px;overflow:hidden;background:#000;}
+  .xpbar::before{content:"";position:absolute;top:3px;left:-40px;width:33px;height:10px;
+    background:linear-gradient(90deg,#3355F0 0 9px,transparent 9px 12px,#3355F0 12px 21px,transparent 21px 24px,#3355F0 24px 33px);
+    animation:xpbar 1.4s linear infinite;}
+  html.booting #gate{background:#000;}
+  html.booting .xp, html.booting .taskbar{display:none;}
+  html.booting .xp-boot{display:flex;}
+  .taskbar{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:stretch;
+    height:calc(36px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);
+    background:linear-gradient(#3168D5 0%,#4993E6 7%,#2157D7 40%,#2663E0 88%,#1941A5 100%);}
+  .start{display:flex;align-items:center;gap:6px;padding:0 20px 0 12px;border-radius:0 14px 14px 0;color:#fff;
+    font:italic 700 18px/1 'Trebuchet MS',Verdana,sans-serif;text-shadow:1px 1px 1px rgba(0,0,0,.5);
+    background:linear-gradient(#3C9E3C,#5CBA5C 12%,#379F37 50%,#2E8C2E 90%,#1F6B1F);box-shadow:inset -2px 0 3px rgba(0,0,0,.25);}
+  .tray{display:flex;align-items:center;gap:6px;padding:0 14px;color:#fff;font:13px Tahoma,Verdana,sans-serif;border-left:1px solid #1042AF;
+    background:linear-gradient(#0C59B9,#139EE9 8%,#18B5F2 12%,#139BEB 20%,#1290E8 60%,#0D8DEA 90%,#095BC9);}
+  .tray small{font-size:10.5px;opacity:.85;}
 
-  /* ---------- hero ---------- */
-  header.hero{text-align:center;padding:40px 10px 8px;}
-  .hero .over{font-family:Arial,sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
-  .hero h1{font-family:'Caveat',cursive;font-weight:700;color:var(--rust-dk);
-    font-size:clamp(46px,9vw,72px);margin:2px 0 0;line-height:1;text-wrap:balance;}
-  .hero .dates{font-style:italic;color:var(--faint);margin-top:6px;}
-  .daychip{display:inline-block;margin-top:14px;background:var(--rust);color:#fff;border-radius:999px;
-    padding:5px 16px;font-family:Arial,sans-serif;font-size:12.5px;letter-spacing:.05em;}
-  .daychip.done{background:var(--navy);}
+  /* ================= LED ticker ================= */
+  .ticker{overflow:hidden;background:#0C0C24;border-bottom:2px solid #FFD23F;box-shadow:0 2px 6px rgba(0,0,0,.4);
+    padding:7px 0 6px;color:#FFD23F;font:700 12px/1.35 Silkscreen,'Courier New',monospace;letter-spacing:.06em;
+    text-shadow:0 0 6px rgba(255,210,63,.55);}
+  .ticker-track{display:inline-flex;white-space:nowrap;animation:tick 40s linear infinite;will-change:transform;}
+  .ticker-track span{padding:0 2.5em;}
 
-  section{margin-top:44px;}
-  .shead{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--rust);padding-bottom:6px;margin-bottom:18px;flex-wrap:wrap;}
-  .shead h2{font-family:'Caveat',cursive;color:var(--rust-dk);font-size:34px;margin:0;line-height:1;}
-  .shead .note{font-size:13px;font-style:italic;color:var(--faint);}
+  /* ================= masthead ================= */
+  #book{overflow-x:clip;}
+  .page{max-width:1080px;margin:0 auto;padding:0 14px 50px;}
+  .masthead{position:relative;text-align:center;padding:14px 0 4px;}
+  .wa-wrap{position:relative;max-width:640px;margin:0 auto;}
+  .wordart{display:block;width:100%;height:auto;overflow:visible;}
+  .wordart text{font-family:Anton,Impact,'Arial Narrow',sans-serif;font-size:74px;}
+  .burstwrap{position:absolute;top:-18px;right:-1px;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.35));transform:rotate(14deg);animation:wobble 2.6s ease-in-out infinite;}
+  .burst{width:64px;height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;text-align:center;
+    color:#C8161D;background:radial-gradient(circle,#FFF76A 0,#FFD500 72%);}
+  .burst b{font:400 15px/1 Anton,Impact,sans-serif;letter-spacing:.02em;}
+  .burst span{font:700 7.5px/1.3 Silkscreen,monospace;}
+  @media (min-width:520px){.burstwrap{top:-8px;right:-4px;} .burst{width:84px;height:84px;} .burst b{font-size:19px;} .burst span{font-size:9px;}}
+  .tagline{margin:2px 0 0;font:700 19px/1.3 'Comic Neue','Comic Sans MS',cursive;color:#3B1605;text-shadow:0 1px 0 rgba(255,238,205,.55);}
+  .dateline{margin:2px 0 0;font:italic 15px/1.4 Gelasio,Georgia,serif;color:#3B2412;text-shadow:0 1px 0 rgba(255,238,205,.5);}
+  .glossnav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:14px 0 2px;}
+  .gloss{position:relative;border:1px solid var(--edge);border-radius:999px;padding:8px 13px;color:#fff;
+    font:700 13px/1 Verdana,Tahoma,'Segoe UI',sans-serif;text-shadow:0 -1px 0 rgba(0,0,0,.35);
+    background:linear-gradient(180deg,var(--hi) 0%,var(--mid) 49%,var(--lo) 50%,var(--glow) 100%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 2px 4px rgba(0,0,0,.35);}
+  .gloss:active,.gloss[aria-pressed="true"]{box-shadow:inset 0 2px 5px rgba(0,0,0,.45);transform:translateY(1px);}
+  .g-blue{--hi:#9ED6FF;--mid:#3C9CEB;--lo:#1478D4;--glow:#56B7F7;--edge:#0E5AA8;}
+  .g-green{--hi:#BDF28C;--mid:#5DBB34;--lo:#3A9B18;--glow:#79D14A;--edge:#2A7310;}
+  .g-orange{--hi:#FFD39A;--mid:#F79A2E;--lo:#E57A0C;--glow:#FFB347;--edge:#A85405;}
+  .g-pink{--hi:#FFB6DA;--mid:#E3559C;--lo:#C9307C;--glow:#F07CB8;--edge:#8F1D57;}
+  .uc{position:relative;margin:22px -8px 4px;padding:8px 0;transform:rotate(-1.4deg);text-align:center;
+    background:repeating-linear-gradient(-45deg,#FFD200 0 16px,#161616 16px 32px);box-shadow:0 4px 8px rgba(0,0,0,.35);}
+  .uc span{display:inline-block;max-width:92%;background:#161616;color:#FFD200;font:700 11px/1.4 Silkscreen,monospace;letter-spacing:.05em;padding:5px 12px;}
+  @media (max-width:519px){.uc span{font-size:9px;letter-spacing:.02em;padding:5px 9px;}}
 
-  /* ---------- map ---------- */
-  .map-post{background:var(--card);border:1px solid var(--line);padding:16px 16px 8px;position:relative;
-    transform:rotate(-.7deg);box-shadow:0 8px 22px rgba(70,45,20,.14);max-width:640px;margin:0 auto;}
-  .map-post::before,.map-post::after{content:"";position:absolute;width:96px;height:24px;background:var(--tape);}
-  .map-post::before{top:-10px;left:28px;transform:rotate(-5deg);}
-  .map-post::after{top:-10px;right:28px;transform:rotate(4deg);}
-  .map-post svg{display:block;width:100%;height:auto;}
-  .map-cap{text-align:center;font-family:'Caveat',cursive;font-size:21px;color:var(--faint);padding:6px 0 8px;}
-  .stop-hit{cursor:pointer;}
-  .stop-hit:focus-visible{outline:none;}
-  .stop-hit:focus-visible .hit-ring{stroke:var(--navy);stroke-width:2;}
-  .stop-hit.sel .dot-stay{stroke:#2E4A6B;stroke-width:3.5;}
-  .stop-hit.sel .dot-pass{stroke-width:3.5;}
-  @media (prefers-reduced-motion:no-preference){
-    .pin-pulse{transform-box:fill-box;transform-origin:center;animation:aaPulse 2.2s ease-out infinite;}
-    @keyframes aaPulse{0%{transform:scale(.5);opacity:.85}75%{transform:scale(2.1);opacity:0}100%{transform:scale(2.1);opacity:0}}
+  /* ================= layout ================= */
+  .layout{margin-top:6px;}
+  .side{display:grid;gap:34px;margin-top:46px;}
+  @media (min-width:920px){
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:38px;align-items:start;}
+    .side{margin-top:30px;}
   }
 
-  /* ---------- stop panel ---------- */
-  #stopPanel{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--rust);
-    padding:18px 18px 12px;margin-top:26px;box-shadow:0 6px 18px rgba(70,45,20,.08);}
-  #spName{font-family:'Caveat',cursive;color:var(--rust-dk);font-size:36px;margin:0;line-height:1.05;}
-  #spHere{display:inline-block;vertical-align:middle;margin-left:10px;background:var(--navy);color:#fff;
-    border-radius:999px;padding:3px 12px;font-family:Arial,sans-serif;font-size:11.5px;letter-spacing:.05em;}
-  .sp-stay{margin-top:8px;font-size:15.5px;}
-  .sp-stay b{color:var(--rust-dk);}
-  .sp-when{font-size:13.5px;font-style:italic;color:var(--faint);margin-top:2px;}
-  .sp-note{font-size:14px;color:#5A4A3A;margin-top:8px;}
-  .sp-days{margin-top:6px;}
-  .allbtn{margin-top:14px;background:none;border:1.5px solid var(--navy);color:var(--navy);border-radius:4px;
-    padding:8px 14px;font-family:Arial,sans-serif;font-size:12.5px;}
+  /* ================= pushpins ================= */
+  .pushpin{position:absolute;width:20px;height:20px;border-radius:50%;z-index:3;
+    background:radial-gradient(circle at 34% 30%,#FFB9AE 0 10%,#EE4336 32%,#B11A10 70%,#6A0B05 100%);box-shadow:3px 5px 5px rgba(0,0,0,.35);}
+  .pushpin.blue{background:radial-gradient(circle at 34% 30%,#D2E4FF 0 10%,#4A86EE 32%,#1C4FB8 70%,#0B245F 100%);}
+  .pushpin.green{background:radial-gradient(circle at 34% 30%,#D9FFC4 0 10%,#4DBB3A 32%,#23801A 70%,#0E3E08 100%);}
+  .pushpin.yellow{background:radial-gradient(circle at 34% 30%,#FFFBD0 0 10%,#F5CE1F 32%,#C09A08 70%,#5E4A02 100%);}
 
-  /* ---------- diary bits ---------- */
-  .dayhead{display:flex;align-items:baseline;gap:10px;margin:24px 0 10px;}
-  .dayhead .dn{font-family:'Caveat',cursive;font-size:29px;color:var(--rust);line-height:1;}
-  .dayhead .dt{font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);}
-  .entry{background:#FFFEFB;border:1px solid var(--line);padding:16px 18px 14px;margin-bottom:14px;
-    box-shadow:0 4px 14px rgba(70,45,20,.07);}
-  .entry h3{font-family:'Caveat',cursive;font-size:29px;color:var(--rust-dk);margin:0 0 6px;line-height:1.1;}
-  .entry .body{white-space:pre-wrap;}
-  .entry .meta{font-size:12.5px;color:var(--faint);font-style:italic;margin-top:10px;}
-  .shots{columns:2;column-gap:14px;margin-top:14px;}
-  @media (max-width:520px){.shots{columns:1;}}
-  .shot{break-inside:avoid;background:#fff;border:1px solid var(--line);padding:8px 8px 6px;margin:0 0 14px;
-    box-shadow:0 5px 14px rgba(70,45,20,.12);}
-  .shot:nth-child(odd){transform:rotate(.8deg);}
-  .shot:nth-child(even){transform:rotate(-.9deg);}
-  .shot img{display:block;width:100%;border-radius:2px;cursor:zoom-in;}
-  .shot .cap{font-family:'Caveat',cursive;font-size:19px;color:#4A3A2A;padding:5px 2px 0;line-height:1.15;}
-  .empty{background:#FFFEFB;border:1px dashed var(--line);padding:20px;text-align:center;
-    font-style:italic;color:var(--faint);margin-top:8px;}
+  /* ================= the road map ================= */
+  .mapcard{position:relative;max-width:640px;margin:32px auto 0;padding:10px;background:#FBF3E0;box-shadow:0 10px 20px rgba(40,20,5,.45);transform:rotate(-.5deg);}
+  .mapcard .pushpin.l{top:-8px;left:18px;}
+  .mapcard .pushpin.r{top:-8px;right:18px;}
+  .mapfold{position:relative;}
+  .mapfold::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(90deg,transparent calc(50% - 1px),rgba(80,50,20,.13) calc(50% - 1px),rgba(255,255,255,.55) 50%,transparent calc(50% + 1.5px)),
+      linear-gradient(180deg,transparent calc(33.3% - 1px),rgba(80,50,20,.1) calc(33.3% - 1px),rgba(255,255,255,.5) 33.3%,transparent calc(33.3% + 1.5px)),
+      linear-gradient(180deg,transparent calc(66.6% - 1px),rgba(80,50,20,.1) calc(66.6% - 1px),rgba(255,255,255,.5) 66.6%,transparent calc(66.6% + 1.5px)),
+      linear-gradient(90deg,rgba(80,50,20,.06),transparent 22%,rgba(80,50,20,.04) 50%,transparent 78%,rgba(80,50,20,.06));}
+  .mapcard svg{display:block;width:100%;height:auto;}
+  .mapcard .dymo{position:absolute;right:14px;bottom:-15px;}
+  .lbl{font:700 16px Gelasio,Georgia,serif;fill:#2A2118;paint-order:stroke;stroke:#FBF3E0;stroke-width:4px;stroke-linejoin:round;}
+  .ann{font:400 18px 'Permanent Marker',cursive;fill:#1D3F9A;}
+  .stop-hit{cursor:pointer;outline:none;}
+  .stop-hit:focus-visible circle{stroke:#1D6FE0;stroke-width:3;}
 
-  /* ---------- lightbox ---------- */
-  #lb{position:fixed;inset:0;background:rgba(25,15,8,.9);display:flex;align-items:center;justify-content:center;
-    z-index:60;padding:20px;cursor:zoom-out;}
-  #lb img{max-width:100%;max-height:88vh;border:6px solid #fff;box-shadow:0 12px 40px rgba(0,0,0,.5);}
-  #lb .lbcap{position:fixed;bottom:18px;left:0;right:0;text-align:center;color:#F6EFE3;
-    font-family:'Caveat',cursive;font-size:24px;}
+  /* ================= the stop panel ================= */
+  #panel{margin-top:40px;scroll-margin-top:12px;}
+  .panel-label{text-align:center;margin:6px 0 4px;}
+  .dymo{display:inline-block;background:linear-gradient(#303030,#121212);color:#F4F4F4;
+    font:900 14px/1 'Arial Black',Arial,Helvetica,sans-serif;letter-spacing:.22em;text-transform:uppercase;padding:8px 13px 8px 17px;border-radius:3px;
+    text-shadow:0 1px 0 rgba(255,255,255,.35),0 -1px 0 rgba(0,0,0,.9);box-shadow:0 2px 4px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.14);transform:rotate(-1.6deg);}
+  .dymo.red{background:linear-gradient(#D62830,#A5141B);}
+  .tagrow{display:flex;flex-wrap:wrap;gap:22px 20px;align-items:flex-start;padding-left:24px;}
+  .tagwrap{position:relative;flex:1 1 270px;min-width:0;filter:drop-shadow(0 4px 5px rgba(40,20,5,.4));transform:rotate(-1.2deg);}
+  .tagwrap::before,.tagwrap::after{content:"";position:absolute;top:50%;height:2px;border-radius:2px;background:#8A6A3A;transform-origin:100% 50%;z-index:2;}
+  .tagwrap::before{left:-22px;width:46px;transform:rotate(-22deg);}
+  .tagwrap::after{left:-26px;width:50px;transform:rotate(-7deg);}
+  .luggage{position:relative;background-color:var(--manila);
+    background-image:linear-gradient(170deg,rgba(255,255,255,.35),rgba(255,255,255,0) 40%,rgba(120,80,20,.06)),repeating-linear-gradient(90deg,rgba(130,95,40,.05) 0 1px,transparent 1px 4px);
+    clip-path:polygon(34px 0,100% 0,100% 100%,34px 100%,0 calc(100% - 30px),0 30px);padding:14px 16px 16px 56px;}
+  .eyelet{position:absolute;left:12px;top:50%;width:24px;height:24px;margin-top:-12px;border-radius:50%;
+    background:radial-gradient(circle,#B38652 0 5px,#6D5A2A 5.5px,#F2DC8E 6.5px,#C9A035 8.5px,#8A6816 11px,#C9A035 12px);}
+  .tag-brand{font:700 10px/1.3 Arial,Helvetica,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A3312;border-bottom:2px solid #8A3312;padding-bottom:5px;margin-bottom:9px;}
+  .luggage dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 10px;align-items:baseline;}
+  .luggage dt{font:700 10px/1.2 Arial,Helvetica,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#6B4A1E;white-space:nowrap;}
+  .luggage dd{margin:0;font:19px/1.25 'Permanent Marker','Comic Neue',cursive;color:var(--blue-ink);border-bottom:1px solid rgba(110,80,30,.45);padding-bottom:3px;overflow-wrap:anywhere;}
+  .rubber{position:absolute;right:10px;top:7px;transform:rotate(-9deg);border:3px double rgba(196,22,28,.85);color:rgba(196,22,28,.9);
+    font:400 14px/1 Anton,Impact,sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:5px 8px;border-radius:6px;mix-blend-mode:multiply;}
+  .postit{position:relative;flex:0 1 230px;min-width:190px;margin:4px 0 0 auto;background:linear-gradient(180deg,#FFF7A8,#FFEE6B);color:#3A3318;
+    font:16px/1.45 'Comic Neue','Comic Sans MS',cursive;padding:18px 16px 20px;transform:rotate(2.2deg);
+    box-shadow:0 10px 12px -8px rgba(40,20,5,.55),0 1px 1px rgba(0,0,0,.12);}
+  .postit::before{content:"";position:absolute;top:-9px;left:50%;width:70px;height:20px;margin-left:-35px;background:rgba(255,255,255,.55);transform:rotate(-4deg);box-shadow:0 1px 2px rgba(0,0,0,.1);}
+  .postit-solo{margin:26px auto;max-width:300px;transform:rotate(-1.5deg);}
+  .sheet{position:relative;margin:30px 0;padding:14px 18px 22px 60px;background-color:var(--paper);
+    background-image:linear-gradient(90deg,transparent 46px,var(--margin) 46px 48px,transparent 48px),
+      repeating-linear-gradient(180deg,transparent 0 27px,var(--rule) 27px 28px);
+    background-position:0 0,0 9px;line-height:28px;box-shadow:0 4px 10px rgba(40,20,5,.35);transform:rotate(-.35deg);}
+  .sheet:nth-child(even){transform:rotate(.45deg);}
+  .sheet::before{content:"";position:absolute;left:12px;top:0;bottom:0;width:20px;
+    background:radial-gradient(circle at 10px 10px,#A67A48 0 6.5px,rgba(60,35,10,.35) 7px,transparent 8px) 0 34px/20px 170px repeat-y;}
+  .sheet-head{margin:0;font:400 22px/28px 'Permanent Marker',cursive;color:var(--rust);}
+  .sheet-head .st{color:var(--ink);font:italic 16px/28px Gelasio,Georgia,serif;}
+  .entry h4{margin:28px 0 0;font:400 20px/28px 'Permanent Marker',cursive;color:var(--blue-ink);}
+  .entry .body{margin:0;white-space:pre-wrap;}
+  .pencil{margin:28px 0 0;font:17px/28px 'Comic Neue','Comic Sans MS',cursive;color:#7C7C7C;}
+  .newbadge{display:inline-block;vertical-align:3px;margin-left:6px;background:#FF1F1F;color:#FFF200;font:700 11px/1.3 Silkscreen,monospace;
+    padding:1px 5px;border:1px solid #900;transform:rotate(-6deg);animation:blink 1.1s steps(1) infinite;}
+  .shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px;margin:24px 0 8px;}
+  .polaroid{position:relative;margin:0;background:#fff;padding:7px 7px 6px;box-shadow:0 5px 12px rgba(30,15,0,.35);transform:rotate(var(--r,0deg));}
+  .polaroid::before{content:"";position:absolute;top:-10px;left:50%;width:58px;height:20px;margin-left:-29px;background:rgba(250,244,205,.72);transform:rotate(-4deg);box-shadow:0 1px 2px rgba(0,0,0,.12);}
+  .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;background:#1C1C1C;cursor:zoom-in;}
+  .polaroid figcaption{font:15px/1.25 'Permanent Marker',cursive;color:#23325E;padding:8px 2px 2px;min-height:26px;}
+  .pday{display:block;font:12px/1.3 'Comic Neue',cursive;color:#7A6A5A;}
+  .wall{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 18px;margin-top:30px;}
+  @media (min-width:640px){.wall{grid-template-columns:repeat(3,minmax(0,1fr));}}
+  .webring{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:460px;margin:34px auto 0;padding:6px;
+    background:#C0C0C0;border:2px solid;border-color:#FFF #808080 #808080 #FFF;box-shadow:1px 1px 0 #000;}
+  .ringname{flex:1;text-align:center;font:700 13px/1.3 'Comic Neue','Comic Sans MS',cursive;color:#000;}
+  .ringname span{display:block;font:11px/1.3 Tahoma,Verdana,sans-serif;font-weight:400;color:#333;}
+  .w98btn{background:#C0C0C0;border:2px solid;border-color:#FFF #808080 #808080 #FFF;box-shadow:1px 1px 0 #000;
+    font:700 13px Tahoma,Verdana,sans-serif;color:#000;padding:7px 10px;white-space:nowrap;}
+  .w98btn:active{border-color:#808080 #FFF #FFF #808080;box-shadow:none;transform:translate(1px,1px);}
 
-  footer{margin-top:70px;text-align:center;font-style:italic;color:var(--faint);font-size:13.5px;}
-  footer .hand{font-size:22px;color:var(--rust-dk);}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+  /* ================= sidebar widgets ================= */
+  .widget{position:relative;}
+  .metal{padding:22px 16px 14px;border-radius:12px;text-align:center;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.14) 0 1px,rgba(0,0,0,.045) 1px 2px,rgba(255,255,255,0) 2px 4px),linear-gradient(180deg,#E6E9ED,#BCC1C8 55%,#D3D7DC);
+    border:1px solid #7C838C;box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.18),0 6px 14px rgba(40,20,5,.4);}
+  .screw{position:absolute;width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF,#A2A8B0 55%,#5F656D);box-shadow:0 1px 0 rgba(255,255,255,.7);}
+  .screw::after{content:"";position:absolute;left:1.5px;right:1.5px;top:5px;height:1.2px;background:rgba(40,40,40,.7);transform:rotate(38deg);}
+  .s1{top:7px;left:7px;}.s2{top:7px;right:7px;}.s3{bottom:7px;left:7px;}.s4{bottom:7px;right:7px;}
+  .engrave{margin:0;font:700 11px/1.2 Arial,Helvetica,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#4B525C;text-shadow:0 1px 0 rgba(255,255,255,.85);}
+  .odo{display:inline-flex;gap:3px;padding:6px;margin:10px 0 8px;background:linear-gradient(#0E0E0E,#2A2A2A);border-radius:6px;box-shadow:inset 0 2px 6px #000,0 1px 0 rgba(255,255,255,.7);}
+  .wheel{position:relative;width:24px;height:36px;overflow:hidden;border-radius:2px;background:linear-gradient(#141414,#3A3A3A 50%,#141414);}
+  .wheel::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,0) 32%,rgba(0,0,0,0) 68%,rgba(0,0,0,.6));pointer-events:none;}
+  .strip{display:flex;flex-direction:column;transition:transform 1.6s cubic-bezier(.15,.85,.25,1);}
+  .strip span{display:block;height:36px;text-align:center;font:400 24px/36px Anton,Impact,sans-serif;color:#F2F2F2;}
+  .wheel.tenth{margin-left:4px;background:linear-gradient(#D8D8D8,#FFF 50%,#D8D8D8);}
+  .wheel.tenth span{color:#B3121A;}
+  .odo-cap{margin:0;font:italic 13px/1.4 Gelasio,Georgia,serif;color:#3E444C;}
+  .album{padding:20px 14px 18px;background-color:#F7EFDC;background-image:linear-gradient(rgba(120,90,50,.07) 1px,transparent 1px);background-size:100% 20px;box-shadow:0 6px 14px rgba(40,20,5,.4);}
+  .album::before,.album::after{content:"";position:absolute;width:20px;height:20px;}
+  .album::before{top:6px;left:6px;background:linear-gradient(135deg,#2B2B2B 50%,transparent 50%);}
+  .album::after{bottom:6px;right:6px;background:linear-gradient(315deg,#2B2B2B 50%,transparent 50%);}
+  .album h3{margin:0;text-align:center;font:400 20px/1.2 'Special Elite','Courier New',monospace;color:#3A2A18;}
+  .album .count{display:block;text-align:center;font:13px/1.4 'Comic Neue',cursive;color:#6B5A48;margin:2px 0 14px;}
+  .stampgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 12px;}
+  .stampwrap{position:relative;filter:drop-shadow(1px 2px 1.5px rgba(0,0,0,.3));transform:rotate(var(--tilt,0deg));}
+  .stamp{--r:3.5px;aspect-ratio:4/5;background:#FFFDF6;padding:calc(var(--r) * 2);
+    -webkit-mask:radial-gradient(var(--r),#0000 97%,#000) round calc(var(--r) * -1.5) calc(var(--r) * -1.5)/calc(var(--r) * 3) calc(var(--r) * 3),linear-gradient(#000 0 0) no-repeat 50%/calc(100% - var(--r) * 3) calc(100% - var(--r) * 3);
+    mask:radial-gradient(var(--r),#0000 97%,#000) round calc(var(--r) * -1.5) calc(var(--r) * -1.5)/calc(var(--r) * 3) calc(var(--r) * 3),linear-gradient(#000 0 0) no-repeat 50%/calc(100% - var(--r) * 3) calc(100% - var(--r) * 3);}
+  .stamp-in{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:var(--c);color:#fff;padding:4px 3px 5px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35);}
+  .usa{align-self:flex-start;font:700 8px/1 Silkscreen,monospace;letter-spacing:.04em;}
+  .em{font-size:26px;line-height:1;}
+  .sn{font:400 10px/1.05 Anton,Impact,sans-serif;letter-spacing:.04em;text-align:center;}
+  .postmark{position:absolute;top:-4px;right:-16px;width:62px;color:rgba(25,25,45,.62);transform:rotate(-12deg);pointer-events:none;}
+  .slot{aspect-ratio:4/5;border:2px dashed rgba(100,75,40,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:rgba(100,75,40,.65);font:12px/1.2 'Special Elite','Courier New',monospace;}
+  .slot b{font:400 18px/1 Anton,Impact,sans-serif;color:rgba(100,75,40,.45);}
+  .leather{padding:24px 20px 22px 30px;border-radius:5px 14px 14px 5px;color:#F4DFB2;scroll-margin-top:20px;
+    background-color:#6A2410;background-image:radial-gradient(circle at 25% 35%,rgba(255,255,255,.06) 0 .8px,transparent 1.2px),radial-gradient(circle at 70% 65%,rgba(0,0,0,.22) 0 1px,transparent 1.5px),linear-gradient(135deg,#83341A,#5A1D0A 70%);
+    background-size:5px 5px,7px 6px,100% 100%;box-shadow:inset 8px 0 10px -6px rgba(0,0,0,.65),0 7px 16px rgba(40,20,5,.45);}
+  .leather::before{content:"";position:absolute;inset:9px 9px 9px 17px;border:2px dashed rgba(236,200,132,.8);border-radius:4px 9px 9px 4px;pointer-events:none;}
+  .leather h3{margin:0 0 12px;text-align:center;font:400 28px/1.1 Anton,Impact,sans-serif;letter-spacing:.16em;text-transform:uppercase;
+    background:linear-gradient(180deg,#FFF3C4 0%,#E7B955 48%,#A8741C 52%,#F1D284 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 rgba(0,0,0,.65));}
+  .leather .label{position:relative;background:#FBF4E2;color:#3A2A18;font:16px/1.45 'Comic Neue','Comic Sans MS',cursive;padding:12px 14px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.45);}
+  .leather .label p{margin:0 0 8px;}
+  .leather .label p:last-child{margin:0;}
+  .w98{background:#C0C0C0;border:2px solid;border-color:#FFF #808080 #808080 #FFF;box-shadow:1px 1px 0 #000;padding:3px;}
+  .w98-title{background:linear-gradient(90deg,#000080,#1084D0);color:#fff;font:700 12px/1.2 Tahoma,Verdana,sans-serif;padding:5px 7px;}
+  .lcd{margin:10px 8px 6px;padding:10px 6px 8px;background:#000;color:#39FF14;font:700 28px/1 Silkscreen,'Courier New',monospace;letter-spacing:.14em;text-align:center;
+    border:2px solid;border-color:#808080 #FFF #FFF #808080;text-shadow:0 0 6px rgba(57,255,20,.75);}
+  .w98-cap{margin:0;font:12px/1.4 Tahoma,Verdana,sans-serif;text-align:center;padding:0 8px 8px;color:#000;}
+
+  /* ================= footer ================= */
+  .foot{margin-top:56px;text-align:center;color:#2E1A0A;}
+  .badges{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:660px;margin:0 auto 18px;}
+  .b88{width:88px;height:31px;display:inline-flex;align-items:stretch;border:1px solid #000;overflow:hidden;box-shadow:1px 1px 0 rgba(0,0,0,.35);
+    font:400 8px/1.1 Silkscreen,'Courier New',monospace;text-transform:uppercase;}
+  .b88 i{font-style:normal;flex:0 0 29px;display:flex;align-items:center;justify-content:center;font-size:15px;border-right:1px solid #000;}
+  .b88 b{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:400;padding:0 2px;}
+  .b-ns i{background:#008080;color:#fff;font:700 18px/1 Georgia,serif;}
+  .b-ns b{background:#000;color:#fff;}
+  .b-np i{background:#fff;}
+  .b-np b{background:#E4E4E4;color:#000;}
+  .b-tea i{background:#6B3A1E;}
+  .b-tea b{background:#F3E0C0;color:#3A1A08;}
+  .b-w2 b{background:linear-gradient(#FFC46B,#F7931E 50%,#E07B00 51%,#F9A441);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.35);}
+  .b-zb i{background:#B7410E;color:#fff;}
+  .b-zb b{background:#1A1A1A;color:#FFD23F;}
+  .b-rt i{background:#FFF3E0;}
+  .b-rt b{background:#fff;color:#C8161D;}
+  .b-800 b{background:#000080;color:#fff;}
+  .foot .small{max-width:560px;margin:0 auto;font:13.5px/1.65 'Comic Neue','Comic Sans MS',cursive;text-shadow:0 1px 0 rgba(255,236,200,.45);}
+  .foot a{color:#0000EE;}
+  .foot a:visited{color:#551A8B;}
+
+  /* ================= lightbox ================= */
+  #lb{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;background:rgba(20,12,4,.88);cursor:zoom-out;}
+  .lb-pol{margin:0;background:#fff;padding:10px 10px 12px;max-width:min(92vw,720px);box-shadow:0 14px 40px rgba(0,0,0,.6);transform:rotate(-1deg);}
+  .lb-pol img{display:block;max-width:100%;max-height:72vh;margin:0 auto;}
+  .lb-pol figcaption{font:20px/1.25 'Permanent Marker',cursive;color:#23325E;text-align:center;padding-top:10px;}
+  .lb-hint{font:11px/1 Silkscreen,monospace;color:#E8D9C0;}
+
+  /* ================= motion ================= */
+  @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes blink{50%{visibility:hidden;}}
+  @keyframes pulse{0%{transform:scale(.6);opacity:.9;}70%{transform:scale(2.1);opacity:0;}100%{transform:scale(2.1);opacity:0;}}
+  @keyframes wobble{0%,100%{transform:rotate(14deg) scale(1);}50%{transform:rotate(9deg) scale(1.06);}}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-9px);}40%{transform:translateX(8px);}60%{transform:translateX(-6px);}80%{transform:translateX(4px);}}
+  @keyframes xpbar{to{left:178px;}}
+  .pin-pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.2s ease-out infinite;}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important;}
+    .ticker-track{display:block;white-space:normal;padding:0 1em;}
+    #tick2{display:none;}
+  }
 </style>
 </head>
 <body>
 
 <div id="gate">
-  <div class="gate-card">
-    <div class="hand" style="font-size:20px;color:var(--faint)">you've found</div>
-    <h1>An American Autumn</h1>
-    <div class="sub">Washington DC &#8594; Boston &#183; 27 Sept &#8211; 10 Oct 2026<br>a scrapbook, kept as we go</div>
-    <form id="gateForm">
-      <label for="pw">the password</label>
-      <input id="pw" type="password" autocomplete="off" placeholder="ask Matt&hellip;">
-      <button id="unlockBtn" type="submit">Open the scrapbook</button>
+  <div class="xp" id="xpDialog" role="dialog" aria-labelledby="xpTitle">
+    <div class="xp-title"><span id="xpTitle">Enter Network Password</span><button class="xp-x" type="button" id="xpClose" aria-label="Cancel">&#10005;</button></div>
+    <form class="xp-body" id="gateForm">
+      <div class="xp-row">
+        <div class="xp-icon" aria-hidden="true">&#128273;</div>
+        <div>
+          <p>Please type the password for this site.</p>
+          <table class="xp-kv"><tr><td>Site:</td><td>American Autumn Road Trip Homepage</td></tr><tr><td>Realm:</td><td>Family &amp; Friends Only</td></tr></table>
+        </div>
+      </div>
+      <label class="xp-field" for="pw"><span>Password</span><input id="pw" type="password" autocomplete="off"></label>
+      <label class="xp-check" for="savePw"><input type="checkbox" id="savePw" checked> Save this password in your password list</label>
+      <div id="gateMsg" role="alert"></div>
+      <div class="xp-btns"><button type="submit" class="xp-btn" id="unlockBtn">OK</button><button type="button" class="xp-btn" id="cancelBtn">Cancel</button></div>
     </form>
-    <div id="gateMsg"></div>
+  </div>
+  <div class="xp-boot" aria-live="polite">
+    <div class="logo">American Autumn<sup>XP</sup><small>Loading your scrapbook&hellip;</small></div>
+    <div class="xpbar" role="progressbar" aria-label="Loading"></div>
+  </div>
+  <div class="taskbar" aria-hidden="true">
+    <span class="start">&#127809; start</span>
+    <span class="tray" title="The time where we are"><span id="trayClock"></span><small>ET</small></span>
   </div>
 </div>
 
-<main class="wrap" id="book" hidden>
-  <header class="hero">
-    <div class="over">Two Brits &#183; one car &#183; fourteen days</div>
-    <h1>An American Autumn</h1>
-    <div class="dates">Washington DC &#8594; Boston &#183; 27 September &#8211; 10 October 2026 &#183; ~900 miles</div>
-    <div class="daychip" id="daychip"></div>
-  </header>
+<div id="book" hidden>
+  <div id="top"></div>
+  <div class="ticker" role="marquee" aria-label="News ticker"><div class="ticker-track" id="tickTrack"><span id="tick1"></span><span id="tick2" aria-hidden="true"></span></div></div>
 
-  <section aria-label="Route map">
-    <div class="map-post">
-      <svg id="mapSvg" viewBox="0 0 560 640" role="img" aria-label="Route map from Washington DC to Boston. Tap a stop we stayed at to read its diary.">
-        <rect x="6" y="6" width="548" height="628" fill="#FBF6EC" stroke="#E4D6C0"/>
-        <g fill="#D9C9AE" font-family="Georgia,serif" font-style="italic" font-size="17" opacity=".8">
-          <text x="96" y="472">Pennsylvania</text>
-          <text x="212" y="268">New York</text>
-          <text x="316" y="150">New Hampshire</text>
-          <text x="498" y="170">Maine</text>
-          <text x="330" y="332">Massachusetts</text>
-        </g>
-        <polyline points="66.6,586 54,494.2 175.3,416.2 190.4,380.7 265,346.9 267,339.3 268.6,301.7 425.8,264.6 442.2,269.5 438.1,105.3 414.9,76.3 430.8,54 451.1,74.3 460.8,77.6 506,112.4 466.2,226.9 455.8,243.2"
-          fill="none" stroke="#B7410E" stroke-width="3" stroke-dasharray="7 5" stroke-linejoin="round" stroke-linecap="round"/>
-        <g id="pinLayer"></g>
-        <g id="dotLayer"></g>
-        <g font-family="Georgia,serif" font-size="16" font-weight="bold" fill="#2B2017" pointer-events="none">
-          <text x="80" y="591">Washington DC</text>
-          <text x="253" y="364" text-anchor="end">Bear Mountain</text>
-          <text x="413" y="256" text-anchor="end">Milford</text>
-          <text x="402" y="70" text-anchor="end">N&nbsp;Woodstock</text>
-          <text x="470" y="95">Fryeburg</text>
-          <text x="506" y="133" text-anchor="middle">Portland</text>
-          <text x="467" y="252">Boston</text>
-        </g>
-        <g font-family="Georgia,serif" font-style="italic" font-size="13" fill="#8A7561" pointer-events="none">
-          <text x="36" y="620">&#9992; in: Washington, 27 Sept</text>
-          <text x="524" y="620" text-anchor="end">out: Boston, 10 Oct &#9992;</text>
-        </g>
-        <g id="hitLayer"></g>
-      </svg>
-      <div class="map-cap">fourteen days, seven beds, one dashed rust line &#8594; the pulsing pin is us, now</div>
+  <div class="page">
+    <header class="masthead">
+      <div class="wa-wrap">
+        <svg class="wordart" viewBox="0 0 600 168" role="img" aria-label="American Autumn">
+          <defs>
+            <path id="waArc" d="M28,150 Q300,8 572,150"/>
+            <linearGradient id="waGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFF3A0"/>
+              <stop offset=".35" stop-color="#FFC21F"/>
+              <stop offset=".7" stop-color="#F26A10"/>
+              <stop offset="1" stop-color="#C21D10"/>
+            </linearGradient>
+          </defs>
+          <text transform="translate(6,7)" fill="#2E0C02"><textPath href="#waArc" startOffset="50%" text-anchor="middle" textLength="528" lengthAdjust="spacingAndGlyphs">AMERICAN AUTUMN</textPath></text>
+          <text transform="translate(5,5.8)" fill="#4A1405"><textPath href="#waArc" startOffset="50%" text-anchor="middle" textLength="528" lengthAdjust="spacingAndGlyphs">AMERICAN AUTUMN</textPath></text>
+          <text transform="translate(4,4.6)" fill="#5E1A06"><textPath href="#waArc" startOffset="50%" text-anchor="middle" textLength="528" lengthAdjust="spacingAndGlyphs">AMERICAN AUTUMN</textPath></text>
+          <text transform="translate(3,3.4)" fill="#6E2008"><textPath href="#waArc" startOffset="50%" text-anchor="middle" textLength="528" lengthAdjust="spacingAndGlyphs">AMERICAN AUTUMN</textPath></text>
+          <text transform="translate(2,2.2)" fill="#7E260A"><textPath href="#waArc" startOffset="50%" text-anchor="middle" textLength="528" lengthAdjust="spacingAndGlyphs">AMERICAN AUTUMN</textPath></text>
+          <text transform="translate(1,1.1)" fill="#8E2C0C"><textPath href="#waArc" startOffset="50%" text-anchor="middle" textLength="528" lengthAdjust="spacingAndGlyphs">AMERICAN AUTUMN</textPath></text>
+          <text fill="url(#waGrad)" stroke="#4A1204" stroke-width="2" paint-order="stroke" stroke-linejoin="round"><textPath href="#waArc" startOffset="50%" text-anchor="middle" textLength="528" lengthAdjust="spacingAndGlyphs">AMERICAN AUTUMN</textPath></text>
+        </svg>
+        <div class="burstwrap" aria-hidden="true"><div class="burst" id="burst"><b id="b1"></b><span id="b2"></span><span id="b3"></span></div></div>
+      </div>
+      <p class="tagline">~*~ Matt &amp; co.&rsquo;s Road Trip Homepage ~*~</p>
+      <p class="dateline">Washington DC &#8594; Boston &#183; 27 September &#8211; 10 October 2026</p>
+      <nav class="glossnav" aria-label="Sections">
+        <button type="button" class="gloss g-blue" data-go="map">Map</button>
+        <button type="button" class="gloss g-green" data-go="diary" aria-pressed="false">Diary</button>
+        <button type="button" class="gloss g-orange" data-go="photos" aria-pressed="false">Photos</button>
+        <button type="button" class="gloss g-pink" data-go="guestbook">Guestbook</button>
+      </nav>
+    </header>
+
+    <div class="uc" id="uc"><span id="ucText"></span></div>
+
+    <div class="layout">
+      <main>
+        <section class="mapcard" id="mapCard" aria-label="Route map">
+          <span class="pushpin l" aria-hidden="true"></span><span class="pushpin blue r" aria-hidden="true"></span>
+          <div class="mapfold">
+            <svg id="mapSvg" viewBox="0 0 560 640" role="group" aria-label="Road map from Washington DC to Boston. Each pin is a night's stay; tap one to read its diary.">
+              <defs>
+                <radialGradient id="pinRed" cx="35%" cy="30%" r="72%">
+                  <stop offset="0" stop-color="#FFB3A8"/><stop offset=".25" stop-color="#F0483A"/><stop offset=".7" stop-color="#B51C12"/><stop offset="1" stop-color="#6E0C06"/>
+                </radialGradient>
+                <radialGradient id="pinBlue" cx="35%" cy="30%" r="72%">
+                  <stop offset="0" stop-color="#D2E4FF"/><stop offset=".25" stop-color="#4A86EE"/><stop offset=".7" stop-color="#1C4FB8"/><stop offset="1" stop-color="#0B245F"/>
+                </radialGradient>
+                <marker id="arrowHead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10" fill="none" stroke="#1D3F9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </marker>
+              </defs>
+              <rect x="6" y="6" width="548" height="628" fill="#FBF3E0" stroke="#D9C7A4"/>
+              <!-- water -->
+              <g fill="#CFE2F1" stroke="#8FB5D6" stroke-width="1" stroke-linejoin="round">
+                <polygon points="553,90 536,105 510,114 511,123 500,128 495,143 485,163 479,172 473,186 471,198 485,213 468,227 458,243 467,251 482,283 490,302 518,300 521,286 513,276 509,273 516,270 527,283 531,305 527,313 505,316 488,321 470,317 450,327 440,331 428,342 388,344 335,349 317,361 294,372 267,398 264,432 264,455 259,483 237,541 206,584 193,599 195,634 553,634"/>
+                <polygon points="163,512 172,535 192,560 206,584 193,599 178,570 165,540 158,522"/>
+                <polygon points="128,522 133,535 124,560 122,590 118,634 106,634 104,600 100,580 104,560 112,545 122,530"/>
+              </g>
+              <polygon points="272,402 300,390 340,377 379,363 404,369 400,375 360,385 320,396 285,406 272,410" fill="#FBF3E0" stroke="#8FB5D6" stroke-width="1" stroke-linejoin="round"/>
+              <g fill="#C9B690" font-family="Gelasio,Georgia,serif" font-style="italic" font-size="17">
+                <text x="96" y="472">Pennsylvania</text>
+                <text x="190" y="262">New York</text>
+                <text x="306" y="196">New Hampshire</text>
+                <text x="505" y="26">Maine</text>
+                <text x="300" y="228">Massachusetts</text>
+              </g>
+              <text x="430" y="482" text-anchor="middle" fill="#6E98C0" font-family="Gelasio,Georgia,serif" font-style="italic" font-size="15" letter-spacing="5">ATLANTIC OCEAN</text>
+              <!-- cartouche + compass -->
+              <g font-family="'Special Elite','Courier New',monospace" fill="#3A2A18">
+                <rect x="16" y="16" width="190" height="112" fill="#FFF9EA" stroke="#7A2C0A" stroke-width="1.5"/>
+                <rect x="20" y="20" width="182" height="104" fill="none" stroke="#7A2C0A" stroke-width=".7"/>
+                <text x="111" y="42" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="18" fill="#7A2C0A" letter-spacing="1">AMERICAN AUTUMN</text>
+                <text x="111" y="57" text-anchor="middle" font-size="9.5">OFFICIAL ROAD MAP &#183; 2026 ED.</text>
+                <line x1="30" y1="74" x2="52" y2="74" stroke="#FFE600" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+                <line x1="30" y1="74" x2="52" y2="74" stroke="#B7410E" stroke-width="1.6" stroke-dasharray="5 4"/>
+                <text x="60" y="78" font-size="11">our route</text>
+                <circle cx="41" cy="93" r="5.5" fill="url(#pinRed)"/>
+                <text x="60" y="97" font-size="11">a bed for the night</text>
+                <circle cx="41" cy="112" r="5.5" fill="url(#pinBlue)"/>
+                <text x="60" y="116" font-size="11">where we are now</text>
+              </g>
+              <g transform="translate(46,168)">
+                <circle r="18" fill="#FFF9EA" stroke="#7A2C0A" stroke-width="1.2"/>
+                <polygon points="0,-14 5,0 0,-3 -5,0" fill="#7A2C0A"/>
+                <polygon points="0,14 5,0 0,3 -5,0" fill="#E9D7B5" stroke="#7A2C0A" stroke-width=".8"/>
+                <text y="-21" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="12" fill="#7A2C0A">N</text>
+              </g>
+              <!-- the route: highlighter, then pen -->
+              <polyline points="66.6,586 54,494.2 175.3,416.2 190.4,380.7 265,346.9 267,339.3 268.6,301.7 425.8,264.6 442.2,269.5 438.1,105.3 414.9,76.3 430.8,54 451.1,74.3 460.8,77.6 506,112.4 488,146 470,176 466.2,226.9 455.8,243.2"
+                fill="none" stroke="#FFE600" stroke-opacity=".6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="66.6,586 54,494.2 175.3,416.2 190.4,380.7 265,346.9 267,339.3 268.6,301.7 425.8,264.6 442.2,269.5 438.1,105.3 414.9,76.3 430.8,54 451.1,74.3 460.8,77.6 506,112.4 488,146 470,176 466.2,226.9 455.8,243.2"
+                fill="none" stroke="#B7410E" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- interstate shields -->
+              <g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="7.5" text-anchor="middle">
+                <g transform="translate(228,386)"><path d="M-10,-9 Q-5,-12 0,-9 Q5,-12 10,-9 L10,-1 Q10,8 0,11 Q-10,8 -10,-1 Z" fill="#fff"/><path d="M-8.5,-7.6 Q-4.2,-10 0,-7.6 Q4.2,-10 8.5,-7.6 L8.5,-3.5 L-8.5,-3.5 Z" fill="#C8102E"/><path d="M-8.5,-3.5 L8.5,-3.5 L8.5,-1 Q8.5,6.5 0,9.5 Q-8.5,6.5 -8.5,-1 Z" fill="#003F87"/><text y="4.5" fill="#fff">80</text></g>
+                <g transform="translate(347,300)"><path d="M-10,-9 Q-5,-12 0,-9 Q5,-12 10,-9 L10,-1 Q10,8 0,11 Q-10,8 -10,-1 Z" fill="#fff"/><path d="M-8.5,-7.6 Q-4.2,-10 0,-7.6 Q4.2,-10 8.5,-7.6 L8.5,-3.5 L-8.5,-3.5 Z" fill="#C8102E"/><path d="M-8.5,-3.5 L8.5,-3.5 L8.5,-1 Q8.5,6.5 0,9.5 Q-8.5,6.5 -8.5,-1 Z" fill="#003F87"/><text y="4.5" fill="#fff">84</text></g>
+                <g transform="translate(454,160)"><path d="M-10,-9 Q-5,-12 0,-9 Q5,-12 10,-9 L10,-1 Q10,8 0,11 Q-10,8 -10,-1 Z" fill="#fff"/><path d="M-8.5,-7.6 Q-4.2,-10 0,-7.6 Q4.2,-10 8.5,-7.6 L8.5,-3.5 L-8.5,-3.5 Z" fill="#C8102E"/><path d="M-8.5,-3.5 L8.5,-3.5 L8.5,-1 Q8.5,6.5 0,9.5 Q-8.5,6.5 -8.5,-1 Z" fill="#003F87"/><text y="4.5" fill="#fff">93</text></g>
+                <g transform="translate(454,207)"><path d="M-10,-9 Q-5,-12 0,-9 Q5,-12 10,-9 L10,-1 Q10,8 0,11 Q-10,8 -10,-1 Z" fill="#fff"/><path d="M-8.5,-7.6 Q-4.2,-10 0,-7.6 Q4.2,-10 8.5,-7.6 L8.5,-3.5 L-8.5,-3.5 Z" fill="#C8102E"/><path d="M-8.5,-3.5 L8.5,-3.5 L8.5,-1 Q8.5,6.5 0,9.5 Q-8.5,6.5 -8.5,-1 Z" fill="#003F87"/><text y="4.5" fill="#fff">95</text></g>
+              </g>
+              <g id="ringLayer"></g>
+              <g id="pinLayer"></g>
+              <g class="lbl-group">
+                <text class="lbl" x="80" y="591">Washington DC</text>
+                <text class="lbl" x="253" y="364" text-anchor="end">Bear Mountain</text>
+                <text class="lbl" x="413" y="256" text-anchor="end">Milford</text>
+                <text class="lbl" x="402" y="70" text-anchor="end">N&#160;Woodstock</text>
+                <text class="lbl" x="470" y="96">Fryeburg</text>
+                <text class="lbl" x="498" y="142" text-anchor="end">Portland</text>
+                <text class="lbl" x="467" y="253">Boston</text>
+              </g>
+              <g font-family="Gelasio,Georgia,serif" font-style="italic" font-size="12.5">
+                <text x="22" y="624" fill="#6E5A46">&#9992; in: Washington, 27 Sept</text>
+                <text x="540" y="624" text-anchor="end" fill="#3F6F9A">out: Boston, 10 Oct &#9992;</text>
+              </g>
+              <g id="annLayer"></g>
+              <g id="selLayer"></g>
+              <g id="hitLayer"></g>
+            </svg>
+          </div>
+          <span class="dymo red">Tap a pin!</span>
+        </section>
+
+        <section id="panel" aria-live="polite"><div id="panelBody"></div></section>
+      </main>
+
+      <aside class="side" aria-label="Widgets">
+        <div class="widget metal">
+          <span class="screw s1"></span><span class="screw s2"></span><span class="screw s3"></span><span class="screw s4"></span>
+          <p class="engrave">Odometer</p>
+          <div class="odo" id="odoWheels" role="img"></div>
+          <p class="odo-cap" id="odoCap"></p>
+        </div>
+
+        <div class="widget album">
+          <h3>States collected</h3>
+          <span class="count" id="stampCount"></span>
+          <div class="stampgrid" id="stampGrid"></div>
+        </div>
+
+        <div class="widget leather" id="guestbook">
+          <h3>Guestbook</h3>
+          <div class="label">
+            <p><b>Sign our guestbook!</b></p>
+            <p>OK, it&rsquo;s broken. (Honestly, it never worked in 2006 either.)</p>
+            <p>Send your comments to Matt the old-fashioned way &#8212; text him! &#9786;</p>
+          </div>
+        </div>
+
+        <div class="widget w98">
+          <div class="w98-title">Visitor counter</div>
+          <div class="lcd" id="lcd">000000</div>
+          <p class="w98-cap">times <b>you&rsquo;ve</b> visited, on this device</p>
+        </div>
+      </aside>
     </div>
-  </section>
 
-  <section id="stopPanel" aria-live="polite">
-    <h2 id="spName"></h2>
-    <div class="sp-stay" id="spStay"></div>
-    <div class="sp-when" id="spWhen"></div>
-    <div class="sp-note" id="spNote"></div>
-    <div class="sp-days" id="spDays"></div>
-    <button class="allbtn" id="allBtn" type="button">Show the whole diary</button>
-  </section>
-
-  <footer><span class="hand">&#8212; Matt &amp; co.</span><br>An American Autumn &#183; 2026</footer>
-</main>
+    <footer class="foot">
+      <div class="badges">
+        <span class="b88 b-ns"><i>N</i><b>Netscape<br>now!</b></span>
+        <span class="b88 b-np"><i>&#128221;</i><b>Made with<br>Notepad</b></span>
+        <span class="b88 b-tea"><i>&#9749;</i><b>Powered<br>by tea</b></span>
+        <span class="b88 b-w2"><b>Web 2.0 &#183; beta</b></span>
+        <span class="b88 b-zb"><i>&#9835;</i><b>Zach Bryan<br>fan club</b></span>
+        <span class="b88 b-rt"><i>&#127809;</i><b>I &#9829;<br>road trips</b></span>
+        <span class="b88 b-800"><b>Best viewed<br>800x600</b></span>
+      </div>
+      <p class="small">&copy; 2026 Matt &amp; co. &#183; All rights reserved (we think)<br>
+        This site is best viewed in Netscape Navigator 4.0 at 800&times;600 with the sound up.<br>
+        Last updated: <span id="lastUpd"></span><br>
+        &#127809; A proud member of the American Autumn Webring &#127809;<br>
+        <a href="#top">&#9650; back to top</a></p>
+    </footer>
+  </div>
+</div>
 
 <script id="aa-state" type="application/json">{"v":1,"salt":"Y0OJIZczSYtrpe/fCE4KVw==","iv":"iiWCjrnysMSXJfag","ct":"2gH0lAykju4HzKRNL9fQjPp8Q95kWrUraD/IkTm4"}</script>
 <script>
 "use strict";
-/* Viewer page. Entries are written on the private Writing Desk and folded
-   into the aa-state block above by the sync routine. */
 var LS_PW = 'aa-scrapbook-pw';
+var LS_VISITS = 'aa-scrapbook-visits';
+var PAGE_UPDATED = '2026-09-28';
 var $ = function(id){ return document.getElementById(id); };
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+function lsDel(k){ try { localStorage.removeItem(k); } catch(e){} }
+function safeSrc(s){ return /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(s || '') ? s : ''; }
+var REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var BEHAVIOR = REDUCED ? 'auto' : 'smooth';
 
 var DAYS = [
   ['Sun 27 Sept','Wheels down in Washington'],
@@ -217,35 +553,56 @@ var DAYS = [
   ['Sat 10 Oct','Revolution, hockey, home']
 ];
 
-/* The seven beds of the trip. x/y match the SVG; days = trip days whose diary belongs here. */
+/* The seven beds. x/y match the map; days = diary days filed under this stop;
+   ann = where the "we're here!" scribble sits when this is the current stop. */
 var STOPS = [
- {name:'Washington DC', x:66.6, y:586, days:[1,2,3,4],
+ {name:'Washington, DC', x:66.6, y:586, hit:24, days:[1,2,3,4],
   stay:'Hilton Garden Inn Downtown', when:'Sun 27 Sept – Thu 1 Oct · 4 nights',
-  note:'Three blocks from the White House. Marble, museums and the machinery of the republic.'},
- {name:'Bear Mountain, NY', x:265, y:346.9, days:[5],
+  note:'Three blocks from the White House. Marble, museums and the machinery of the republic.',
+  ann:{x:92, y:546, a:'start', ax:90, ay:562}},
+ {name:'Bear Mountain, NY', x:265, y:346.9, hit:24, days:[5],
   stay:'Bear Mountain Inn — Overlook Lodge', when:'Thu 1 Oct · 1 night',
-  note:'Reached via Gettysburg’s battlefield and Bethlehem’s blast furnaces. A 1915 lodge above Hessian Lake — the first mile of the Appalachian Trail runs through the grounds.'},
- {name:'Milford, MA', x:425.8, y:264.6, days:[6],
+  note:'Reached via Gettysburg’s battlefield and Bethlehem’s blast furnaces. A 1915 lodge above Hessian Lake — the first mile of the Appalachian Trail runs through the grounds.',
+  ann:{x:283, y:318, a:'start', ax:281, ay:332}},
+ {name:'Milford, MA', x:425.8, y:264.6, hit:18, days:[6],
   stay:'Holiday Inn Express', when:'Fri 2 Oct · 1 night',
-  note:'The big Friday: West Point at ten, FDR’s Springwood at lunch, then ZACH BRYAN at Gillette Stadium — twenty minutes from this bed.'},
- {name:'North Woodstock, NH', x:414.9, y:76.3, days:[7,8],
+  note:'The big Friday: West Point at ten, FDR’s Springwood at lunch, then ZACH BRYAN at Gillette Stadium — twenty minutes from this bed.',
+  ann:{x:410, y:292, a:'end', ax:413, ay:283}},
+ {name:'North Woodstock, NH', x:414.9, y:76.3, hit:22, days:[7,8],
   stay:'Woodstock Inn Brewery', when:'Sat 3 – Mon 5 Oct · 2 nights',
-  note:'Sleeping above our own brewpub at the mouth of Franconia Notch — base for the Cog Railway, the Gold Room at Bretton Woods, and Lonesome Lake.'},
- {name:'Fryeburg, ME', x:460.8, y:77.6, days:[9,10],
+  note:'Sleeping above our own brewpub at the mouth of Franconia Notch — base for the Cog Railway, the Gold Room at Bretton Woods, and Lonesome Lake.',
+  ann:{x:404, y:106, a:'end', ax:407, ay:96}},
+ {name:'Fryeburg, ME', x:460.8, y:77.6, hit:22, days:[9,10],
   stay:'The Oxford House Inn', when:'Mon 5 Oct · 1 night',
-  note:'A 1913 inn fifteen minutes’ walk from the Fryeburg Fair gate — we sleep inside fair week, in from the Kancamagus and the Crawford Notch train.'},
- {name:'Portland, ME', x:506, y:112.4, days:[10,11,12],
-  stay:'Portland — the Old Port', when:'Tue 6 – Fri 9 Oct · 3 nights',
-  note:'Lighthouses, lobster, and the best small food city on the route.'},
- {name:'Boston', x:455.8, y:243.2, days:[13,14],
+  note:'A 1913 inn fifteen minutes’ walk from the Fryeburg Fair gate — we sleep inside fair week, in from the Kancamagus and the Crawford Notch train.',
+  ann:{x:478, y:50, a:'start', ax:476, ay:64}},
+ {name:'Portland, ME', x:506, y:112.4, hit:22, days:[10,11,12],
+  stay:'Somewhere in the Old Port (TBC!)', when:'Tue 6 – Fri 9 Oct · 3 nights',
+  note:'Lighthouses, lobster, and the best small food city on the route.',
+  ann:{x:550, y:158, a:'end', ax:514, ay:146}},
+ {name:'Boston, MA', x:455.8, y:243.2, hit:18, days:[13,14],
   stay:'The Royal Sonesta', when:'Fri 9 Oct · 1 night',
-  note:'In via Salem’s Haunted Happenings; then the Freedom Trail, a Bruins matinee, and the flight home.'}
+  note:'In via Salem’s Haunted Happenings; then the Freedom Trail, a Bruins matinee, and the flight home.',
+  ann:{x:478, y:212, a:'start', ax:476, ay:226}}
 ];
-/* trip day (1-14) -> index into STOPS for the "we are here" pin */
 var DAY_STOP = {1:0,2:0,3:0,4:0,5:1,6:2,7:3,8:3,9:4,10:5,11:5,12:5,13:6,14:6};
+/* planned road miles per trip day (no car in DC; returned in Boston on day 13) */
+var DAY_MILES = {5:305,6:200,7:165,8:60,9:45,10:50,11:50,12:120,13:105};
+var STATES = [
+  {nm:'D.C.', ab:'DC', day:1, em:'🏛️', c:'#1F3A6B', pm:'SEP 27'},
+  {nm:'Maryland', ab:'MD', day:5, em:'🦀', c:'#B3261E', pm:'OCT 1'},
+  {nm:'Pennsylvania', ab:'PA', day:5, em:'🔔', c:'#2C5AA0', pm:'OCT 1'},
+  {nm:'New Jersey', ab:'NJ', day:5, em:'🍅', c:'#2E7D32', pm:'OCT 1'},
+  {nm:'New York', ab:'NY', day:5, em:'🗽', c:'#00796B', pm:'OCT 1'},
+  {nm:'Connecticut', ab:'CT', day:6, em:'⚓', c:'#5E35B1', pm:'OCT 2'},
+  {nm:'Massachusetts', ab:'MA', day:6, em:'☕', c:'#8D3B12', pm:'OCT 2'},
+  {nm:'New Hampshire', ab:'NH', day:7, em:'🏔️', c:'#1B5E20', pm:'OCT 3'},
+  {nm:'Maine', ab:'ME', day:9, em:'🦞', c:'#0D47A1', pm:'OCT 5'}
+];
+var ROT = ['-2.4deg','1.8deg','-1deg','2.6deg','-1.8deg','1.1deg'];
 
 /* ---- crypto (PBKDF2 -> AES-256-GCM) ---- */
-function b64ToBuf(b64){ var bin = atob(b64), a = new Uint8Array(bin.length); for (var i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return a; }
+function b64ToBuf(b64){ var bin = atob(b64), a = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return a; }
 function deriveKey(pw, saltB64){
   return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey'])
     .then(function(km){ return crypto.subtle.deriveKey(
@@ -257,181 +614,396 @@ function openState(pw, blob){
     return crypto.subtle.decrypt({name:'AES-GCM', iv:b64ToBuf(blob.iv)}, key, b64ToBuf(blob.ct));
   }).then(function(pt){ return JSON.parse(new TextDecoder().decode(pt)); });
 }
-function readBlob(){
-  try { return JSON.parse($('aa-state').textContent); } catch(e){ return null; }
-}
+function readBlob(){ try { return JSON.parse($('aa-state').textContent); } catch(e){ return null; } }
 
-/* ---- day helpers (trip runs on US Eastern time) ---- */
-function tripDayToday(){
+/* ---- time where we are (US Eastern) ---- */
+function etNow(){
+  var p = {};
   try {
-    var now = new Intl.DateTimeFormat('en-CA', {timeZone:'America/New_York'}).format(new Date());
-    var d = Math.floor((new Date(now + 'T12:00:00Z') - new Date('2026-09-27T12:00:00Z')) / 86400000) + 1;
-    return d;
+    new Intl.DateTimeFormat('en-US', {timeZone:'America/New_York', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hourCycle:'h23'})
+      .formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
+    return {y:+p.year, m:+p.month, d:+p.day, h:+p.hour % 24, min:+p.minute};
   } catch(e){
-    return Math.floor((new Date() - new Date('2026-09-27T00:00:00')) / 86400000) + 1;
+    var n = new Date();
+    return {y:n.getFullYear(), m:n.getMonth() + 1, d:n.getDate(), h:n.getHours(), min:n.getMinutes()};
   }
 }
+function tripDay(){
+  var t = etNow();
+  return Math.round((Date.UTC(t.y, t.m - 1, t.d) - Date.UTC(2026, 8, 27)) / 86400000) + 1;
+}
+function trayTick(){
+  var c = $('trayClock'); if (!c) return;
+  try { c.textContent = new Intl.DateTimeFormat('en-US', {timeZone:'America/New_York', hour:'numeric', minute:'2-digit'}).format(new Date()); }
+  catch(e){ c.textContent = ''; }
+}
+trayTick();
+var trayTimer = setInterval(trayTick, 15000);
 
-/* ---- unlock ---- */
-var STATE = null;
-function unlock(pw, silent){
+/* ---- the gate ---- */
+var STATE = null, HERE = null, BOOTED = false;
+function unlock(pw, remember){
   var blob = readBlob();
-  if (!blob){ if (!silent) $('gateMsg').textContent = 'This copy of the page is missing its contents.'; return Promise.resolve(false); }
+  if (!blob) return Promise.reject(new Error('no-blob'));
   return openState(pw, blob).then(function(st){
-    STATE = st && st.entries ? st : {entries:[]};
-    try { localStorage.setItem(LS_PW, pw); } catch(e){}
+    STATE = (st && Array.isArray(st.entries)) ? st : {entries:[]};
+    if (remember) lsSet(LS_PW, pw); else lsDel(LS_PW);
+    clearInterval(trayTimer);
     $('gate').hidden = true;
     $('book').hidden = false;
+    document.documentElement.classList.remove('booting');
+    try { window.scrollTo(0, 0); } catch(e){}
     boot();
-    return true;
-  }).catch(function(){
-    if (!silent) $('gateMsg').textContent = 'That’s not it — try again (hint: one word, very patriotic).';
-    return false;
   });
+}
+function shake(){
+  var d = $('xpDialog');
+  d.classList.remove('shake'); void d.offsetWidth; d.classList.add('shake');
 }
 $('gateForm').addEventListener('submit', function(ev){
   ev.preventDefault();
   var pw = $('pw').value.trim();
-  if (pw) unlock(pw, false);
+  if (!pw){ $('gateMsg').textContent = 'Type the password first, then press OK.'; return; }
+  var btn = $('unlockBtn');
+  btn.disabled = true; btn.textContent = 'Checking…';
+  unlock(pw, $('savePw').checked).catch(function(){
+    btn.disabled = false; btn.textContent = 'OK';
+    $('gateMsg').textContent = 'Access denied. Hint: one word, very patriotic.';
+    $('pw').select();
+    shake();
+  });
 });
+function cancelGate(){
+  $('pw').value = '';
+  $('gateMsg').textContent = 'No password, no postcards. Ask Matt — it’s one very patriotic word.';
+}
+$('cancelBtn').addEventListener('click', cancelGate);
+$('xpClose').addEventListener('click', cancelGate);
 (function autoUnlock(){
-  var saved = null;
-  try { saved = localStorage.getItem(LS_PW); } catch(e){}
-  if (saved) unlock(saved, true).then(function(ok){ if (!ok){ try{ localStorage.removeItem(LS_PW); }catch(e){} } });
+  var saved = lsGet(LS_PW);
+  if (!saved){ document.documentElement.classList.remove('booting'); return; }
+  document.documentElement.classList.add('booting');
+  unlock(saved, true).catch(function(){
+    lsDel(LS_PW);
+    document.documentElement.classList.remove('booting');
+  });
 })();
 
-/* ---- boot after unlock ---- */
-var SELECTED = null;   /* stop index, or 'all' */
-var HERE = null;       /* stop index of the current pin, or null */
+/* ---- boot the homepage ---- */
 function boot(){
-  var d = tripDayToday();
-  var chip = $('daychip');
-  if (d < 1){ chip.textContent = 'Departure soon — ' + Math.abs(d-1) + ' days to go'; HERE = null; }
-  else if (d > 14){ chip.textContent = 'The trip that was · 27 Sept – 10 Oct 2026'; chip.className = 'daychip done'; HERE = 6; }
-  else { chip.textContent = 'Live · Day ' + d + ' of 14 — ' + DAYS[d-1][1]; HERE = DAY_STOP[d]; }
-  drawStops();
-  drawPin();
-  selectStop(HERE !== null ? HERE : 0, true);
+  if (BOOTED) return;
+  BOOTED = true;
+  var d = tripDay();
+  HERE = (d >= 1 && d <= 14) ? DAY_STOP[d] : null;
+  buildTicker(d);
+  buildBurst(d);
+  buildTape(d);
+  drawMap();
+  selectStop(HERE !== null ? HERE : (d > 14 ? 6 : 0), true);
+  renderOdometer();
+  setInterval(renderOdometer, 60000);
+  renderStamps(d);
+  renderCounter();
+  renderUpdated();
+  wireNav();
 }
 
-/* ---- map ---- */
+function nextStopAfter(i){ return i + 1 < STOPS.length ? STOPS[i + 1] : null; }
+function tickerText(d){
+  var items = ['WELCOME TO OUR ROAD TRIP HOMEPAGE!!!'];
+  if (d < 1){
+    items.push('WE LEAVE IN ' + (1 - d) + ' DAY' + (1 - d === 1 ? '' : 'S'));
+  } else if (d <= 14){
+    var s = STOPS[DAY_STOP[d]], nx = nextStopAfter(DAY_STOP[d]);
+    items.push('DAY ' + d + ' OF 14: ' + DAYS[d - 1][1].toUpperCase());
+    items.push(d === 14 ? 'TONIGHT: THE OVERNIGHT FLIGHT HOME' : 'TONIGHT: ' + s.stay.toUpperCase());
+    items.push(nx ? 'NEXT STOP: ' + nx.name.toUpperCase() + ' (' + DAYS[nx.days[0] - 1][0].toUpperCase() + ')' : 'NEXT STOP: HOME');
+    if (d < 6) items.push('ZACH BRYAN IN ' + (6 - d) + ' DAY' + (6 - d === 1 ? '' : 'S') + '!!!');
+    if (d === 6) items.push('ZACH BRYAN TONIGHT!!!!!!');
+  } else {
+    items.push('THE TRIP IS OVER :( THANKS FOR VISITING');
+  }
+  items.push('CAR STEREO: ZACH BRYAN ON REPEAT');
+  items.push('SIGN OUR GUESTBOOK!');
+  return items.join('   ★   ');
+}
+function buildTicker(d){
+  var t = tickerText(d);
+  $('tick1').textContent = t;
+  $('tick2').textContent = t;
+  $('tickTrack').style.animationDuration = Math.max(22, Math.round(t.length * 0.24)) + 's';
+}
+function buildBurst(d){
+  var pts = [];
+  for (var k = 0; k < 40; k++){
+    var ang = (k * 9 - 90) * Math.PI / 180, r = k % 2 ? 41 : 50;
+    pts.push((50 + r * Math.cos(ang)).toFixed(1) + '% ' + (50 + r * Math.sin(ang)).toFixed(1) + '%');
+  }
+  var b = $('burst');
+  b.style.clipPath = 'polygon(' + pts.join(',') + ')';
+  b.style.webkitClipPath = b.style.clipPath;
+  var t = d < 1 ? ['SOON!', (1 - d) + ' DAYS', 'TO GO'] : d > 14 ? ['THE END', '14 DAYS', 'OF FUN'] : ['LIVE!', 'DAY ' + d, 'OF 14'];
+  $('b1').textContent = t[0]; $('b2').textContent = t[1]; $('b3').textContent = t[2];
+}
+function buildTape(d){
+  if (d > 14){ $('uc').hidden = true; return; }
+  $('ucText').textContent = d < 1
+    ? '🚧 UNDER CONSTRUCTION ★ THE TRIP STARTS SOON 🚧'
+    : '🚧 UNDER CONSTRUCTION ★ NEW ENTRIES NIGHTLY 🚧';
+}
+
+/* ---- the map ---- */
 var SVGNS = 'http://www.w3.org/2000/svg';
-function el(tag, attrs){
+function el(tag, attrs, text){
   var n = document.createElementNS(SVGNS, tag);
   for (var k in attrs) n.setAttribute(k, attrs[k]);
+  if (text != null) n.textContent = text;
   return n;
 }
-function drawStops(){
-  var dots = $('dotLayer'), hits = $('hitLayer');
-  dots.innerHTML = ''; hits.innerHTML = '';
+function drawMap(){
+  var ring = $('ringLayer'), pins = $('pinLayer'), ann = $('annLayer'), hits = $('hitLayer');
+  ring.textContent = ''; pins.textContent = ''; ann.textContent = ''; hits.textContent = '';
   STOPS.forEach(function(s, i){
-    var dot = el('circle', {cx:s.x, cy:s.y, r:7.5, fill:'#B7410E', stroke:'#FFFDF8', 'stroke-width':2.5, 'class':'dot-stay'});
-    var g = document.createElementNS(SVGNS, 'g');
-    g.setAttribute('class', 'stop-hit');
-    g.setAttribute('data-si', i);
-    g.setAttribute('tabindex', '0');
-    g.setAttribute('role', 'button');
-    var title = document.createElementNS(SVGNS, 'title');
-    title.textContent = s.name + ' — tap for the diary';
-    g.appendChild(title);
-    g.appendChild(el('circle', {cx:s.x, cy:s.y, r:16, fill:'transparent', 'class':'hit-ring', stroke:'none'}));
-    g.appendChild(dot);
+    var here = i === HERE;
+    pins.appendChild(el('ellipse', {cx:s.x + 3, cy:s.y + 4, rx:7.5, ry:5, fill:'rgba(40,20,5,.3)'}));
+    pins.appendChild(el('circle', {cx:s.x, cy:s.y, r:8.5, fill: here ? 'url(#pinBlue)' : 'url(#pinRed)', stroke:'rgba(0,0,0,.35)', 'stroke-width':.8}));
+    pins.appendChild(el('circle', {cx:s.x - 2.8, cy:s.y - 3, r:2.3, fill:'#fff', opacity:.75}));
+    var g = el('g', {'class':'stop-hit', 'data-si':i, tabindex:0, role:'button', 'aria-label':s.name + ': ' + s.stay});
+    g.appendChild(el('title', {}, s.name + ' — tap for the diary'));
+    g.appendChild(el('circle', {cx:s.x, cy:s.y, r:s.hit, fill:'transparent'}));
     g.addEventListener('click', function(){ selectStop(i, false); });
     g.addEventListener('keydown', function(ev){ if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); selectStop(i, false); } });
     hits.appendChild(g);
   });
-}
-function drawPin(){
-  var layer = $('pinLayer');
-  layer.innerHTML = '';
   if (HERE === null) return;
-  var s = STOPS[HERE];
-  layer.appendChild(el('circle', {cx:s.x, cy:s.y, r:11, fill:'none', stroke:'#2E4A6B', 'stroke-width':2.5, 'class':'pin-pulse'}));
-  layer.appendChild(el('circle', {cx:s.x, cy:s.y, r:10, fill:'none', stroke:'#2E4A6B', 'stroke-width':1.5, opacity:'.55'}));
+  var s = STOPS[HERE], a = s.ann;
+  ring.appendChild(el('circle', {cx:s.x, cy:s.y, r:13, fill:'none', stroke:'#2E6BE0', 'stroke-width':3, 'class':'pin-pulse'}));
+  var t = el('text', {x:a.x, y:a.y, 'text-anchor':a.a, 'class':'ann'});
+  t.appendChild(el('tspan', {x:a.x, dy:0}, 'we’re'));
+  t.appendChild(el('tspan', {x:a.x, dy:17}, 'here!'));
+  ann.appendChild(t);
+  var dx = s.x - a.ax, dy = s.y - a.ay, L = Math.sqrt(dx * dx + dy * dy) || 1;
+  var ex = s.x - dx / L * 12, ey = s.y - dy / L * 12;
+  var mx = (a.ax + ex) / 2 - dy / L * 7, my = (a.ay + ey) / 2 + dx / L * 7;
+  ann.appendChild(el('path', {d:'M' + a.ax + ',' + a.ay + ' Q' + mx.toFixed(1) + ',' + my.toFixed(1) + ' ' + ex.toFixed(1) + ',' + ey.toFixed(1),
+    fill:'none', stroke:'#1D3F9A', 'stroke-width':2, 'stroke-linecap':'round', 'marker-end':'url(#arrowHead)'}));
+}
+function markSelected(i){
+  var sl = $('selLayer');
+  sl.textContent = '';
+  if (i == null) return;
+  var s = STOPS[i];
+  sl.appendChild(el('ellipse', {cx:s.x, cy:s.y, rx:17, ry:13.5, transform:'rotate(-14 ' + s.x + ' ' + s.y + ')', fill:'none', stroke:'#1D3F9A', 'stroke-width':2.2}));
+  sl.appendChild(el('ellipse', {cx:s.x + 1, cy:s.y - .5, rx:15.5, ry:14.5, transform:'rotate(12 ' + s.x + ' ' + s.y + ')', fill:'none', stroke:'#1D3F9A', 'stroke-width':1.3, opacity:.7}));
 }
 
-/* ---- stop panel ---- */
+/* ---- the panel under the map ---- */
 function entriesForDay(day){
   return (STATE.entries || []).filter(function(e){ return e.day === day; })
-    .sort(function(a,b){ return a.ts - b.ts; });
+    .sort(function(a, b){ return (a.ts || 0) - (b.ts || 0); });
+}
+function polaroid(p, i, day){
+  var cap = p.cap ? esc(p.cap) : '&nbsp;';
+  return '<figure class="polaroid" style="--r:' + ROT[i % ROT.length] + '"><img loading="lazy" alt="' + esc(p.cap || 'Trip photo') + '" src="' + safeSrc(p.src) + '">' +
+    '<figcaption>' + cap + (day ? '<span class="pday">Day ' + day + ' · ' + esc(DAYS[day - 1][0]) + '</span>' : '') + '</figcaption></figure>';
 }
 function entryHtml(e){
-  var h = '<article class="entry">';
-  if (e.title) h += '<h3>' + esc(e.title) + '</h3>';
-  if (e.text) h += '<div class="body">' + esc(e.text) + '</div>';
-  if (e.photos && e.photos.length){
-    h += '<div class="shots">';
-    e.photos.forEach(function(p){
-      h += '<figure class="shot"><img loading="lazy" alt="' + esc(p.cap || 'trip photo') + '" src="' + p.src + '">' +
-           (p.cap ? '<figcaption class="cap">' + esc(p.cap) + '</figcaption>' : '') + '</figure>';
-    });
-    h += '</div>';
-  }
-  h += '<div class="meta">' + esc(DAYS[e.day-1] ? DAYS[e.day-1][0] : '') + '</div></article>';
-  return h;
+  var isNew = e.ts && (Date.now() - e.ts) < 36 * 3600 * 1000;
+  var h = '<div class="entry">';
+  if (e.title || isNew) h += '<h4>' + esc(e.title || '') + (isNew ? '<span class="newbadge">NEW!</span>' : '') + '</h4>';
+  if (e.text) h += '<p class="body">' + esc(e.text) + '</p>';
+  var ps = (e.photos || []).filter(function(p){ return safeSrc(p.src); });
+  if (ps.length) h += '<div class="shots">' + ps.map(function(p, i){ return polaroid(p, i, 0); }).join('') + '</div>';
+  return h + '</div>';
 }
-function dayBlock(day, showEmpty){
-  var es = entriesForDay(day);
-  if (!es.length && !showEmpty) return '';
-  var d = DAYS[day-1] || ['',''];
-  var h = '<div class="dayhead"><span class="dn">Day ' + day + '</span><span class="dt">' + esc(d[0]) + ' · ' + esc(d[1]) + '</span></div>';
-  h += es.length ? es.map(entryHtml).join('') : '';
-  return h;
+function sheetHtml(day, es){
+  var d = DAYS[day - 1];
+  return '<article class="sheet"><h3 class="sheet-head">Day ' + day + ' · ' + esc(d[0]) + ' <span class="st">— ' + esc(d[1]) + '</span></h3>' +
+    es.map(entryHtml).join('') + '</article>';
 }
-function selectStop(i, quiet){
-  SELECTED = i;
-  document.querySelectorAll('.stop-hit').forEach(function(g){
-    g.classList.toggle('sel', +g.dataset.si === i);
+function emptySheet(msg){
+  return '<article class="sheet"><p class="pencil">' + esc(msg) + '</p></article>';
+}
+function tagHtml(s, isHere){
+  return '<div class="tagrow"><div class="tagwrap"><div class="luggage">' +
+    '<span class="eyelet" aria-hidden="true"></span>' +
+    '<div class="tag-brand">American Autumn Lines · Checked</div>' +
+    (isHere ? '<span class="rubber">We’re here!</span>' : '') +
+    '<dl><dt>Staying at</dt><dd>' + esc(s.stay) + '</dd>' +
+    '<dt>Where</dt><dd>' + esc(s.name) + '</dd>' +
+    '<dt>When</dt><dd>' + esc(s.when) + '</dd></dl>' +
+    '</div></div>' +
+    '<div class="postit">' + esc(s.note) + '</div></div>';
+}
+function webringHtml(i){
+  var n = STOPS.length;
+  return '<nav class="webring" aria-label="Previous and next stop">' +
+    '<button type="button" class="w98btn" data-ring="' + ((i + n - 1) % n) + '">« prev</button>' +
+    '<div class="ringname">🍁 The American Autumn Webring 🍁<span>stop ' + (i + 1) + ' of ' + n + '</span></div>' +
+    '<button type="button" class="w98btn" data-ring="' + ((i + 1) % n) + '">next »</button></nav>';
+}
+function setPressed(which){
+  document.querySelectorAll('[data-go][aria-pressed]').forEach(function(b){
+    b.setAttribute('aria-pressed', b.getAttribute('data-go') === which ? 'true' : 'false');
   });
-  var s = STOPS[i];
-  $('spName').innerHTML = esc(s.name) + (i === HERE ? '<span id="spHere">📍 we’re here</span>' : '');
-  $('spStay').innerHTML = s.stay ? '🛖 Staying at <b>' + esc(s.stay) + '</b>' : '';
-  $('spStay').hidden = !s.stay;
-  $('spWhen').textContent = s.when || '';
-  $('spNote').textContent = s.note || '';
-  var days = s.days || [];
-  var anyEntries = days.some(function(d){ return entriesForDay(d).length; });
-  var h = days.map(function(d){ return dayBlock(d, false); }).join('');
-  if (!anyEntries){
-    h += '<div class="empty">No diary here yet — ' +
-      (i === HERE ? 'we’re still living it. Check back tonight!' : 'it’ll fill in when we get there (or get round to it).') + '</div>';
-  }
-  $('spDays').innerHTML = h;
-  $('allBtn').textContent = 'Show the whole diary';
-  if (!quiet) $('stopPanel').scrollIntoView({behavior:'smooth', block:'start'});
-  wireShots($('spDays'));
 }
-function showAll(){
-  SELECTED = 'all';
-  document.querySelectorAll('.stop-hit').forEach(function(g){ g.classList.remove('sel'); });
-  $('spName').textContent = 'The whole diary';
-  $('spStay').hidden = true;
-  $('spWhen').textContent = '27 September – 10 October 2026';
-  $('spNote').textContent = '';
-  var any = (STATE.entries || []).length;
-  var h = '';
-  for (var d = 1; d <= 14; d++) h += dayBlock(d, false);
-  if (!any) h = '<div class="empty">Nothing written yet — entries and photos appear as the trip unfolds. Check back!</div>';
-  $('spDays').innerHTML = h;
-  wireShots($('spDays'));
-}
-$('allBtn').addEventListener('click', function(){
-  if (SELECTED === 'all'){ selectStop(HERE !== null ? HERE : 0, true); }
-  else showAll();
-});
-
-/* ---- lightbox ---- */
-function wireShots(root){
-  root.querySelectorAll('.shot img').forEach(function(img){
+function wirePanel(){
+  var body = $('panelBody');
+  body.querySelectorAll('.polaroid img').forEach(function(img){
     img.addEventListener('click', function(){ openLightbox(img.src, img.alt); });
   });
+  body.querySelectorAll('[data-ring]').forEach(function(b){
+    b.addEventListener('click', function(){ selectStop(+b.getAttribute('data-ring'), false); });
+  });
 }
+function selectStop(i, quiet){
+  markSelected(i);
+  setPressed(null);
+  var s = STOPS[i], isHere = i === HERE, d = tripDay();
+  var h = tagHtml(s, isHere), any = false;
+  s.days.forEach(function(day){
+    var es = entriesForDay(day);
+    if (es.length){ any = true; h += sheetHtml(day, es); }
+  });
+  if (!any){
+    var msg = isHere ? 'Nothing written here yet — we’re still living it. Check back tonight!'
+      : (s.days[0] > d ? 'We haven’t got here yet! This page fills in from ' + DAYS[s.days[0] - 1][0] + '.'
+      : 'Nothing written here yet — Matt’s behind on his homework.');
+    h += emptySheet(msg);
+  }
+  h += webringHtml(i);
+  $('panelBody').innerHTML = h;
+  wirePanel();
+  if (!quiet) $('panel').scrollIntoView({behavior:BEHAVIOR, block:'start'});
+}
+function showDiary(){
+  markSelected(null);
+  setPressed('diary');
+  var h = '<div class="panel-label"><span class="dymo">The whole diary</span></div>', any = false;
+  for (var day = 1; day <= 14; day++){
+    var es = entriesForDay(day);
+    if (es.length){ any = true; h += sheetHtml(day, es); }
+  }
+  if (!any) h += '<div class="postit postit-solo">Nothing written yet! Entries and photos appear here as the trip unfolds. Check back tonight.</div>';
+  $('panelBody').innerHTML = h;
+  wirePanel();
+}
+function showPhotos(){
+  markSelected(null);
+  setPressed('photos');
+  var shots = [];
+  for (var day = 1; day <= 14; day++){
+    entriesForDay(day).forEach(function(e){
+      (e.photos || []).forEach(function(p){ if (safeSrc(p.src)) shots.push({p:p, day:day}); });
+    });
+  }
+  var h = '<div class="panel-label"><span class="dymo">All the photos</span></div>';
+  h += shots.length
+    ? '<div class="wall">' + shots.map(function(x, i){ return polaroid(x.p, i, x.day); }).join('') + '</div>'
+    : '<div class="postit postit-solo">No photos yet! (Matt&rsquo;s camera roll is bursting, promise.)</div>';
+  $('panelBody').innerHTML = h;
+  wirePanel();
+}
+function wireNav(){
+  document.querySelectorAll('[data-go]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var go = b.getAttribute('data-go');
+      if (go === 'map') $('mapCard').scrollIntoView({behavior:BEHAVIOR, block:'start'});
+      else if (go === 'diary'){ showDiary(); $('panel').scrollIntoView({behavior:BEHAVIOR, block:'start'}); }
+      else if (go === 'photos'){ showPhotos(); $('panel').scrollIntoView({behavior:BEHAVIOR, block:'start'}); }
+      else if (go === 'guestbook') $('guestbook').scrollIntoView({behavior:BEHAVIOR, block:'center'});
+    });
+  });
+}
+
+/* ---- widgets ---- */
+function odometerMiles(){
+  var d = tripDay(), total = 0, k;
+  if (d < 1) return 0;
+  if (d > 14){ for (k in DAY_MILES) total += DAY_MILES[k]; return total; }
+  for (k = 1; k < d; k++) total += DAY_MILES[k] || 0;
+  var today = DAY_MILES[d] || 0;
+  if (today){
+    var t = etNow(), hr = t.h + t.min / 60;
+    total += today * Math.min(1, Math.max(0, (hr - 8) / 11));
+  }
+  return total;
+}
+function renderOdometer(){
+  var miles = odometerMiles();
+  var whole = Math.floor(miles), tenth = Math.floor((miles - whole) * 10 + 1e-6);
+  var digits = ('00000' + whole).slice(-5).split('').map(Number);
+  digits.push(tenth);
+  var box = $('odoWheels');
+  if (!box.children.length){
+    digits.forEach(function(_, i){
+      var w = document.createElement('span');
+      w.className = 'wheel' + (i === 5 ? ' tenth' : '');
+      var strip = document.createElement('span');
+      strip.className = 'strip';
+      for (var n = 0; n <= 9; n++){ var c = document.createElement('span'); c.textContent = n; strip.appendChild(c); }
+      w.appendChild(strip);
+      box.appendChild(w);
+    });
+  }
+  var strips = box.querySelectorAll('.strip');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    digits.forEach(function(n, i){ strips[i].style.transform = 'translateY(' + (-n * 10) + '%)'; });
+  }); });
+  box.setAttribute('aria-label', 'About ' + Math.round(miles).toLocaleString('en-GB') + ' miles driven so far');
+  var total = 0; for (var k in DAY_MILES) total += DAY_MILES[k];
+  $('odoCap').textContent = 'Road miles so far, estimated from our plan · about ' + total.toLocaleString('en-GB') + ' by Boston';
+}
+function postmarkSvg(pm){
+  var p = pm.split(' ');
+  return '<svg class="postmark" viewBox="0 0 64 34" aria-hidden="true">' +
+    '<circle cx="17" cy="17" r="13" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+    '<text x="17" y="15" text-anchor="middle" font-size="7" font-family="\'Special Elite\',monospace" fill="currentColor">' + p[0] + '</text>' +
+    '<text x="17" y="24.5" text-anchor="middle" font-size="9" font-family="\'Special Elite\',monospace" fill="currentColor">' + p[1] + '</text>' +
+    '<path d="M33,10 q4,-3 8,0 t8,0 t8,0 M33,17 q4,-3 8,0 t8,0 t8,0 M33,24 q4,-3 8,0 t8,0 t8,0" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+}
+function renderStamps(d){
+  var got = 0, tilts = ['-3deg','2deg','-1deg','3deg','-2deg','1deg','2.5deg','-2.5deg','1.5deg'];
+  $('stampGrid').innerHTML = STATES.map(function(s, i){
+    if (d < s.day){
+      var left = s.day - d;
+      return '<div class="slot" role="img" aria-label="' + esc(s.nm) + ', not collected yet"><b>' + s.ab + '</b>' + (left === 1 ? 'tomorrow' : 'in ' + left + ' days') + '</div>';
+    }
+    got++;
+    return '<div class="stampwrap" role="img" style="--tilt:' + tilts[i] + '" aria-label="' + esc(s.nm) + ', collected ' + s.pm + '">' +
+      '<div class="stamp" style="--c:' + s.c + '"><div class="stamp-in"><span class="usa">USA 39</span><span class="em">' + s.em + '</span><span class="sn">' + esc(s.nm.toUpperCase()) + '</span></div></div>' +
+      postmarkSvg(s.pm) + '</div>';
+  }).join('');
+  $('stampCount').textContent = got + ' of 9 · (D.C. counts, we’ve decided)';
+}
+function renderCounter(){
+  var v = (parseInt(lsGet(LS_VISITS), 10) || 0) + 1;
+  lsSet(LS_VISITS, String(v));
+  $('lcd').textContent = ('000000' + v).slice(-6);
+}
+function renderUpdated(){
+  var ts = Date.parse(PAGE_UPDATED + 'T16:00:00Z');
+  (STATE.entries || []).forEach(function(e){ if (e.ts > ts) ts = e.ts; });
+  var s;
+  try { s = new Date(ts).toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric', timeZone:'America/New_York'}); }
+  catch(e){ s = new Date(ts).toDateString(); }
+  $('lastUpd').textContent = s;
+}
+
+/* ---- lightbox ---- */
 function openLightbox(src, cap){
-  var lb = document.createElement('div'); lb.id = 'lb';
-  lb.innerHTML = '<img alt="' + esc(cap) + '" src="' + src + '">' + (cap && cap !== 'trip photo' ? '<div class="lbcap">' + esc(cap) + '</div>' : '');
+  var lb = document.createElement('div');
+  lb.id = 'lb';
+  lb.setAttribute('role', 'dialog');
+  lb.setAttribute('aria-label', 'Photo');
+  var c = cap && cap !== 'Trip photo' ? cap : '';
+  lb.innerHTML = '<figure class="lb-pol"><img alt="' + esc(cap) + '" src="' + safeSrc(src) + '">' + (c ? '<figcaption>' + esc(c) + '</figcaption>' : '') + '</figure><div class="lb-hint">tap anywhere to close</div>';
   lb.addEventListener('click', function(){ lb.remove(); });
   document.body.appendChild(lb);
 }
+document.addEventListener('keydown', function(ev){
+  if (ev.key === 'Escape'){ var lb = $('lb'); if (lb) lb.remove(); }
+});
 </script>
 </body>
 </html>
