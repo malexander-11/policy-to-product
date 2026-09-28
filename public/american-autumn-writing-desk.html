@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>American Autumn Writing Desk</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap">
-<!-- The private composer for the American Autumn scrapbook, served from the
-     same site. Entries stage on this device (localStorage) and reach the
+<meta name="robots" content="noindex">
+<!-- The composer for the American Autumn scrapbook, served from the same
+     site. Entries stage on this device (localStorage) and reach the
      scrapbook via Claude: export the packet and attach it in the Claude chat
-     (or paste it). Claude merges by entry id, reseals the diary and deploys. -->
+     (or paste it). Claude merges by entry id and deploys. Nothing here can
+     publish on its own. -->
 <style>
   :root{
     --paper:#EFEAE0; --card:#FFFDF8; --ink:#232A33; --faint:#6E7887;
@@ -24,23 +26,6 @@
   .hand{font-family:'Caveat','Comic Sans MS',cursive;}
   button{font:inherit;cursor:pointer;}
   :focus-visible{outline:3px solid var(--rust);outline-offset:2px;}
-
-  /* ---------- gate ---------- */
-  #gate{min-height:88vh;display:flex;align-items:center;justify-content:center;padding:18px;}
-  .gate-card{background:var(--card);border:1px solid var(--line);max-width:400px;width:100%;
-    padding:34px 28px 30px;text-align:center;box-shadow:0 10px 30px rgba(30,45,70,.14);position:relative;}
-  .gate-card::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);
-    width:120px;height:26px;background:var(--tape);}
-  .gate-card h1{font-family:'Caveat',cursive;color:var(--navy-dk);font-size:40px;margin:6px 0 0;line-height:1.05;}
-  .gate-card .sub{font-style:italic;color:var(--faint);margin:6px 0 22px;font-size:14.5px;}
-  .gate-card label{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--faint);margin-bottom:6px;}
-  #pw{width:100%;padding:10px 12px;font:inherit;border:1.5px solid var(--line);
-    background:#FFFEFB;border-radius:4px;text-align:center;}
-  #unlockBtn{margin-top:12px;width:100%;padding:10px;background:var(--navy);color:#fff;border:none;
-    border-radius:4px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:.04em;}
-  #unlockBtn:hover{background:var(--navy-dk);}
-  #gateMsg{min-height:20px;font-size:13.5px;color:var(--rust);margin-top:10px;font-style:italic;}
 
   /* ---------- header ---------- */
   header.top{text-align:center;padding:38px 10px 4px;}
@@ -98,21 +83,7 @@
 </head>
 <body>
 
-<div id="gate">
-  <div class="gate-card">
-    <div class="hand" style="font-size:20px;color:var(--faint)">the private side of</div>
-    <h1>The Writing Desk</h1>
-    <div class="sub">where the American Autumn scrapbook gets written<br>same password as the scrapbook</div>
-    <form id="gateForm">
-      <label for="pw">password</label>
-      <input id="pw" type="password" autocomplete="off">
-      <button id="unlockBtn" type="submit">Sit down</button>
-    </form>
-    <div id="gateMsg"></div>
-  </div>
-</div>
-
-<main class="wrap" id="desk" hidden>
+<main class="wrap" id="desk">
   <header class="top">
     <div class="over">An American Autumn &#183; admin</div>
     <h1>The Writing Desk</h1>
@@ -146,7 +117,7 @@
     <ol>
       <li>Write entries and <b>Add to the pile</b> &#8212; they stay saved on this phone.</li>
       <li><b>Send to Claude</b> downloads a little packet file &#8212; attach it to a message in your Claude chat (or use <i>copy it</i> and paste). Say &ldquo;scrapbook entries&rdquo;.</li>
-      <li>Claude seals them into the scrapbook and the website updates a few minutes later.</li>
+      <li>Claude adds them to the scrapbook and the website updates a few minutes later.</li>
     </ol>
     No packet-faff wanted? Just message Claude the words and attach photos straight from your camera roll &#8212; it all ends up in the same book.</div>
 
@@ -155,13 +126,11 @@
     <div id="published"><span class="em" style="font-style:italic;color:var(--faint)">Checking the published scrapbook&hellip;</span></div>
   </section>
 
-  <footer>The Writing Desk &#183; private companion to the American Autumn scrapbook</footer>
+  <footer>The Writing Desk &#183; behind the scenes of the American Autumn scrapbook</footer>
 </main>
 
-<script id="aa-state" type="application/json">{"v":1,"salt":"Y0OJIZczSYtrpe/fCE4KVw==","iv":"iiWCjrnysMSXJfag","ct":"2gH0lAykju4HzKRNL9fQjPp8Q95kWrUraD/IkTm4"}</script>
 <script>
 "use strict";
-var LS_PW = 'aa-scrapbook-pw';
 var LS_STAGE = 'aa-desk-staged';
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -187,53 +156,13 @@ var DAYS = [
   ['Sat 10 Oct','Revolution, hockey, home']
 ];
 
-/* ---- crypto (PBKDF2 -> AES-256-GCM), same scheme as the scrapbook ---- */
-function b64ToBuf(b64){ var bin = atob(b64), a = new Uint8Array(bin.length); for (var i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return a; }
-function deriveKey(pw, saltB64){
-  return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey'])
-    .then(function(km){ return crypto.subtle.deriveKey(
-      {name:'PBKDF2', salt:b64ToBuf(saltB64), iterations:150000, hash:'SHA-256'},
-      km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']); });
+/* an entry's name in the lists: its title, else the start of its text */
+function entryLabel(e){
+  if (e.title) return '<b>' + esc(e.title) + '</b>';
+  var t = String(e.text || '').replace(/\s+/g, ' ').trim();
+  if (!t) return '<b>(untitled)</b>';
+  return '<i>' + esc(t.length > 52 ? t.slice(0, 50).replace(/\s+\S*$/, '') + '…' : t) + '</i>';
 }
-function openState(pw, blob){
-  return deriveKey(pw, blob.salt).then(function(key){
-    return crypto.subtle.decrypt({name:'AES-GCM', iv:b64ToBuf(blob.iv)}, key, b64ToBuf(blob.ct));
-  }).then(function(pt){ return JSON.parse(new TextDecoder().decode(pt)); });
-}
-function localBlob(){
-  try { return JSON.parse($('aa-state').textContent); } catch(e){ return null; }
-}
-
-/* ---- unlock (verified against the local seed blob; works offline) ---- */
-var PASSWORD = null;
-function unlock(pw, silent){
-  var blob = localBlob();
-  if (!blob){ if (!silent) $('gateMsg').textContent = 'This copy of the page is missing its lock.'; return Promise.resolve(false); }
-  return openState(pw, blob).then(function(){
-    PASSWORD = pw;
-    try { localStorage.setItem(LS_PW, pw); } catch(e){}
-    $('gate').hidden = true;
-    $('desk').hidden = false;
-    buildDayOptions();
-    loadStage();
-    renderMine();
-    loadPublished();
-    return true;
-  }).catch(function(){
-    if (!silent) $('gateMsg').textContent = 'Not it — it’s the same password as the scrapbook.';
-    return false;
-  });
-}
-$('gateForm').addEventListener('submit', function(ev){
-  ev.preventDefault();
-  var pw = $('pw').value.trim();
-  if (pw) unlock(pw, false);
-});
-(function autoUnlock(){
-  var saved = null;
-  try { saved = localStorage.getItem(LS_PW); } catch(e){}
-  if (saved) unlock(saved, true).then(function(ok){ if (!ok){ try{ localStorage.removeItem(LS_PW); }catch(e){} } });
-})();
 
 /* ---- composer ---- */
 function buildDayOptions(){
@@ -329,7 +258,7 @@ function renderMine(){
   var box = $('mine');
   var es = STAGED.slice().sort(function(a,b){ return (a.day-b.day)||(a.ts-b.ts); });
   box.innerHTML = es.length ? es.map(function(e){
-    return '<div class="mine"><span>Day ' + e.day + ' · <b>' + esc(e.title || '(untitled)') + '</b>' +
+    return '<div class="mine"><span>Day ' + e.day + ' · ' + entryLabel(e) +
       (e.photos && e.photos.length ? ' · ' + e.photos.length + ' photo' + (e.photos.length>1?'s':'') : '') + '</span>' +
       '<span><button type="button" data-ed="' + e.id + '">edit</button><button type="button" data-del="' + e.id + '">delete</button></span></div>';
   }).join('') : '<div class="mine"><span class="em">Nothing on the pile.</span></div>';
@@ -401,17 +330,23 @@ function loadPublished(){
     var i = src.indexOf(A);
     var j = i >= 0 ? src.indexOf('<\/script>', i + A.length) : -1;
     if (i < 0 || j < 0) throw new Error('block');
-    return openState(PASSWORD, JSON.parse(src.slice(i + A.length, j)));
-  }).then(function(st){
+    var st = JSON.parse(src.slice(i + A.length, j));
     var es = (st.entries || []).slice().sort(function(a,b){ return (a.day-b.day)||(a.ts-b.ts); });
     $('published').innerHTML = es.length ? es.map(function(e){
-      return '<div class="pub">Day ' + e.day + ' · <b>' + esc(e.title || '(untitled)') + '</b>' +
+      return '<div class="pub">Day ' + e.day + ' · ' + entryLabel(e) +
         (e.photos && e.photos.length ? ' · ' + e.photos.length + ' photo' + (e.photos.length>1?'s':'') : '') + '</div>';
     }).join('') : '<div class="pub" style="font-style:italic">The published book is still empty — the pile above is where it starts.</div>';
   }).catch(function(){
     $('published').innerHTML = '<div class="pub" style="font-style:italic">Couldn’t read the published book just now (offline?). The pile still works.</div>';
   });
 }
+
+/* a password saved back when the desk had one */
+try { localStorage.removeItem('aa-scrapbook-pw'); } catch(e){}
+buildDayOptions();
+loadStage();
+renderMine();
+loadPublished();
 </script>
 </body>
 </html>
