@@ -212,21 +212,21 @@ var DAYS = [
   ['Sat 10 Oct','Revolution, hockey, home']
 ];
 
-/* The seven beds. x/y match the map; days = diary days filed under this stop;
-   ann = where the "we're here!" note sits when this is the current stop. */
+/* The sections, one per bed, except From DC to Gillette Stadium, which covers two
+   beds and lists them in pins. x/y match the map; days = diary days filed under the
+   section; ann = where the "we're here!" note sits when that bed is tonight's. */
 var STOPS = [
  {name:'Washington DC', x:66.6, y:586, hit:24, days:[1,2,3,4],
   stay:'Hilton Garden Inn Downtown', when:'Sun 27 Sept – Thu 1 Oct · 4 nights',
   note:'Three blocks from the White House. Marble, museums and the machinery of the republic.',
   ann:{x:92, y:546, a:'start', ax:90, ay:564}},
- {name:'West Point', x:265, y:346.9, hit:24, days:[5],
-  stay:'Bear Mountain Inn — Overlook Lodge', when:'Thu 1 Oct · 1 night',
-  note:'Reached via Gettysburg’s battlefield and Bethlehem’s blast furnaces. A 1915 lodge above Hessian Lake — the first mile of the Appalachian Trail runs through the grounds.',
-  ann:{x:283, y:316, a:'start', ax:281, ay:333}},
- {name:'Gillette Stadium', x:425.8, y:264.6, hit:18, days:[6],
-  stay:'Holiday Inn Express, Milford', when:'Fri 2 Oct · 1 night',
-  note:'The big Friday: West Point at ten, FDR’s Springwood at lunch, then Zach Bryan at Gillette Stadium — twenty minutes from this bed.',
-  ann:{x:410, y:294, a:'end', ax:413, ay:283}},
+ {name:'From DC to Gillette Stadium', days:[5,6],
+  pins:[{x:265, y:346.9, hit:24, days:[5], stay:'Bear Mountain Inn — Overlook Lodge',
+         ann:{x:283, y:316, a:'start', ax:281, ay:333}},
+        {x:425.8, y:264.6, hit:18, days:[6], stay:'Holiday Inn Express, Milford',
+         ann:{x:410, y:294, a:'end', ax:413, ay:283}}],
+  stay:'Bear Mountain Inn — Overlook Lodge, then Holiday Inn Express, Milford', when:'Thu 1 – Fri 2 Oct · 2 nights',
+  note:'The road trip begins: Gettysburg’s battlefield and Bethlehem’s blast furnaces, a night at a 1915 lodge above Hessian Lake, then the big Friday — West Point, FDR’s Springwood and Zach Bryan at Gillette Stadium.'},
  {name:'North Woodstock', x:414.9, y:76.3, hit:22, days:[7,8],
   stay:'Woodstock Inn Brewery', when:'Sat 3 – Mon 5 Oct · 2 nights',
   note:'Sleeping above our own brewpub at the mouth of Franconia Notch — base for the Cog Railway, the Gold Room at Bretton Woods, and Lonesome Lake.',
@@ -244,7 +244,7 @@ var STOPS = [
   note:'In via Salem’s Haunted Happenings; then the Freedom Trail, a Bruins matinee, and the flight home.',
   ann:{x:478, y:210, a:'start', ax:476, ay:226}}
 ];
-var DAY_STOP = {1:0,2:0,3:0,4:0,5:1,6:2,7:3,8:3,9:4,10:5,11:5,12:5,13:6,14:6};
+var DAY_STOP = {1:0,2:0,3:0,4:0,5:1,6:1,7:2,8:2,9:3,10:4,11:4,12:4,13:5,14:5};
 /* planned road miles per trip day (no car in DC; returned in Boston on day 13) */
 var DAY_MILES = {5:305,6:200,7:165,8:60,9:45,10:50,11:50,12:120,13:105};
 /* the day each of DC + 8 states is first reached */
@@ -282,7 +282,7 @@ function boot(){
   HERE = (d >= 1 && d <= 14) ? DAY_STOP[d] : null;
   $('status').textContent = statusLine(d);
   drawMap();
-  selectStop(HERE !== null ? HERE : (d > 14 ? 6 : 0), true);
+  selectStop(HERE !== null ? HERE : (d > 14 ? STOPS.length - 1 : 0), true);
   renderUpdated();
   document.querySelectorAll('[data-go]').forEach(function(b){
     b.addEventListener('click', function(){
@@ -321,20 +321,32 @@ function el(tag, attrs, text){
   if (text != null) n.textContent = text;
   return n;
 }
+/* a section's beds on the map: its pins, or the section itself when it has one bed */
+function pinsOf(s){ return s.pins || [s]; }
+/* tonight's bed within the section we're in */
+function herePin(){
+  if (HERE === null) return null;
+  var d = tripDay(), ps = pinsOf(STOPS[HERE]);
+  for (var k = 0; k < ps.length; k++) if (ps[k].days && ps[k].days.indexOf(d) >= 0) return ps[k];
+  return ps[0];
+}
 function drawMap(){
   var ring = $('ringLayer'), pins = $('pinLayer'), ann = $('annLayer'), hits = $('hitLayer');
   ring.textContent = ''; pins.textContent = ''; ann.textContent = ''; hits.textContent = '';
+  var hp = herePin();
   STOPS.forEach(function(s, i){
-    pins.appendChild(el('circle', {cx:s.x, cy:s.y, r:7.5, fill: i === HERE ? '#A63A0C' : '#2E2419', stroke:'#FBF4E4', 'stroke-width':2.5}));
-    var g = el('g', {'class':'stop-hit', 'data-si':i, tabindex:0, role:'button', 'aria-label':s.name + ': ' + s.stay});
-    g.appendChild(el('title', {}, s.name + ' — tap to open its page'));
-    g.appendChild(el('circle', {cx:s.x, cy:s.y, r:s.hit, fill:'transparent'}));
-    g.addEventListener('click', function(){ selectStop(i, false); });
-    g.addEventListener('keydown', function(ev){ if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); selectStop(i, false); } });
-    hits.appendChild(g);
+    pinsOf(s).forEach(function(p){
+      pins.appendChild(el('circle', {cx:p.x, cy:p.y, r:7.5, fill: p === hp ? '#A63A0C' : '#2E2419', stroke:'#FBF4E4', 'stroke-width':2.5}));
+      var g = el('g', {'class':'stop-hit', 'data-si':i, tabindex:0, role:'button', 'aria-label':s.name + ': ' + (p.stay || s.stay)});
+      g.appendChild(el('title', {}, s.name + ' — tap to open its page'));
+      g.appendChild(el('circle', {cx:p.x, cy:p.y, r:p.hit, fill:'transparent'}));
+      g.addEventListener('click', function(){ selectStop(i, false); });
+      g.addEventListener('keydown', function(ev){ if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); selectStop(i, false); } });
+      hits.appendChild(g);
+    });
   });
-  if (HERE === null) return;
-  var s = STOPS[HERE], a = s.ann;
+  if (!hp) return;
+  var s = hp, a = s.ann;
   ring.appendChild(el('circle', {cx:s.x, cy:s.y, r:12, fill:'none', stroke:'#A63A0C', 'stroke-width':2.5, 'class':'pin-pulse'}));
   var t = el('text', {x:a.x, y:a.y, 'text-anchor':a.a, 'class':'ann'});
   t.appendChild(el('tspan', {x:a.x, dy:0}, 'we’re'));
@@ -353,9 +365,10 @@ function markSelected(i){
   var sl = $('selLayer');
   sl.textContent = '';
   if (i == null) return;
-  var s = STOPS[i];
-  sl.appendChild(el('ellipse', {cx:s.x, cy:s.y, rx:16, ry:13, transform:'rotate(-14 ' + s.x + ' ' + s.y + ')', fill:'none', stroke:'#2E2419', 'stroke-width':1.8}));
-  sl.appendChild(el('ellipse', {cx:s.x + 1, cy:s.y - .5, rx:15, ry:14, transform:'rotate(12 ' + s.x + ' ' + s.y + ')', fill:'none', stroke:'#2E2419', 'stroke-width':1.1, opacity:.6}));
+  pinsOf(STOPS[i]).forEach(function(s){
+    sl.appendChild(el('ellipse', {cx:s.x, cy:s.y, rx:16, ry:13, transform:'rotate(-14 ' + s.x + ' ' + s.y + ')', fill:'none', stroke:'#2E2419', 'stroke-width':1.8}));
+    sl.appendChild(el('ellipse', {cx:s.x + 1, cy:s.y - .5, rx:15, ry:14, transform:'rotate(12 ' + s.x + ' ' + s.y + ')', fill:'none', stroke:'#2E2419', 'stroke-width':1.1, opacity:.6}));
+  });
 }
 
 /* ---- a stop's page, the diary, the photos ---- */
