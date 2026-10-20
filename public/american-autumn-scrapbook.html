@@ -111,6 +111,42 @@
   .lb-print figcaption{padding-top:8px;text-align:center;font:24px/1.2 Caveat,cursive;}
   .lb-hint{font:12px 'Special Elite','Courier New',monospace;color:#E9DCC3;}
 
+  /* ---------- on a computer: map on the left, kept in view; the diary beside it ---------- */
+  .click{display:none;}
+  @media (min-width:1024px){
+    .page{width:calc(100% - 64px);max-width:1240px;padding:40px 56px 40px;}
+    .head .label{margin-top:8px;}
+    .status{max-width:none;margin-top:10px;}
+    .nav{margin-top:12px;}
+    .spread{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:56px;align-items:start;margin-top:22px;}
+    /* on shorter screens the map shrinks (keeping its shape) so all of it fits under the header */
+    .map-col{width:100%;max-width:max(300px, calc((100vh - 350px) * .875 + 18px));margin:0 auto;}
+    .map-col .mapcard{margin:12px 0 0;max-width:none;}
+    #panel{margin-top:0;scroll-margin-top:24px;}
+    #panelBody > :first-child{border-top:0;padding-top:0;}
+    .lb-print{max-width:min(92vw,1100px);}
+    .lb-print img{max-height:80vh;}
+  }
+  @media (min-width:1024px) and (min-height:640px){
+    .map-col{position:sticky;top:24px;}
+  }
+  /* wide screens: three prints to a row, the last row centred */
+  @media (min-width:1280px){
+    .prints:not(.wall){display:flex;flex-wrap:wrap;justify-content:center;}
+    .prints:not(.wall) .print{flex:0 0 calc((100% - 36px) / 3);}
+  }
+  /* with a mouse: say "click", and let pins and prints respond to the pointer */
+  @media (min-width:1024px) and (hover:hover) and (pointer:fine){
+    .tap{display:none;}
+    .click{display:inline;}
+  }
+  @media (hover:hover) and (pointer:fine){
+    .stop-hit:hover circle{fill:rgba(166,58,12,.14);}
+    .print{transition:transform .18s ease, box-shadow .18s ease;}
+    .print:hover{transform:rotate(0deg) scale(1.03);box-shadow:0 10px 24px rgba(60,40,15,.32);z-index:3;}
+    .nav button:hover, .pager button:hover{color:#7A2A08;}
+  }
+
   @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
 </style>
 </head>
@@ -129,6 +165,8 @@
       </nav>
     </header>
 
+    <div class="spread">
+    <aside class="map-col">
     <section class="mapcard" id="mapCard" aria-label="Route map">
       <span class="tape l" aria-hidden="true"></span><span class="tape r" aria-hidden="true"></span>
       <div class="mapfold">
@@ -167,9 +205,11 @@
         </svg>
       </div>
     </section>
-    <p class="map-cap"><i style="background:#2E2419"></i>a night&rsquo;s stay &#160;&#183;&#160; tap a pin to open its page</p>
+    <p class="map-cap"><i style="background:#2E2419"></i>a night&rsquo;s stay &#160;&#183;&#160; <span class="tap">tap</span><span class="click">click</span> a pin to open its page</p>
+    </aside>
 
     <section id="panel" aria-live="polite"><div id="panelBody"></div></section>
+    </div>
 
     <footer class="foot">A homemade scrapbook by Matt &amp; co., written along the way.<br><a href="#top">back to top &#8593;</a></footer>
   </div>
@@ -241,7 +281,7 @@ function boot(){
   document.querySelectorAll('[data-go]').forEach(function(b){
     b.addEventListener('click', function(){
       var go = b.getAttribute('data-go');
-      if (go === 'map') $('mapCard').scrollIntoView({behavior:BEHAVIOR, block:'start'});
+      if (go === 'map') (window.matchMedia('(min-width:1024px)').matches ? document.querySelector('.spread') : $('mapCard')).scrollIntoView({behavior:BEHAVIOR, block:'start'});
       else if (go === 'diary'){ showDiary(); $('panel').scrollIntoView({behavior:BEHAVIOR, block:'start'}); }
       else if (go === 'photos'){ showPhotos(); $('panel').scrollIntoView({behavior:BEHAVIOR, block:'start'}); }
     });
@@ -265,7 +305,7 @@ function drawMap(){
     pinsOf(s).forEach(function(p){
       pins.appendChild(el('circle', {cx:p.x, cy:p.y, r:7.5, fill:'#2E2419', stroke:'#FBF4E4', 'stroke-width':2.5}));
       var g = el('g', {'class':'stop-hit', 'data-si':i, tabindex:0, role:'button', 'aria-label':s.name + ': ' + (p.stay || s.stay)});
-      g.appendChild(el('title', {}, s.name + ' — tap to open its page'));
+      g.appendChild(el('title', {}, s.name + ' — click to open its page'));
       g.appendChild(el('circle', {cx:p.x, cy:p.y, r:p.hit, fill:'transparent'}));
       g.addEventListener('click', function(){ selectStop(i, false); });
       g.addEventListener('keydown', function(ev){ if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); selectStop(i, false); } });
