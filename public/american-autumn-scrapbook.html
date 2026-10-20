@@ -36,10 +36,6 @@
   /* one attachment method everywhere: masking tape */
   .tape{position:absolute;z-index:2;width:88px;height:24px;background:var(--tape);box-shadow:0 1px 2px rgba(60,40,15,.15);
     clip-path:polygon(2% 10%,6% 0,95% 6%,100% 14%,98% 88%,100% 100%,4% 94%,0 86%);}
-  /* one ink stamp, reused */
-  .stamp{display:inline-block;border:2.5px double var(--rust);border-radius:4px;color:var(--rust);
-    font:13px/1 'Special Elite','Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;
-    padding:6px 9px 5px;transform:rotate(-6deg);mix-blend-mode:multiply;opacity:.9;}
   .label{font:12px/1.5 'Special Elite','Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-wrap:balance;}
 
   /* ---------- the page ---------- */
@@ -69,7 +65,6 @@
   .map-cap{margin:16px 0 0;text-align:center;text-wrap:balance;font:12.5px/1.6 'Special Elite','Courier New',monospace;color:var(--faint);}
   .map-cap i{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 5px 0 0;vertical-align:-1px;}
   .lbl{font:700 16px Gelasio,Georgia,serif;fill:#2E2419;paint-order:stroke;stroke:#FBF4E4;stroke-width:4px;stroke-linejoin:round;}
-  .ann{font:700 23px Caveat,cursive;fill:#A63A0C;}
   .stop-hit{cursor:pointer;outline:none;}
   .stop-hit:focus-visible circle{stroke:#A63A0C;stroke-width:2.5;}
 
@@ -78,7 +73,6 @@
   .stop-head{position:relative;border-top:1px solid var(--rule);padding-top:26px;}
   .stop-head h2,.view-h{margin:0;font:700 44px/1.05 Caveat,cursive;color:var(--ink);}
   .view-h{border-top:1px solid var(--rule);padding-top:26px;}
-  .stop-title{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;}
   .facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:baseline;margin:14px 0 0;}
   .facts dd{margin:0;}
   .blurb{margin:12px 0 0;font-style:italic;}
@@ -87,7 +81,6 @@
   .day-h b{font:700 32px/1.1 Caveat,cursive;color:var(--rust);}
   .entry{margin-top:18px;}
   .entry h3{margin:0;font:700 29px/1.1 Caveat,cursive;}
-  .day-h .stamp{margin-left:auto;padding:4px 6px 3px;font-size:11px;}
   .entry p{margin:6px 0 0;white-space:pre-wrap;}
   .empty{margin:30px 0 0;text-align:center;font:25px/1.3 Caveat,cursive;color:var(--faint);}
   .prints{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 18px;margin:24px 0 6px;}
@@ -118,8 +111,6 @@
   .lb-print figcaption{padding-top:8px;text-align:center;font:24px/1.2 Caveat,cursive;}
   .lb-hint{font:12px 'Special Elite','Courier New',monospace;color:#E9DCC3;}
 
-  @keyframes pulse{0%{transform:scale(.6);opacity:.9;}70%{transform:scale(2.1);opacity:0;}100%{transform:scale(2.1);opacity:0;}}
-  .pin-pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-out infinite;}
   @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
 </style>
 </head>
@@ -130,7 +121,7 @@
     <header class="head" id="top">
       <h1>An American Autumn</h1>
       <p class="label">Washington DC &#8594; Boston &#183; 27 Sept &#8211; 10 Oct 2026</p>
-      <p class="status" id="status"></p>
+      <p class="status" id="status">Fourteen days, about 1,100 road miles, eight states and D.C. Thanks for reading.</p>
       <nav class="nav" aria-label="Sections">
         <button type="button" data-go="map">Map</button>
         <button type="button" data-go="diary" aria-pressed="false">Diary</button>
@@ -161,7 +152,6 @@
             fill="none" stroke="#FFE14D" stroke-opacity=".55" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
           <polyline points="66.6,586 54,494.2 175.3,416.2 190.4,380.7 265,346.9 267,339.3 268.6,301.7 425.8,264.6 442.2,269.5 438.1,105.3 414.9,76.3 430.8,54 451.1,74.3 460.8,77.6 506,112.4 488,146 470,176 466.2,226.9 455.8,243.2"
             fill="none" stroke="#A63A0C" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round" stroke-linejoin="round"/>
-          <g id="ringLayer"></g>
           <g id="pinLayer"></g>
           <g>
             <text class="lbl" x="86" y="591">Washington DC</text>
@@ -172,24 +162,22 @@
             <text class="lbl" x="498" y="142" text-anchor="end">Portland</text>
             <text class="lbl" x="467" y="253">Boston</text>
           </g>
-          <g id="annLayer"></g>
           <g id="selLayer"></g>
           <g id="hitLayer"></g>
         </svg>
       </div>
     </section>
-    <p class="map-cap"><i style="background:#2E2419"></i>a night&rsquo;s stay &#160; <i style="background:#A63A0C"></i>where we are now &#160;&#183;&#160; tap a pin to open its page</p>
+    <p class="map-cap"><i style="background:#2E2419"></i>a night&rsquo;s stay &#160;&#183;&#160; tap a pin to open its page</p>
 
     <section id="panel" aria-live="polite"><div id="panelBody"></div></section>
 
-    <footer class="foot">A homemade scrapbook by Matt &amp; co.<br>Last updated <span id="lastUpd"></span><br><a href="#top">back to top &#8593;</a></footer>
+    <footer class="foot">A homemade scrapbook by Matt &amp; co., written along the way.<br><a href="#top">back to top &#8593;</a></footer>
   </div>
 </div>
 
 <script id="aa-state" type="application/json">{"entries":[{"id":"d1-arrival","day":1,"title":"","text":"Despite the “lost passport” episode and an hour’s delay on the tarmac, our transatlantic journey was smooth. We arrived at 9pm local time and headed straight to bed.","photos":[],"ts":1790630685200},{"id":"d2-mall-and-archives","day":2,"title":"","text":"The jet lag worked in our favour: awake at 6am and ready to carpe the diem. Drip coffee and a lox bagel made for a wonderfully American start in the lovely diner pictured below.","photos":[{"thumb":"scrapbook-media/018e0320e336e4cd-t.jpg","full":"scrapbook-media/018e0320e336e4cd-f.jpg","w":1200,"h":1600,"cap":"Lox bagels at the Gallery Café"},{"thumb":"scrapbook-media/50896a59b0034500-t.jpg","full":"scrapbook-media/50896a59b0034500-f.jpg","w":1200,"h":1600,"cap":"Two lox, clearly labelled"}],"ts":1790630685201},{"id":"d2-lunch","day":2,"title":"","text":"All that walking called for a substantial lunch, and my burrito certainly delivered.","photos":[{"thumb":"scrapbook-media/f148f945d2f49860-t.jpg","full":"scrapbook-media/f148f945d2f49860-f.jpg","w":1200,"h":1600,"cap":"The burrito, with Gaviscon on standby"}],"ts":1790631003640},{"id":"d2-portrait-gallery","day":2,"title":"","text":"Refuelled, we headed to the National Portrait Gallery. It was a great way to take in the grand sweep of American history, with plenty of familiar faces alongside some interesting new perspectives.","photos":[{"thumb":"scrapbook-media/b7270300db95ac4e-t.jpg","full":"scrapbook-media/b7270300db95ac4e-f.jpg","w":1200,"h":1600,"cap":"“Out of Darkness Into Light”"},{"thumb":"scrapbook-media/0d4fa88a5bc49a53-t.jpg","full":"scrapbook-media/0d4fa88a5bc49a53-f.jpg","w":1600,"h":1200,"cap":"Nixon, by Norman Rockwell"},{"thumb":"scrapbook-media/a19108c5ab11f8b4-t.jpg","full":"scrapbook-media/a19108c5ab11f8b4-f.jpg","w":1200,"h":1600,"cap":"Richard Feynman at the blackboard"},{"thumb":"scrapbook-media/790f04f7d814500e-t.jpg","full":"scrapbook-media/790f04f7d814500e-f.jpg","w":1200,"h":1600,"cap":"Obama, by Kehinde Wiley"}],"ts":1790631003641},{"id":"d2-archives","day":2,"title":"","text":"Next we headed to the National Archive, where we survived the indignity of an exhibition about the divorce between our nations 250 years ago. The archival film footage of government messaging and patents of US inventions were fascinating.\n\nWith 25,000 steps behind us, we retreated to base for a breather before our evening plans.","photos":[{"thumb":"scrapbook-media/febcf504ad9c7fba-t.jpg","full":"scrapbook-media/febcf504ad9c7fba-f.jpg","w":1200,"h":1600,"cap":"“142 years young and going strong!” — July 4th, 1918"},{"thumb":"scrapbook-media/95547edf0a13d956-t.jpg","full":"scrapbook-media/95547edf0a13d956-f.jpg","w":1200,"h":1600,"cap":"Jack Kilby’s microchip patent, 1964"}],"ts":1790631003642},{"id":"d2-monuments","day":2,"title":"","text":"We then spent four hours walking around DC, taking in the White House (heavily securitised), the Washington Monument (once the world’s tallest structure), and the Reflecting Pool (sans water).\n\nThe Lincoln Memorial was awesome in the classic sense of the word. The Korean memorial exhibit is cleverly done and I was shocked by the sheer number of UN victims. The Vietnam Veterans Memorial was more sobering, particularly seeing two veterans clearly moved by their visit. We continued around the MLK and FDR memorials before making our way to the Jefferson portico.","photos":[{"thumb":"scrapbook-media/0f2616a67cd3746b-t.jpg","full":"scrapbook-media/0f2616a67cd3746b-f.jpg","w":1200,"h":1600,"cap":"The Washington Monument"},{"thumb":"scrapbook-media/bb67da6ad000aacc-t.jpg","full":"scrapbook-media/bb67da6ad000aacc-f.jpg","w":1200,"h":1600,"cap":"“I have a dream” — and the Reflecting Pool, sans water"},{"thumb":"scrapbook-media/bdac3f356449b2a6-t.jpg","full":"scrapbook-media/bdac3f356449b2a6-f.jpg","w":1600,"h":1200,"cap":"The two of us, and Abe"},{"thumb":"scrapbook-media/a776b07f3a0ecadd-t.jpg","full":"scrapbook-media/a776b07f3a0ecadd-f.jpg","w":1600,"h":1200,"cap":"On patrol at the Korean War Veterans Memorial"},{"thumb":"scrapbook-media/a16604610fe04d03-t.jpg","full":"scrapbook-media/a16604610fe04d03-f.jpg","w":1600,"h":1200,"cap":"The Korean War’s toll, at the Pool of Remembrance"},{"thumb":"scrapbook-media/06afcce203666568-t.jpg","full":"scrapbook-media/06afcce203666568-f.jpg","w":1200,"h":1600,"cap":"A letter left at the Vietnam Wall for Peter Kmetyk"}],"ts":1790631003639},{"id":"d2-off-the-record","day":2,"title":"","text":"We ventured back out into the evening to Off the Record, a politically themed bar by the White House. Bustling with staffers and decorated with political caricatures, I think we will be going back before we leave DC.","photos":[{"thumb":"scrapbook-media/7fc724e23f847744-t.jpg","full":"scrapbook-media/7fc724e23f847744-f.jpg","w":1200,"h":1600,"cap":"The White House by night"},{"thumb":"scrapbook-media/552d82f2307f726e-t.jpg","full":"scrapbook-media/552d82f2307f726e-f.jpg","w":1600,"h":1200,"cap":"The caricature wall at Off the Record"},{"thumb":"scrapbook-media/5c7cee15c2abf1f9-t.jpg","full":"scrapbook-media/5c7cee15c2abf1f9-f.jpg","w":1200,"h":1600,"cap":"Souvenir secured"}],"ts":1790679920885},{"id":"d2-old-ebbitt","day":2,"title":"","text":"After a couple of drinks and with a few placemats secured as souvenirs, we headed to the Old Ebbitt Grill for dinner. This was a bustling bar and restaurant which served us crab cakes and conversation at the bar, where our Californian neighbours turned out to have once done a house swap with a family in Guildford.","photos":[{"thumb":"scrapbook-media/571d5a6750dfc323-t.jpg","full":"scrapbook-media/571d5a6750dfc323-f.jpg","w":1200,"h":1600,"cap":"The Old Ebbitt Grill in full swing"},{"thumb":"scrapbook-media/5b1e30cc7c5a5cae-t.jpg","full":"scrapbook-media/5b1e30cc7c5a5cae-f.jpg","w":1200,"h":1600,"cap":"The view from our bar stools"}],"ts":1790679920886},{"id":"d2-bedtime","day":2,"title":"","text":"Now it really was time for bed.","photos":[],"ts":1790680016694},{"id":"d3-morning-run","day":3,"title":"","text":"Jet lag once again got us up bright and early. I headed out for a morning run while Billy went for a swim. The National Mall makes a spectacular running route, stretching from the Lincoln Memorial (hi again!) all the way to the Capitol (see you later!).","photos":[{"thumb":"scrapbook-media/82cb10f5b7397db7-t.jpg","full":"scrapbook-media/82cb10f5b7397db7-f.jpg","w":1200,"h":1600,"cap":"Hi again, Abe"},{"thumb":"scrapbook-media/b3cda6872854a759-t.jpg","full":"scrapbook-media/b3cda6872854a759-f.jpg","w":1200,"h":1600,"cap":"See ya later, Capitol"}],"ts":1790684881954},{"id":"d3-union-station","day":3,"title":"","text":"Today was all about the Capitol, so once we were ready, we got on the subway and headed over. This also gave us a chance to see the gorgeous Union Station. The marble floors certainly get polished!","photos":[{"thumb":"scrapbook-media/cd4c67221fd9b1d6-t.jpg","full":"scrapbook-media/cd4c67221fd9b1d6-f.jpg","w":1200,"h":1600,"cap":"Union Station, freshly polished"},{"thumb":"scrapbook-media/13bc629bb1c8b26f-t.jpg","full":"scrapbook-media/13bc629bb1c8b26f-f.jpg","w":1200,"h":1600,"cap":"Outside Union Station, the Capitol in sight"}],"ts":1790716029849},{"id":"d3-senate-and-library","day":3,"title":"","text":"We then took our seats in the Senate gallery, where a senator from Vermont was seeking to reverse Trump’s tariffs on Canada. Unsurprisingly, he didn’t get very far.\n\nAfter a further mooch around the exhibitions, the House and the gift shop, we headed to the Library of Congress. This was a complete surprise: jaw-droppingly beautiful and an absolute must-visit.","photos":[{"thumb":"scrapbook-media/6142ff7a3ee466cb-t.jpg","full":"scrapbook-media/6142ff7a3ee466cb-f.jpg","w":1200,"h":1600,"cap":"Jaw-dropping: the Library of Congress"}],"ts":1790716029851},{"id":"d3-capitol-hill-verdict","day":3,"title":"","text":"Capitol Hill certainly didn’t disappoint. A wonderfully welcoming and engaging place to spend the day.","photos":[],"ts":1790716029853},{"id":"d3-capitol-tour","day":3,"title":"","text":"After a short queue, we toured the building, with a film in the theatre as part of the experience. My highlight was the statue of Ronald Reagan in the beautiful rotunda, with fragments of the Berlin Wall built into its base.","photos":[{"thumb":"scrapbook-media/569246c0e087bd7c-t.jpg","full":"scrapbook-media/569246c0e087bd7c-f.jpg","w":1600,"h":1200,"cap":"The Capitol, under dramatic skies"},{"thumb":"scrapbook-media/038244417a3f65c8-t.jpg","full":"scrapbook-media/038244417a3f65c8-f.jpg","w":1200,"h":1600,"cap":"The Rotunda: history, painted big"},{"thumb":"scrapbook-media/7305beb6fbf901a2-t.jpg","full":"scrapbook-media/7305beb6fbf901a2-f.jpg","w":1200,"h":1600,"cap":"Looking up at the Apotheosis of Washington"},{"thumb":"scrapbook-media/67a95716e70bd2c2-t.jpg","full":"scrapbook-media/67a95716e70bd2c2-f.jpg","w":1200,"h":1600,"cap":"Reagan, standing on pieces of the Berlin Wall"},{"thumb":"scrapbook-media/4638fcfb8afb8b80-t.jpg","full":"scrapbook-media/4638fcfb8afb8b80-f.jpg","w":1200,"h":1600,"cap":"Arizona’s Barry Goldwater"}],"ts":1790716029850},{"id":"d3-supreme-court","day":3,"title":"","text":"We rounded off the visit with a look at the Supreme Court and a wander around the botanical gardens before heading home.","photos":[{"thumb":"scrapbook-media/6f049d758f52f4d5-t.jpg","full":"scrapbook-media/6f049d758f52f4d5-f.jpg","w":1200,"h":1600,"cap":"Equal Justice Under Law"},{"thumb":"scrapbook-media/816772b067334b20-t.jpg","full":"scrapbook-media/816772b067334b20-f.jpg","w":1200,"h":1600,"cap":"Goodbye, Capitol"}],"ts":1790716029852},{"id":"d3-georgetown","day":3,"title":"","text":"After a quick refresh, we were out to Georgetown to experience a more livable and lively neighbourhood. We started at a bar called The Sovereign where we enjoyed their extensive beer list.","photos":[{"thumb":"scrapbook-media/821b0b809310c680-t.jpg","full":"scrapbook-media/821b0b809310c680-f.jpg","w":1600,"h":1200,"cap":"The Sovereign’s wall of taps"}],"ts":1790798922267},{"id":"d3-martins-tavern","day":3,"title":"","text":"We then headed to Martin’s Tavern. This is where JFK proposed to Jackie and we had our photo in that booth. I enjoyed a delicious massive fillet of halibut on a bed of beet risotto, definitely the best food of the trip so far.","photos":[{"thumb":"scrapbook-media/1dd98538a3da21cb-t.jpg","full":"scrapbook-media/1dd98538a3da21cb-f.jpg","w":1600,"h":1200,"cap":"The two of us in the Proposal Booth"},{"thumb":"scrapbook-media/fe5d3cbcf420c2d3-t.jpg","full":"scrapbook-media/fe5d3cbcf420c2d3-f.jpg","w":1200,"h":1600,"cap":"The halibut: best of the trip so far"}],"ts":1790799582609},{"id":"d3-bedtime","day":3,"title":"","text":"Then, with jet lag catching up with us, it was time for bed.","photos":[],"ts":1790799582610},{"id":"d4-post-office-tower","day":4,"title":"","text":"Another jet lag induced early morning and we headed straight to the Old Post Office Tower for great views of DC. It was fascinating to see the scale of Arlington in the distance and the National Cathedral on the horizon.","photos":[{"thumb":"scrapbook-media/179ecf2b4bc6cb78-t.jpg","full":"scrapbook-media/179ecf2b4bc6cb78-f.jpg","w":1200,"h":1600,"cap":"Up the Old Post Office Tower"}],"ts":1790800161165},{"id":"d4-supreme-court","day":4,"title":"","text":"A revisit to the Supreme Court was next on the agenda with a fantastic museum downstairs and the most impressive marble forum leading to the courtroom.","photos":[{"thumb":"scrapbook-media/8ff9cb4d10774fc4-t.jpg","full":"scrapbook-media/8ff9cb4d10774fc4-f.jpg","w":1200,"h":1600,"cap":"The Supreme Court’s Great Hall"}],"ts":1790800161166},{"id":"d4-postal-museum","day":4,"title":"","text":"After a quick whizz around the US postal museum (fun fact 1: they used optical character recognition to sort mail as early as 1997) (fun fact 2: they deliver about half of the world’s mail), we grabbed a quick lunch and headed to Arlington.","photos":[{"thumb":"scrapbook-media/4f73cde11cf17667-t.jpg","full":"scrapbook-media/4f73cde11cf17667-f.jpg","w":1200,"h":1600,"cap":"Waffle ceilings on the Metro"}],"ts":1790800161167},{"id":"d4-arlington","day":4,"title":"","text":"Arlington was haunting in its beauty and its scale. The Unknown Soldier was particularly touching and we witnessed a changing of the guard.","photos":[{"thumb":"scrapbook-media/67628e5a00ba8ceb-t.jpg","full":"scrapbook-media/67628e5a00ba8ceb-f.jpg","w":1600,"h":1200,"cap":"Arlington National Cemetery"},{"thumb":"scrapbook-media/6a8b84b5ab5b7dfc-t.jpg","full":"scrapbook-media/6a8b84b5ab5b7dfc-f.jpg","w":1200,"h":1600,"cap":"Row upon row"}],"ts":1790800161168},{"id":"d4-myth-making","day":4,"title":"","text":"The national myth making stands out in DC in a way that just doesn’t exist back in the UK.","photos":[],"ts":1790800161169},{"id":"d4-sunset-stroll","day":4,"title":"","text":"After a short break, we headed back to Off the Record for a drink and to add to our collection of political placemats. From there, we took a sunset stroll around DC’s monuments, all bathed in a gorgeous orange and pink glow.","photos":[{"thumb":"scrapbook-media/96b5cbddaca3bb37-t.jpg","full":"scrapbook-media/96b5cbddaca3bb37-f.jpg","w":1200,"h":1600,"cap":"The Washington Monument at dusk"},{"thumb":"scrapbook-media/1d1f99b4ae1c1e9a-t.jpg","full":"scrapbook-media/1d1f99b4ae1c1e9a-f.jpg","w":1200,"h":1600,"cap":"The World War II Memorial at sunset"},{"thumb":"scrapbook-media/62ec1faa99ffd66e-t.jpg","full":"scrapbook-media/62ec1faa99ffd66e-f.jpg","w":1200,"h":1600,"cap":"Goodnight, Abe"}],"ts":1790853359753},{"id":"d4-last-night","day":4,"title":"","text":"A stop at a sports bar and another dinner at Old Ebbitt Grill rounded off the evening, before an early night ahead of a big day of travelling.","photos":[],"ts":1790853359754},{"id":"d5-gettysburg","day":5,"title":"","text":"An exciting day as our road trip truly began with us picking up our beautiful red Jeep.\n\nFirst stop: Gettysburg. After yesterday’s visit to Arlington, another cemetery felt a little bleak. But the museum was beautifully done, bringing to life the Civil War, the Battle of Gettysburg and Lincoln’s famous address.\n\nBonus points for the hot dog I enjoyed on the patio in the 27-degree sunshine!","photos":[{"thumb":"scrapbook-media/f83d913c2b945900-t.jpg","full":"scrapbook-media/f83d913c2b945900-f.jpg","w":1200,"h":1600,"cap":"Pointing out the Soldiers’ National Monument"},{"thumb":"scrapbook-media/b0dad57dc865aec9-t.jpg","full":"scrapbook-media/b0dad57dc865aec9-f.jpg","w":1200,"h":1600,"cap":"Abe again, at Gettysburg"},{"thumb":"scrapbook-media/a108bcdf0b97ec63-t.jpg","full":"scrapbook-media/a108bcdf0b97ec63-f.jpg","w":1200,"h":1600,"cap":"The battlefield, quiet now"}],"ts":1791029409497},{"id":"d5-bethlehem-steel","day":5,"title":"","text":"We continued across Pennsylvania to the abandoned ironworks at Bethlehem Steel. The massive furnaces told a story of industrial might followed by steep decline, echoed in Billy Joel’s Allentown. At its peak, 30,000 people worked there.","photos":[{"thumb":"scrapbook-media/578dafa0149d4130-t.jpg","full":"scrapbook-media/578dafa0149d4130-f.jpg","w":1200,"h":1600,"cap":"Dwarfed by the blast furnaces"},{"thumb":"scrapbook-media/385239104bf5fd77-t.jpg","full":"scrapbook-media/385239104bf5fd77-f.jpg","w":1200,"h":1600,"cap":"Bethlehem Steel’s rusting giants"}],"ts":1791029409498},{"id":"d5-new-jersey","day":5,"title":"","text":"Billy was keen to see his mother’s family home before sunset, so we pressed on towards New Jersey as the light faded. Arriving just in time, we saw the old house, met former neighbours and visited her old school. A lovely, personal visit to the American suburbia you see in the movies.\n\nAfter a long day on the road, we headed north to our final stop, the Bear Mountain Inn, for dinner and some much-needed sleep.","photos":[],"ts":1791029409499},{"id":"d6-lakeside","day":6,"title":"","text":"No rest, as our road trip continued at pace! An early start, a lakeside walk, and then straight to West Point.","photos":[{"thumb":"scrapbook-media/a7d2eeb58c785432-t.jpg","full":"scrapbook-media/a7d2eeb58c785432-f.jpg","w":1200,"h":1600,"cap":"Morning stillness on Hessian Lake"}],"ts":1791030290250},{"id":"d6-west-point","day":6,"title":"","text":"I’d expected a rather distant, sanitised tour, but we were lucky to get a thorough look around, walking alongside the cadets as they went about their day. An impressive institution and a fascinating visit.","photos":[{"thumb":"scrapbook-media/58e1bbda145d9c9d-t.jpg","full":"scrapbook-media/58e1bbda145d9c9d-f.jpg","w":1200,"h":1600,"cap":"The Plain, with the Cadet Chapel on the hill"},{"thumb":"scrapbook-media/4d46caeacd94e02a-t.jpg","full":"scrapbook-media/4d46caeacd94e02a-f.jpg","w":1600,"h":1200,"cap":"Army football practice, through the nets"},{"thumb":"scrapbook-media/9f24da9e79d48d8e-t.jpg","full":"scrapbook-media/9f24da9e79d48d8e-f.jpg","w":1200,"h":1600,"cap":"Inside the Cadet Chapel"},{"thumb":"scrapbook-media/75799b012dc3fc40-t.jpg","full":"scrapbook-media/75799b012dc3fc40-f.jpg","w":1200,"h":1600,"cap":"Duty, Honor, Country, in stained glass"}],"ts":1791030290251},{"id":"d6-fdr","day":6,"title":"","text":"We then wound our way north along the Hudson River to FDR’s home, library and museum. I was surprised to learn about the King’s visit to such a modest home, well away from the big cities.","photos":[{"thumb":"scrapbook-media/eb4e532cd2db4b6c-t.jpg","full":"scrapbook-media/eb4e532cd2db4b6c-f.jpg","w":1600,"h":1200,"cap":"Between FDR and Churchill"},{"thumb":"scrapbook-media/549c52393b7aed96-t.jpg","full":"scrapbook-media/549c52393b7aed96-f.jpg","w":1200,"h":1600,"cap":"Norman Rockwell’s Four Freedoms"}],"ts":1791030290252},{"id":"d6-zach-bryan","day":6,"title":"","text":"From there, we headed east towards Boston for our Zach Bryan concert. Traffic slowed us down, but we reached the hotel with plenty of time to spare. Or so we thought.\n\nWhat should have been a 15-minute journey to the stadium took over two hours. We finally arrived at 8:45pm for a 7pm start, fortunately just before Zach took to the stage at 9pm. I couldn’t quite believe how popular he was, or how young the crowd was!","photos":[{"thumb":"scrapbook-media/868a3a2e08418f62-t.jpg","full":"scrapbook-media/868a3a2e08418f62-f.jpg","w":1200,"h":1600,"cap":"Zach Bryan at Gillette Stadium, worth the wait"}],"ts":1791030290253},{"id":"d6-home","day":6,"title":"","text":"Thankfully, the journey home took a much more reasonable 25 minutes.","photos":[],"ts":1791030290254},{"id":"d7-red-arrow","day":7,"title":"","text":"A later start today following last night’s awesome performance. Following a quick breakfast at the Holiday Inn, we hit the road and headed north to New Hampshire.\n\nWe opted to stop at the Red Arrow Diner, a traditional diner for budding presidents to visit during the New Hampshire primaries — the first in the nation. Our lunches were devoured as we sat at the seats of Biden and Trump enjoying the free coffee refills.","photos":[{"thumb":"scrapbook-media/eac2e851695f4f4b-t.jpg","full":"scrapbook-media/eac2e851695f4f4b-f.jpg","w":1200,"h":1600,"cap":"The Red Arrow Diner’s famous counter"},{"thumb":"scrapbook-media/29f5d958dd4681b5-t.jpg","full":"scrapbook-media/29f5d958dd4681b5-f.jpg","w":1200,"h":1600,"cap":"A full American at the Red Arrow"},{"thumb":"scrapbook-media/68eae44c1e5251c1-t.jpg","full":"scrapbook-media/68eae44c1e5251c1-f.jpg","w":1200,"h":1600,"cap":"Clean Plate Award, earned"}],"ts":1791151804909},{"id":"d7-lost-river","day":7,"title":"","text":"Our journey continued as we drove further north, enjoying the leaves becoming more and more amber. We stopped in at the Lost River Gorge to get into the forests and caves. We became minor celebrities as the British men squeezing into tiny caves.","photos":[{"thumb":"scrapbook-media/1e46086c8820751c-t.jpg","full":"scrapbook-media/1e46086c8820751c-f.jpg","w":1200,"h":1600,"cap":"The leaves turning amber on the drive north"},{"thumb":"scrapbook-media/eb094ef9c3e9d180-t.jpg","full":"scrapbook-media/eb094ef9c3e9d180-f.jpg","w":1200,"h":1600,"cap":"Weighing up the Squeezer Gauge"},{"thumb":"scrapbook-media/0d117a18a4ac6cc2-t.jpg","full":"scrapbook-media/0d117a18a4ac6cc2-f.jpg","w":1200,"h":1600,"cap":"One British man, one tiny cave"}],"ts":1791151804910},{"id":"d7-brewery","day":7,"title":"","text":"Our hotel is attached to the brewery next door, so our evening went the way you may expect. I enjoyed a couple of local beers as we ate some massive “Nasty Nachos”!","photos":[{"thumb":"scrapbook-media/23f2077a1074e558-t.jpg","full":"scrapbook-media/23f2077a1074e558-f.jpg","w":1200,"h":1600,"cap":"Home for two nights: the Woodstock Inn Brewery"},{"thumb":"scrapbook-media/850289f5be0fb541-t.jpg","full":"scrapbook-media/850289f5be0fb541-f.jpg","w":1200,"h":1600,"cap":"The “Nasty Nachos”, in all their glory"}],"ts":1791151804911},{"id":"d8-cog-railway","day":8,"title":"","text":"Another early morning as we attempted to avoid the tourist traffic. After a generous breakfast from the hotel, we went straight to the Washington Cog Railway.\n\nBuilt in the 19th century, it takes us straight to the top of the tallest mountain in the northeast of the USA, peaking at a 37% incline. We were fortunate to enjoy clear skies and peak foliage, as our tour guide said “ask whoever planned today’s trip to buy some lottery tickets”.","photos":[{"thumb":"scrapbook-media/3f3f96d0fd9a918e-t.jpg","full":"scrapbook-media/3f3f96d0fd9a918e-f.jpg","w":1200,"h":1600,"cap":"Peak foliage on the road to the Cog"},{"thumb":"scrapbook-media/ee5a58f7b6903667-t.jpg","full":"scrapbook-media/ee5a58f7b6903667-f.jpg","w":1200,"h":1600,"cap":"Waumbek, Cog engine No. 9"},{"thumb":"scrapbook-media/7c9346d1334ff145-t.jpg","full":"scrapbook-media/7c9346d1334ff145-f.jpg","w":1200,"h":1600,"cap":"Waumbek pushing off up the mountain"},{"thumb":"scrapbook-media/ab234f6b7cd1f3dd-t.jpg","full":"scrapbook-media/ab234f6b7cd1f3dd-f.jpg","w":1200,"h":1600,"cap":"Head in the clouds at the summit"}],"ts":1791154745814},{"id":"d8-bretton-woods","day":8,"title":"","text":"After much photo taking at the peak, we headed back down and straight off to Bretton Woods.\n\nThere, we soaked in the history of the Bretton Woods conference and tucked into a lovely lunch and a long, lazy afternoon reading on the veranda with a cheeky Baileys hot chocolate.","photos":[{"thumb":"scrapbook-media/c2cb67a26d1c740e-t.jpg","full":"scrapbook-media/c2cb67a26d1c740e-f.jpg","w":1600,"h":1200,"cap":"A cheeky Baileys on the veranda"}],"ts":1791154745815},{"id":"d8-evening","day":8,"title":"","text":"After our exhausting day of sitting on trains and drinking Baileys, we took it easy with drinks at a local sports bar and dinner at the brewery once again. I thoroughly enjoyed my chicken fajitas before heading to bed. A well-earned rest, obviously.","photos":[{"thumb":"scrapbook-media/a2cb805662f6ce50-t.jpg","full":"scrapbook-media/a2cb805662f6ce50-f.jpg","w":1600,"h":1200,"cap":"“The best beer in America”, apparently"}],"ts":1791338931853},{"id":"d9-kancamagus","day":9,"title":"","text":"Yet another moving day! We headed along the Kancamagus Highway, stopping frequently to take in the beautiful autumn views. It’s widely considered one of the most scenic roads in the USA, and I can see why.","photos":[{"thumb":"scrapbook-media/a8571a39a6449392-t.jpg","full":"scrapbook-media/a8571a39a6449392-f.jpg","w":1200,"h":1600,"cap":"One of many stops along the Kancamagus"},{"thumb":"scrapbook-media/07e74cb655e7b7ca-t.jpg","full":"scrapbook-media/07e74cb655e7b7ca-f.jpg","w":1200,"h":1600,"cap":"A waterfall just off the road"}],"ts":1791338931854},{"id":"d9-ll-bean","day":9,"title":"","text":"The road brought us to Conway, where I made the most of the sales at the L.L.Bean outlet and bought myself a good ol’ country outfit for tomorrow’s fair. This included the world’s comfiest shoes — I will be chewing everyone’s ear off about these when I’m back.","photos":[{"thumb":"scrapbook-media/3dd22da65008a617-t.jpg","full":"scrapbook-media/3dd22da65008a617-f.jpg","w":1200,"h":1600,"cap":"The world’s comfiest shoes (you’ll hear about them)"}],"ts":1791338931855},{"id":"d9-hike","day":9,"title":"","text":"After devouring a lovely lunch at the Muddy Moose, we finally got properly stuck into the great outdoors with a two-hour mountain hike. Beautiful views, fresh air and, perhaps, a chance to burn off a fraction of the calories we’d consumed in the Nasty Nachos of two nights ago.","photos":[{"thumb":"scrapbook-media/c9383cd123f7144c-t.jpg","full":"scrapbook-media/c9383cd123f7144c-f.jpg","w":1200,"h":1600,"cap":"Big skies on the two-hour hike"}],"ts":1791338931856},{"id":"d9-oxford-house","day":9,"title":"","text":"Before long, it was time to head to the Oxford House Inn, a quaint little B&B in rural Maine. We had a vision of what a “mom-and-pop” inn might be like, and my God, did it exceed expectations.\n\nWe were greeted with a hug and a promise to keep “her boys” well fed. Next thing we knew, the landlady was bursting into our bedroom to sell us on a pre-dinner cocktail. How could we refuse?\n\nDinner was intimate: just us and a local couple who were clearly regulars. Four and a half short hours later, we stumbled upstairs with plenty of memories, a new understanding of Yankee culture, and a rather large bill for numerous frozen mudslides.","photos":[],"ts":1791338931857},{"id":"d10-landlady","day":10,"title":"","text":"A slightly later start after last night’s antics brought us back downstairs for breakfast with the landlady. Within five minutes, she’d assured us that “I’ve got you” as we tucked into the local fare. Lots of blueberries.\n\nMeanwhile, she was openly wondering where the other couple had got to, affectionately referring to them as “her drunks”.","photos":[],"ts":1791338931858},{"id":"d10-fair-arrival","day":10,"title":"","text":"With our iconic landlady in the rear-view mirror, we headed to Fryeburg Fair. What a place!","photos":[{"thumb":"scrapbook-media/e2706fa941ad7b5a-t.jpg","full":"scrapbook-media/e2706fa941ad7b5a-f.jpg","w":1200,"h":1600,"cap":"Everybody’s agoing to Fryeburg Fair"},{"thumb":"scrapbook-media/7478e96be23c8227-t.jpg","full":"scrapbook-media/7478e96be23c8227-f.jpg","w":1200,"h":1600,"cap":"Dressed for the fair, Bean boots and all"}],"ts":1791338931859},{"id":"d10-fryeburg-fair","day":10,"title":"","text":"There were animals of every description, tractor pulling, horse pulling, cattle competitions and chariot racing. We also tried some blooming onions which were delicious until they were grotesque. It was a glorious celebration of rural New England, and I’d urge anyone to visit a regional fair if they get the chance.","photos":[{"thumb":"scrapbook-media/5acc790d3d1373a1-t.jpg","full":"scrapbook-media/5acc790d3d1373a1-f.jpg","w":1200,"h":1600,"cap":"Jack and Dick, of Stonewall Farm"},{"thumb":"scrapbook-media/8844cc65bf123af2-t.jpg","full":"scrapbook-media/8844cc65bf123af2-f.jpg","w":1200,"h":1600,"cap":"Making friends in the horse barns"},{"thumb":"scrapbook-media/5f7dadeb88ecafcf-t.jpg","full":"scrapbook-media/5f7dadeb88ecafcf-f.jpg","w":1600,"h":1200,"cap":"Harness racing from the grandstand"},{"thumb":"scrapbook-media/e1968fb49e5746fd-t.jpg","full":"scrapbook-media/e1968fb49e5746fd-f.jpg","w":1200,"h":1600,"cap":"Thundering down the home straight"},{"thumb":"scrapbook-media/dc004dc89002725c-t.jpg","full":"scrapbook-media/dc004dc89002725c-f.jpg","w":1200,"h":1600,"cap":"Trackside, with the mountains behind"},{"thumb":"scrapbook-media/fda029fc0a4f38ed-t.jpg","full":"scrapbook-media/fda029fc0a4f38ed-f.jpg","w":1200,"h":1600,"cap":"Blooming onion, at the delicious stage"}],"ts":1791338931860},{"id":"d10-portland","day":10,"title":"","text":"A short drive brought us to Portland, which offered a rather different atmosphere. It oozed cool and stank of weed.\n\nAnyway, we were hungry.\n\nDinner was at Scales, an upmarket seafood restaurant on the waterfront, where we tucked into Maine lobster. Natch.","photos":[{"thumb":"scrapbook-media/59aeb2503e388b20-t.jpg","full":"scrapbook-media/59aeb2503e388b20-f.jpg","w":1600,"h":1200,"cap":"Sunset over Portland’s waterfront"},{"thumb":"scrapbook-media/1bf1a25a815c3b6c-t.jpg","full":"scrapbook-media/1bf1a25a815c3b6c-f.jpg","w":1200,"h":1600,"cap":"Maine lobster at Scales. Natch."}],"ts":1791338931861},{"id":"d10-bedtime","day":10,"title":"","text":"Then it was time for bed. Tomorrow, we’d be heading out to catch the things ourselves.","photos":[],"ts":1791338931862},{"id":"d11-morning","day":11,"title":"","text":"Unsurprisingly, after a busy few days, we woke up late on our first full day in Portland.\n\nAs we walked around, it became noticeable how European Portland feels — lots of espresso coffee shops and little alleys to walk down.\n\nWe started our day at a lovely cafe — The Tandem Bakery. Then we headed into town to mooch before going lobstering.","photos":[],"ts":1791486333967},{"id":"d11-lobstering","day":11,"title":"","text":"The trip included going out to the islands, picking up a lobster cage, looking through the harvest, discarding inappropriate catch, and securing the appropriate catch. A really fascinating commentary was included — a highly regulated industry to ensure sustainability is maintained. It was a highlight of the trip.","photos":[{"thumb":"scrapbook-media/b280497862cd8413-t.jpg","full":"scrapbook-media/b280497862cd8413-f.jpg","w":1200,"h":1600,"cap":"Kitted out and ready to haul"},{"thumb":"scrapbook-media/b92feff5dac3c599-t.jpg","full":"scrapbook-media/b92feff5dac3c599-f.jpg","w":1200,"h":1600,"cap":"Does this one measure up?"},{"thumb":"scrapbook-media/5498d01ea75919bb-t.jpg","full":"scrapbook-media/5498d01ea75919bb-f.jpg","w":1200,"h":1600,"cap":"The appropriate catch, secured"}],"ts":1791486333968},{"id":"d11-lighthouse","day":11,"title":"","text":"We then raced down to the famous lighthouse for a walk, a lobster roll, and photos of the picturesque coastline.","photos":[{"thumb":"scrapbook-media/7fb71e53e5e9c6e1-t.jpg","full":"scrapbook-media/7fb71e53e5e9c6e1-f.jpg","w":1600,"h":1200,"cap":"Portland Head Light"},{"thumb":"scrapbook-media/d984e3e32e8ea633-t.jpg","full":"scrapbook-media/d984e3e32e8ea633-f.jpg","w":1200,"h":1600,"cap":"A lobster roll under the Stars and Stripes"}],"ts":1791486333969},{"id":"d11-pub-quiz","day":11,"title":"","text":"A pub quiz was the theme of the evening. The less said the better (we came last).","photos":[{"thumb":"scrapbook-media/cf239bd30107ea6c-t.jpg","full":"scrapbook-media/cf239bd30107ea6c-f.jpg","w":1200,"h":1600,"cap":"The face of a last-place finish"}],"ts":1791486333970},{"id":"d12-back-cove","day":12,"title":"","text":"Early morning with a run around the Back Cove. It’s fair to say the National Mall is prettier.","photos":[{"thumb":"scrapbook-media/c8f22a5d990d3c41-t.jpg","full":"scrapbook-media/c8f22a5d990d3c41-f.jpg","w":1600,"h":1200,"cap":"Back Cove: pleasant, but no National Mall"}],"ts":1791544951167},{"id":"d12-bakery","day":12,"title":"","text":"A breakfast at a bakery was next on our agenda — very good. Followed by some shopping, I picked up some Lobstah merch.","photos":[{"thumb":"scrapbook-media/88039e48a7e4804d-t.jpg","full":"scrapbook-media/88039e48a7e4804d-f.jpg","w":1200,"h":1600,"cap":"Two thumbs up for the bakery breakfast"}],"ts":1791544951168},{"id":"d12-mailboat","day":12,"title":"","text":"Our mooch continued with a walk around the perimeter of the Old Port, it really is a small city. Continuing our maritime theme, we stopped for fish tacos which were exceptionally good.\n\nThe key event of the day was the mailboat ferry — for 2.5 hours we sat on the ferry as it travelled around the archipelago delivering and picking up mail. A very relaxing way to enjoy the afternoon.","photos":[{"thumb":"scrapbook-media/59355f97c8d6eb66-t.jpg","full":"scrapbook-media/59355f97c8d6eb66-f.jpg","w":1200,"h":1600,"cap":"Island-hopping with the post"},{"thumb":"scrapbook-media/aa9186065b2d46ca-t.jpg","full":"scrapbook-media/aa9186065b2d46ca-f.jpg","w":1200,"h":1600,"cap":"Fellow travellers on the mailboat"}],"ts":1791544951169},{"id":"d12-bowling","day":12,"title":"","text":"I had an odd ambition to go bowling on this trip, so we did! A really fun and large bowling alley (6 lanes for leagues, 6 lanes for fun) was our spot for the evening. Great fun!","photos":[{"thumb":"scrapbook-media/a719a692e2343ce3-t.jpg","full":"scrapbook-media/a719a692e2343ce3-f.jpg","w":1200,"h":1600,"cap":"An odd ambition, fulfilled"}],"ts":1791544951170},{"id":"d12-bedtime","day":12,"title":"","text":"Then, straight to bed ahead of a big day tomorrow.","photos":[],"ts":1791544951171},{"id":"d13-walkers-point","day":13,"title":"","text":"Our last travelling day. We made an early start and grabbed a breakfast at Tandem Bakery to get on the road quickly.\n\nAfter a short drive, we pulled into Walker’s Point to take a look at the Bush holiday home. We soon learnt that we should have been pulling into a layby that overlooked the home, I hope we didn’t disrupt the Secret Service too much! There was a very touching tribute to George H W Bush or “have half” as he was affectionately known for his tendency to share.","photos":[{"thumb":"scrapbook-media/2439a8462f22458a-t.jpg","full":"scrapbook-media/2439a8462f22458a-f.jpg","w":1200,"h":1600,"cap":"“An Anchor to Windward”: the tribute at Walker’s Point"}],"ts":1791667885622},{"id":"d13-jfk-library","day":13,"title":"","text":"Salem was our next stop — though we opted to just drive through. Adults in Halloween garb is not our vibe. On we pushed to the JFK Library.\n\nThe Library was perfectly acceptable, if a little short and simple. I was surprised by JFK’s rhetoric — he was certainly a visionary.","photos":[{"thumb":"scrapbook-media/6da0e6e506dfa981-t.jpg","full":"scrapbook-media/6da0e6e506dfa981-f.jpg","w":1200,"h":1600,"cap":"Clouds in the glass at the JFK Library"},{"thumb":"scrapbook-media/1c9358995e39941e-t.jpg","full":"scrapbook-media/1c9358995e39941e-f.jpg","w":1200,"h":1600,"cap":"Practising the presidential rhetoric"}],"ts":1791667885623},{"id":"d13-regina","day":13,"title":"","text":"After all this, we rested in Boston before an evening in the centre. Regina Pizzeria was delicious. From reading pretentious food writers, I’ve learnt these places are called “institutions”, which I believe means they are historic, aimed at tourists, but — importantly — do actually serve good food.","photos":[{"thumb":"scrapbook-media/73dacc6b915abac3-t.jpg","full":"scrapbook-media/73dacc6b915abac3-f.jpg","w":1200,"h":1600,"cap":"Regina Pizzeria, an “institution”"},{"thumb":"scrapbook-media/95ace4a9444a69ce-t.jpg","full":"scrapbook-media/95ace4a9444a69ce-f.jpg","w":1200,"h":1600,"cap":"Boston by night, slightly blurred"}],"ts":1791667885624},{"id":"d13-irish-bar","day":13,"title":"","text":"We followed this with a tipple in a Boston bar that seemed very popular for its Irish authenticity. This wasn’t too novel for London livers — though definitely fun.","photos":[],"ts":1791667885625},{"id":"d14-home","day":14,"title":"","text":"I won’t bore you with the details of getting home — Chick-fil-A for our airport dinner and Friday Night Lights as in-flight entertainment were the highlights.","photos":[],"ts":1792512520423},{"id":"d14-sign-off","day":14,"title":"","text":"That’s all for now. I’ll be back, USA — there are more presidential libraries to visit and more American sports to watch!","photos":[],"ts":1792512520424},{"id":"d14-old-city-tour","day":14,"title":"","text":"Our last day! No time for tears — we had a whole city to see.\n\nFirst on the agenda: a tour of the old city with a characterful guide. It must be said, the man has talent, educating and charming around 50 of us. I learnt a fair amount of Boston history, which seemed to revolve around Paul Revere!","photos":[{"thumb":"scrapbook-media/d1ae0e466a6a1195-t.jpg","full":"scrapbook-media/d1ae0e466a6a1195-f.jpg","w":1200,"h":1600,"cap":"Our characterful guide, tricorn and all"},{"thumb":"scrapbook-media/8b1457e9e28e928c-t.jpg","full":"scrapbook-media/8b1457e9e28e928c-f.jpg","w":1200,"h":1600,"cap":"Riding the Democratic donkey at Old City Hall"},{"thumb":"scrapbook-media/51cf62233de5746c-t.jpg","full":"scrapbook-media/51cf62233de5746c-f.jpg","w":1200,"h":1600,"cap":"Showtime at Quincy Market"}],"ts":1792512520420},{"id":"d14-bruins","day":14,"title":"","text":"Next up: ice hockey! We raced to the TD Garden to catch the Boston Bruins. After buying a hat for Steph and a beer for me, we took our seats — though not for long, as we were soon on our feet for the American national anthem. More myth-making!\n\nBoston ran out comfortable winners in a fast-flowing game. I could watch this every week, though I was disappointed by the lack of fighting.","photos":[{"thumb":"scrapbook-media/76420ebd64f73f9b-t.jpg","full":"scrapbook-media/76420ebd64f73f9b-f.jpg","w":1200,"h":1600,"cap":"Warm-up against the Philadelphia Flyers"},{"thumb":"scrapbook-media/94fca634265ac2f6-t.jpg","full":"scrapbook-media/94fca634265ac2f6-f.jpg","w":1600,"h":1200,"cap":"Lights down at the TD Garden"}],"ts":1792512520421},{"id":"d14-bunker-hill","day":14,"title":"","text":"The last sight on our list was Bunker Hill — a rare British victory, though one that cost the redcoats nearly half their men. Not much to celebrate!","photos":[{"thumb":"scrapbook-media/d6b4d2a9f2c9c337-t.jpg","full":"scrapbook-media/d6b4d2a9f2c9c337-f.jpg","w":1200,"h":1600,"cap":"The Bunker Hill Monument"}],"ts":1792512520422}]}</script>
 <script>
 "use strict";
-var PAGE_UPDATED = '2026-09-28';
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function safeSrc(s){ return /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(s || '') ? s : ''; }
@@ -213,45 +201,32 @@ var DAYS = [
 ];
 
 /* The sections, one per bed, except From DC to Gillette Stadium, which covers two
-   beds and lists them in pins. x/y match the map; days = diary days filed under the
-   section; ann = where the "we're here!" note sits when that bed is tonight's. */
+   beds and lists them in pins. x/y match the map; days = diary days filed under the section. */
 var STOPS = [
  {name:'Washington DC', x:66.6, y:586, hit:24, days:[1,2,3,4],
   stay:'Hilton Garden Inn Downtown', when:'Sun 27 Sept – Thu 1 Oct · 4 nights',
-  note:'Three blocks from the White House. Marble, museums and the machinery of the republic.',
-  ann:{x:92, y:546, a:'start', ax:90, ay:564}},
+  note:'We stayed three blocks from the White House, among the marble, the museums and the machinery of the republic.'},
  {name:'From DC to Gillette Stadium', days:[5,6],
-  pins:[{x:265, y:346.9, hit:24, days:[5], stay:'Bear Mountain Inn — Overlook Lodge',
-         ann:{x:283, y:316, a:'start', ax:281, ay:333}},
-        {x:425.8, y:264.6, hit:18, days:[6], stay:'Holiday Inn Express, Milford',
-         ann:{x:410, y:294, a:'end', ax:413, ay:283}}],
+  pins:[{x:265, y:346.9, hit:24, stay:'Bear Mountain Inn — Overlook Lodge'},
+        {x:425.8, y:264.6, hit:18, stay:'Holiday Inn Express, Milford'}],
   stay:'Bear Mountain Inn — Overlook Lodge, then Holiday Inn Express, Milford', when:'Thu 1 – Fri 2 Oct · 2 nights',
-  note:'The road trip begins: Gettysburg’s battlefield and Bethlehem’s blast furnaces, a night at a 1915 lodge above Hessian Lake, then the big Friday — West Point, FDR’s Springwood and Zach Bryan at Gillette Stadium.'},
+  note:'Where the road trip began: Gettysburg’s battlefield, Bethlehem’s blast furnaces, a family visit in New Jersey and a night at a 1915 lodge above Hessian Lake. Then the big Friday — West Point, FDR’s Springwood and, eventually, Zach Bryan at Gillette Stadium.'},
  {name:'North Woodstock', x:414.9, y:76.3, hit:22, days:[7,8],
   stay:'Woodstock Inn Brewery', when:'Sat 3 – Mon 5 Oct · 2 nights',
-  note:'Sleeping above our own brewpub at the mouth of Franconia Notch — base for Lost River Gorge, the Cog Railway and the Gold Room at Bretton Woods.',
-  ann:{x:404, y:108, a:'end', ax:407, ay:96}},
+  note:'Two nights above our own brewpub at the mouth of Franconia Notch — our base for Lost River Gorge, the Cog Railway and Bretton Woods.'},
  {name:'Fryeburg Fair', x:460.8, y:77.6, hit:22, days:[9,10],
   stay:'The Oxford House Inn', when:'Mon 5 Oct · 1 night',
-  note:'A 1913 inn fifteen minutes’ walk from the Fryeburg Fair gate — we sleep inside fair week, in from the Kancamagus and a mountain hike.',
-  ann:{x:422, y:30, a:'end', ax:427, ay:38}},
+  note:'A 1913 inn fifteen minutes’ walk from the fair gate, where the landlady kept “her boys” well fed and the frozen mudslides flowing — then a day at the fair itself.'},
  {name:'Portland', x:506, y:112.4, hit:22, days:[10,11,12],
   stay:'The Delphian', when:'Tue 6 – Fri 9 Oct · 3 nights',
-  note:'Lighthouses, lobster, and the best small food city on the route.',
-  ann:{x:550, y:160, a:'end', ax:514, ay:146}},
+  note:'Three nights of lighthouses, lobstering, the mailboat and a last-place pub quiz.'},
  {name:'Boston', x:455.8, y:243.2, hit:18, days:[13,14],
   stay:'The Royal Sonesta', when:'Fri 9 Oct · 1 night',
-  note:'In via Walker’s Point and the JFK Library; then the Freedom Trail, a Bruins matinee, and the flight home.',
-  ann:{x:478, y:210, a:'start', ax:476, ay:226}}
+  note:'In via Walker’s Point and the JFK Library; then a tour of the old city, a Bruins win, Bunker Hill and the flight home.'}
 ];
-var DAY_STOP = {1:0,2:0,3:0,4:0,5:1,6:1,7:2,8:2,9:3,10:4,11:4,12:4,13:5,14:5};
-/* planned road miles per trip day (no car in DC; returned in Boston on day 13) */
-var DAY_MILES = {5:305,6:200,7:165,8:60,9:45,10:50,11:50,12:120,13:105};
-/* the day each of DC + 8 states is first reached */
-var STATE_DAYS = [1,5,5,5,5,6,6,7,9];
 
 /* ---- the diary: plain JSON in the aa-state block ---- */
-var STATE = {entries:[]}, HERE = null;
+var STATE = {entries:[]};
 try {
   var st = JSON.parse($('aa-state').textContent);
   if (st && Array.isArray(st.entries)) STATE = st;
@@ -259,31 +234,10 @@ try {
 /* a password saved back when the page had one */
 try { localStorage.removeItem('aa-scrapbook-pw'); } catch(e){}
 
-/* ---- time where we are (US Eastern) ---- */
-function etNow(){
-  var p = {};
-  try {
-    new Intl.DateTimeFormat('en-US', {timeZone:'America/New_York', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hourCycle:'h23'})
-      .formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
-    return {y:+p.year, m:+p.month, d:+p.day, h:+p.hour % 24, min:+p.minute};
-  } catch(e){
-    var n = new Date();
-    return {y:n.getFullYear(), m:n.getMonth() + 1, d:n.getDate(), h:n.getHours(), min:n.getMinutes()};
-  }
-}
-function tripDay(){
-  var t = etNow();
-  return Math.round((Date.UTC(t.y, t.m - 1, t.d) - Date.UTC(2026, 8, 27)) / 86400000) + 1;
-}
-
-/* ---- boot ---- */
+/* ---- boot: the trip is over, so the scrapbook opens at the beginning ---- */
 function boot(){
-  var d = tripDay();
-  HERE = (d >= 1 && d <= 14) ? DAY_STOP[d] : null;
-  $('status').textContent = statusLine(d);
   drawMap();
-  selectStop(HERE !== null ? HERE : (d > 14 ? STOPS.length - 1 : 0), true);
-  renderUpdated();
+  selectStop(0, true);
   document.querySelectorAll('[data-go]').forEach(function(b){
     b.addEventListener('click', function(){
       var go = b.getAttribute('data-go');
@@ -292,25 +246,6 @@ function boot(){
       else if (go === 'photos'){ showPhotos(); $('panel').scrollIntoView({behavior:BEHAVIOR, block:'start'}); }
     });
   });
-}
-function roadMiles(d){
-  var total = 0, k;
-  if (d < 1) return 0;
-  if (d > 14){ for (k in DAY_MILES) total += DAY_MILES[k]; return total; }
-  for (k = 1; k < d; k++) total += DAY_MILES[k] || 0;
-  if (DAY_MILES[d]){
-    var t = etNow();
-    total += DAY_MILES[d] * Math.min(1, Math.max(0, (t.h + t.min / 60 - 8) / 11));
-  }
-  return Math.round(total);
-}
-function statusLine(d){
-  if (d < 1) return 'We leave in ' + (1 - d) + ' day' + (1 - d === 1 ? '' : 's') + '. The diary starts on 27 September.';
-  var states = STATE_DAYS.filter(function(x){ return x <= d; }).length;
-  var miles = roadMiles(d);
-  if (d > 14) return 'Fourteen days, about ' + miles.toLocaleString('en-GB') + ' road miles, eight states and D.C. Thanks for reading.';
-  var m = d < 5 ? 'no road miles yet (the car arrives Thursday)' : 'about ' + miles.toLocaleString('en-GB') + ' road miles';
-  return 'Day ' + d + ' of 14: ' + DAYS[d - 1][1] + '. So far, ' + states + ' of 9 states (D.C. counts) and ' + m + '.';
 }
 
 /* ---- the map ---- */
@@ -323,20 +258,12 @@ function el(tag, attrs, text){
 }
 /* a section's beds on the map: its pins, or the section itself when it has one bed */
 function pinsOf(s){ return s.pins || [s]; }
-/* tonight's bed within the section we're in */
-function herePin(){
-  if (HERE === null) return null;
-  var d = tripDay(), ps = pinsOf(STOPS[HERE]);
-  for (var k = 0; k < ps.length; k++) if (ps[k].days && ps[k].days.indexOf(d) >= 0) return ps[k];
-  return ps[0];
-}
 function drawMap(){
-  var ring = $('ringLayer'), pins = $('pinLayer'), ann = $('annLayer'), hits = $('hitLayer');
-  ring.textContent = ''; pins.textContent = ''; ann.textContent = ''; hits.textContent = '';
-  var hp = herePin();
+  var pins = $('pinLayer'), hits = $('hitLayer');
+  pins.textContent = ''; hits.textContent = '';
   STOPS.forEach(function(s, i){
     pinsOf(s).forEach(function(p){
-      pins.appendChild(el('circle', {cx:p.x, cy:p.y, r:7.5, fill: p === hp ? '#A63A0C' : '#2E2419', stroke:'#FBF4E4', 'stroke-width':2.5}));
+      pins.appendChild(el('circle', {cx:p.x, cy:p.y, r:7.5, fill:'#2E2419', stroke:'#FBF4E4', 'stroke-width':2.5}));
       var g = el('g', {'class':'stop-hit', 'data-si':i, tabindex:0, role:'button', 'aria-label':s.name + ': ' + (p.stay || s.stay)});
       g.appendChild(el('title', {}, s.name + ' — tap to open its page'));
       g.appendChild(el('circle', {cx:p.x, cy:p.y, r:p.hit, fill:'transparent'}));
@@ -345,21 +272,6 @@ function drawMap(){
       hits.appendChild(g);
     });
   });
-  if (!hp) return;
-  var s = hp, a = s.ann;
-  ring.appendChild(el('circle', {cx:s.x, cy:s.y, r:12, fill:'none', stroke:'#A63A0C', 'stroke-width':2.5, 'class':'pin-pulse'}));
-  var t = el('text', {x:a.x, y:a.y, 'text-anchor':a.a, 'class':'ann'});
-  t.appendChild(el('tspan', {x:a.x, dy:0}, 'we’re'));
-  t.appendChild(el('tspan', {x:a.x, dy:19}, 'here!'));
-  ann.appendChild(t);
-  var dx = s.x - a.ax, dy = s.y - a.ay, L = Math.sqrt(dx * dx + dy * dy) || 1;
-  var ex = s.x - dx / L * 12, ey = s.y - dy / L * 12;
-  var mx = (a.ax + ex) / 2 - dy / L * 7, my = (a.ay + ey) / 2 + dx / L * 7;
-  ann.appendChild(el('path', {d:'M' + a.ax + ',' + a.ay + ' Q' + mx.toFixed(1) + ',' + my.toFixed(1) + ' ' + ex.toFixed(1) + ',' + ey.toFixed(1),
-    fill:'none', stroke:'#A63A0C', 'stroke-width':1.8, 'stroke-linecap':'round'}));
-  var hx = ex - dx / L * 7, hy = ey - dy / L * 7, px = -dy / L * 4, py = dx / L * 4;
-  ann.appendChild(el('path', {d:'M' + (hx + px).toFixed(1) + ',' + (hy + py).toFixed(1) + ' L' + ex.toFixed(1) + ',' + ey.toFixed(1) + ' L' + (hx - px).toFixed(1) + ',' + (hy - py).toFixed(1),
-    fill:'none', stroke:'#A63A0C', 'stroke-width':1.8, 'stroke-linecap':'round', 'stroke-linejoin':'round'}));
 }
 function markSelected(i){
   var sl = $('selLayer');
@@ -384,7 +296,6 @@ function printHtml(p, day){
   return '<figure class="print"><span class="tape" aria-hidden="true"></span><img alt="' + esc(p.cap || 'Trip photo') + '" ' + src + '>' +
     '<figcaption>' + (p.cap ? esc(p.cap) : '&nbsp;') + (day ? '<span class="label">Day ' + day + ' · ' + esc(DAYS[day - 1][0]) + '</span>' : '') + '</figcaption></figure>';
 }
-function isNew(e){ return !!e.ts && (Date.now() - e.ts) < 36 * 3600 * 1000; }
 function entryHtml(e){
   var h = '<div class="entry">';
   if (e.title) h += '<h3>' + esc(e.title) + '</h3>';
@@ -395,7 +306,7 @@ function entryHtml(e){
 }
 function dayHtml(day, es){
   return '<section class="day"><h3 class="day-h"><b>Day ' + day + '</b><span class="label">' + esc(DAYS[day - 1][0]) + ' · ' + esc(DAYS[day - 1][1]) + '</span>' +
-    (es.some(isNew) ? '<span class="stamp">New</span>' : '') + '</h3>' + es.map(entryHtml).join('') + '</section>';
+    '</h3>' + es.map(entryHtml).join('') + '</section>';
 }
 function setPressed(which){
   document.querySelectorAll('[data-go][aria-pressed]').forEach(function(b){
@@ -415,20 +326,16 @@ function wirePanel(){
 function selectStop(i, quiet){
   markSelected(i);
   setPressed(null);
-  var s = STOPS[i], isHere = i === HERE, d = tripDay(), n = STOPS.length;
-  var h = '<div class="stop-head"><div class="stop-title"><h2>' + esc(s.name) + '</h2>' + (isHere ? '<span class="stamp">We’re here</span>' : '') + '</div>' +
-    '<dl class="facts"><dt class="label">Staying at</dt><dd>' + esc(s.stay) + '</dd><dt class="label">When</dt><dd>' + esc(s.when) + '</dd></dl>' +
+  var s = STOPS[i], n = STOPS.length;
+  var h = '<div class="stop-head"><h2>' + esc(s.name) + '</h2>' +
+    '<dl class="facts"><dt class="label">Stayed at</dt><dd>' + esc(s.stay) + '</dd><dt class="label">When</dt><dd>' + esc(s.when) + '</dd></dl>' +
     '<p class="blurb">' + esc(s.note) + '</p></div>';
   var any = false;
   s.days.forEach(function(day){
     var es = entriesForDay(day);
     if (es.length){ any = true; h += dayHtml(day, es); }
   });
-  if (!any){
-    h += '<p class="empty">' + esc(isHere ? 'Nothing written here yet — we’re still living it. Check back tonight!'
-      : s.days[0] > d ? 'We haven’t got here yet. This page fills in from ' + DAYS[s.days[0] - 1][0] + '.'
-      : 'Nothing written here yet — Matt’s catching up.') + '</p>';
-  }
+  if (!any) h += '<p class="empty">No diary entries for these days.</p>';
   var prev = (i + n - 1) % n, next = (i + 1) % n;
   h += '<nav class="pager" aria-label="Other stops"><button type="button" data-to="' + prev + '">← ' + esc(STOPS[prev].name) + '</button>' +
     '<button type="button" data-to="' + next + '">' + esc(STOPS[next].name) + ' →</button></nav>';
@@ -444,7 +351,7 @@ function showDiary(){
     var es = entriesForDay(day);
     if (es.length){ any = true; h += dayHtml(day, es); }
   }
-  if (!any) h += '<p class="empty">Nothing written yet. Entries appear here as the trip unfolds — check back tonight.</p>';
+  if (!any) h += '<p class="empty">No diary entries.</p>';
   $('panelBody').innerHTML = h;
   wirePanel();
 }
@@ -458,18 +365,9 @@ function showPhotos(){
     });
   }
   $('panelBody').innerHTML = '<h2 class="view-h">All the photos</h2>' +
-    (shots.length ? '<div class="prints wall">' + shots.join('') + '</div>' : '<p class="empty">No photos yet — they’re coming, promise.</p>');
+    (shots.length ? '<div class="prints wall">' + shots.join('') + '</div>' : '<p class="empty">No photos.</p>');
   wirePanel();
 }
-function renderUpdated(){
-  var ts = Date.parse(PAGE_UPDATED + 'T16:00:00Z');
-  (STATE.entries || []).forEach(function(e){ if (e.ts > ts) ts = e.ts; });
-  var s;
-  try { s = new Date(ts).toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric', timeZone:'America/New_York'}); }
-  catch(e){ s = new Date(ts).toDateString(); }
-  $('lastUpd').textContent = s;
-}
-
 /* ---- a photo, enlarged ---- */
 function openLightbox(img){
   var cap = img.alt && img.alt !== 'Trip photo' ? img.alt : '';
