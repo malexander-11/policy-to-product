@@ -1,6 +1,6 @@
-// out/poster.html -> out/poster-a3-bleed.pdf (303 x 426 mm, the file for the printer),
-//                    out/poster-a3.pdf (297 x 420 mm, no bleed, for printing at home),
-//                    out/poster-preview.png (100 dpi) and out/check-*.png (300 dpi crops).
+// out/poster.html -> out/poster-a5-bleed.pdf (154 x 216 mm, the file for the printer),
+//                    out/poster-a5.pdf (148 x 210 mm, no bleed, for printing at home),
+//                    out/poster-preview.png (150 dpi) and out/check-*.png (600 dpi crops).
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
@@ -31,32 +31,32 @@ async function ready(page) {
   if (missing.length) throw new Error('images failed to load: ' + missing.join(', '));
 }
 
-const mm = v => Math.round(v * 300 / 25.4);   // mm -> px at 300 dpi
+const mm = v => Math.round(v * 600 / 25.4);   // mm -> px at 600 dpi
 const CROPS = [
-  ['check-mountains', 150, 130, 110, 110],
-  ['check-boston', 150, 190, 110, 110],
-  ['check-print-key', 190, 300, 100, 100],
-  ['check-hudson', 90, 215, 80, 80]
+  ['check-mountains', 95, 40, 50, 45],
+  ['check-boston', 95, 75, 50, 40],
+  ['check-hudson', 55, 100, 45, 40],
+  ['check-dc', 12, 140, 45, 45]
 ];
 
 (async () => {
   const { server, url } = await serve();
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1145, height: 1610 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: 582, height: 816 }, deviceScaleFactor: 1 });
   page.on('pageerror', e => { throw e; });
   await page.goto(url);
   await ready(page);
   const pdfOpts = { printBackground: true, margin: { top: 0, right: 0, bottom: 0, left: 0 }, preferCSSPageSize: false, timeout: 180000 };
-  await page.pdf({ ...pdfOpts, width: '303mm', height: '426mm', path: path.join(OUT, 'poster-a3-bleed.pdf') });
+  await page.pdf({ ...pdfOpts, width: '154mm', height: '216mm', path: path.join(OUT, 'poster-a5-bleed.pdf') });
   await page.evaluate(() => document.body.classList.add('trim-only'));
-  await page.pdf({ ...pdfOpts, width: '297mm', height: '420mm', path: path.join(OUT, 'poster-a3.pdf') });
+  await page.pdf({ ...pdfOpts, width: '148mm', height: '210mm', path: path.join(OUT, 'poster-a5.pdf') });
   await browser.close(); server.close();
 
-  const bleed = path.join(OUT, 'poster-a3-bleed.pdf');
-  execFileSync('pdftoppm', ['-png', '-r', '100', '-singlefile', bleed, path.join(OUT, 'poster-preview')]);
+  const bleed = path.join(OUT, 'poster-a5-bleed.pdf');
+  execFileSync('pdftoppm', ['-png', '-r', '150', '-singlefile', bleed, path.join(OUT, 'poster-preview')]);
   for (const [name, x, y, w, h] of CROPS) {
-    execFileSync('pdftoppm', ['-png', '-r', '300', '-singlefile', '-x', String(mm(x)), '-y', String(mm(y)), '-W', String(mm(w)), '-H', String(mm(h)), bleed, path.join(OUT, name)]);
+    execFileSync('pdftoppm', ['-png', '-r', '600', '-singlefile', '-x', String(mm(x)), '-y', String(mm(y)), '-W', String(mm(w)), '-H', String(mm(h)), bleed, path.join(OUT, name)]);
   }
-  for (const f of ['poster-a3-bleed.pdf', 'poster-a3.pdf', 'poster-preview.png'].concat(CROPS.map(c => c[0] + '.png')))
+  for (const f of ['poster-a5-bleed.pdf', 'poster-a5.pdf', 'poster-preview.png'].concat(CROPS.map(c => c[0] + '.png')))
     console.log('out/' + f + ': ' + (fs.statSync(path.join(OUT, f)).size / 1048576).toFixed(2) + ' MB');
 })().catch(e => { console.error(e); process.exit(1); });

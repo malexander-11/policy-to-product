@@ -1,7 +1,7 @@
 // Project the geography and every placed thing onto the page.
-//   geodata/*.geojson + data/route.json + data/places.json + data/prints.json
+//   geodata/*.geojson + data/route.json + data/places.json
 //   -> data/map-paths.json  (land fills, coast, state borders and rivers in card mm, clipped to the card)
-//   -> data/placed.json     (page mm of every route point, pin, town and leader target; the route curves)
+//   -> data/placed.json     (page mm of every route point, pin and town; the route curves)
 // The geodata files are untrusted downloads: they are only ever JSON.parsed here.
 const fs = require('fs');
 const path = require('path');
@@ -10,12 +10,12 @@ const ROOT = path.join(__dirname, '..');
 const read = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
 
 // ---- the map card on the page (bleed sheet, mm) ----
-const CARD = { x: 16, y: 54, w: 271, h: 334 };
+const CARD = { x: 10, y: 30, w: 134, h: 162 };
 
-// ---- Lambert conformal conic, spherical, in mm at 1:3,200,000 ----
-// Standard parallels 38/45, central meridian -73.1, reference latitude 42.1 at card (135.5, 167).
-// This matches d3.geoConicConformal().parallels([38,45]).rotate([73.1,0]).center([0,42.1]).scale(1990.9).translate([135.5,167]).
-const R = 1990.9, LAM0 = -73.1, PHI0 = 42.1, PHI1 = 38, PHI2 = 45, TX = 135.5, TY = 167;
+// ---- Lambert conformal conic, spherical, in mm at 1:5,000,000 (R = 6371 km / 5,000,000) ----
+// Standard parallels 38/45, central meridian -73.1, reference latitude 42.1 at card (79.6, 70.8).
+// This matches d3.geoConicConformal().parallels([38,45]).rotate([73.1,0]).center([0,42.1]).scale(1274.2).translate([79.6,70.8]).
+const R = 1274.2, LAM0 = -73.1, PHI0 = 42.1, PHI1 = 38, PHI2 = 45, TX = 79.6, TY = 70.8;
 const rad = d => d * Math.PI / 180, deg = r => r * 180 / Math.PI;
 const tany = phi => Math.tan(Math.PI / 4 + phi / 2);
 const n = Math.log(Math.cos(rad(PHI1)) / Math.cos(rad(PHI2))) / Math.log(tany(rad(PHI2)) / tany(rad(PHI1)));
@@ -72,7 +72,7 @@ const rings = geom => geom.type === 'Polygon' ? geom.coordinates : geom.type ===
 const fillPath = geom => rings(geom).map(r => ringPath(clipRing(r.map(c => project(c[0], c[1]))))).join('');
 
 // lines: keep runs of points near the card; the SVG clipPath trims the rest
-const NEAR = 25;
+const NEAR = 15;
 const near = p => p[0] > -NEAR && p[0] < CARD.w + NEAR && p[1] > -NEAR && p[1] < CARD.h + NEAR;
 function runsPath(projectedPts) {
   const parts = []; let run = [];
@@ -154,7 +154,6 @@ for (const f of rivers.features) {
 
 const route = read('data/route.json');
 const places = read('data/places.json');
-const prints = read('data/prints.json');
 const all = {};
 for (const list of [route.main, route.spur, route.extra]) for (const w of list) all[w.id] = w;
 const pt = id => { if (!all[id]) throw new Error('unknown place id: ' + id); return project(all[id].lng, all[id].lat); };
@@ -162,15 +161,14 @@ const pt = id => { if (!all[id]) throw new Error('unknown place id: ' + id); ret
 const cx = places.compass.x - CARD.x, cy = places.compass.y - CARD.y;
 const placed = {
   card: CARD,
-  projection: { type: 'Lambert conformal conic (spherical)', parallels: [PHI1, PHI2], centralMeridian: LAM0, referenceLatitude: PHI0, scale: '1:3,200,000' },
+  projection: { type: 'Lambert conformal conic (spherical)', parallels: [PHI1, PHI2], centralMeridian: LAM0, referenceLatitude: PHI0, scale: '1:5,000,000' },
   points: Object.fromEntries(Object.keys(all).map(id => [id, toPage(pt(id))])),
   routeMain: curvePath(route.main.map(w => pt(w.id))),
   routeSpur: curvePath(route.spur.map(w => pt(w.id))),
   pins: places.pins.map(p => ({ ...p, xy: toPage(pt(p.at)) })),
   towns: places.towns.map(t => ({ ...t, xy: toPage(pt(t.at)) })),
   context: places.context.map(t => ({ ...t, xy: toPage(pt(t.at)) })),
-  leaders: prints.prints.filter(p => p.placed && p.leader).map(p => ({ hex: p.hex, to: p.leader, xy: toPage(pt(p.leader)) })),
-  mmPer100Miles: +(100 * 1.609344 / 3.2).toFixed(2),
+  mmPer100Miles: +(100 * 1.609344 / 5).toFixed(2),
   // meridian convergence at the compass: rotate the rose by this so "N" points along the local meridian
   compassRotate: +(n * (lngAt(cx, cy) - LAM0)).toFixed(2)
 };
@@ -180,4 +178,4 @@ fs.writeFileSync(path.join(ROOT, 'data', 'placed.json'), JSON.stringify(placed, 
 const size = f => (fs.statSync(path.join(ROOT, 'data', f)).size / 1024).toFixed(0) + ' KB';
 console.log('map-paths.json: ' + states.length + ' states/provinces, ' + coast.filter(Boolean).length + ' coast runs, ' + borders.filter(Boolean).length + ' border runs, ' + riverPaths.length + ' rivers, ' + size('map-paths.json'));
 console.log('placed.json: ' + Object.keys(placed.points).length + ' points, compass rotated ' + placed.compassRotate + '°, ' + size('placed.json') + ' (' + (Date.now() - t0) + ' ms)');
-console.log('pins (page mm): ' + placed.pins.map(p => p.n + ' ' + p.label + ' (' + p.xy.join(', ') + ')').join(' · '));
+console.log('pins (page mm): ' + placed.pins.map(p => p.label + ' (' + p.xy.join(', ') + ')').join(' · '));
