@@ -21,3 +21,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# American Autumn print: raw Natural Earth downloads and 300 dpi check crops
+american-autumn-print/geodata/
+american-autumn-print/out/check-*.png

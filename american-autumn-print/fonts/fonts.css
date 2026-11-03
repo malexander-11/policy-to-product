@@ -1,0 +1,5 @@
+/* Latin subsets of the three Google Fonts the scrapbook uses. All are SIL Open Font License (see OFL.txt). */
+@font-face{font-family:'Caveat';font-style:normal;font-weight:400 700;font-display:block;src:url(caveat-latin.woff2) format('woff2');}
+@font-face{font-family:'Gelasio';font-style:normal;font-weight:400 700;font-display:block;src:url(gelasio-latin.woff2) format('woff2');}
+@font-face{font-family:'Gelasio';font-style:italic;font-weight:400;font-display:block;src:url(gelasio-italic-latin.woff2) format('woff2');}
+@font-face{font-family:'Special Elite';font-style:normal;font-weight:400;font-display:block;src:url(special-elite-latin.woff2) format('woff2');}

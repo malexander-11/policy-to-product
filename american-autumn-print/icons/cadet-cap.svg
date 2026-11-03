@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#2E2419" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7.2 16.6 Q6.6 11 7.8 6.4 Q12 5.4 16.2 6.4 Q17.4 11 16.8 16.6 Q12 17.6 7.2 16.6 Z"/>
+  <path d="M8.4 6.3 Q12 4.8 15.6 6.3"/>
+  <path d="M6.2 16.8 Q12 19.8 18.4 16.6"/>
+  <path d="M8.6 17.9 Q12 19.4 15.6 17.9"/>
+  <path class="rust" d="M12 5 Q12.4 2.6 13.4 2.2 M12 5 Q11.4 3.4 10.6 2.4"/>
+  <path class="rust" d="M10.4 11.4 Q12 10.4 13.6 11.4"/>
+</svg>
