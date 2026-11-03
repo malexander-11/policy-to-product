@@ -1,0 +1,395 @@
+{
+  "_": "Everything drawn on the map besides the geography and the route. Pins/towns refer to route ids (lat/lng from route.json). Offsets are mm on the page; icons and state names are page mm (bleed sheet, origin top-left). Tune here, then rebuild.",
+  "pins": [
+    {
+      "n": 1,
+      "at": "dc",
+      "label": "Washington DC",
+      "hotel": "Hilton Garden Inn Downtown",
+      "when": "Sun 27 Sept – Thu 1 Oct · 4 nights",
+      "badge": [
+        5.5,
+        -4.0
+      ],
+      "text": [
+        -4.0,
+        -3.2
+      ],
+      "anchor": "end"
+    },
+    {
+      "n": 2,
+      "at": "bearmtn",
+      "label": "Bear Mountain",
+      "hotel": "Bear Mountain Inn — Overlook Lodge",
+      "when": "Thu 1 Oct · 1 night",
+      "badge": [
+        5,
+        -2
+      ],
+      "text": [
+        4,
+        5
+      ],
+      "anchor": "start"
+    },
+    {
+      "n": 3,
+      "at": "milford",
+      "label": "Milford",
+      "hotel": "Holiday Inn Express, Milford",
+      "when": "Fri 2 Oct · 1 night",
+      "badge": [
+        -2,
+        6
+      ],
+      "text": [
+        -3,
+        -3.4
+      ],
+      "anchor": "end"
+    },
+    {
+      "n": 4,
+      "at": "nwoodstock",
+      "label": "North Woodstock",
+      "hotel": "Woodstock Inn Brewery",
+      "when": "Sat 3 – Mon 5 Oct · 2 nights",
+      "badge": [
+        -6.5,
+        4.5
+      ],
+      "text": [
+        -2.0,
+        10.0
+      ],
+      "anchor": "end"
+    },
+    {
+      "n": 5,
+      "at": "fryeburg",
+      "label": "Fryeburg",
+      "hotel": "The Oxford House Inn",
+      "when": "Mon 5 Oct · 1 night",
+      "badge": [
+        0,
+        6
+      ],
+      "text": [
+        3.5,
+        -2.5
+      ],
+      "anchor": "start"
+    },
+    {
+      "n": 6,
+      "at": "portland",
+      "label": "Portland",
+      "hotel": "The Delphian",
+      "when": "Tue 6 – Fri 9 Oct · 3 nights",
+      "badge": [
+        5,
+        -3
+      ],
+      "text": [
+        -4.5,
+        6.5
+      ],
+      "anchor": "end"
+    },
+    {
+      "n": 7,
+      "at": "boston",
+      "label": "Boston",
+      "hotel": "The Royal Sonesta",
+      "when": "Fri 9 Oct · 1 night",
+      "badge": [
+        4.5,
+        5.0
+      ],
+      "text": [
+        8.0,
+        1.5
+      ],
+      "anchor": "start"
+    }
+  ],
+  "towns": [
+    {
+      "at": "gettysburg",
+      "label": "Gettysburg",
+      "text": [
+        3.0,
+        1.2
+      ],
+      "anchor": "start"
+    },
+    {
+      "at": "bethlehem",
+      "label": "Bethlehem",
+      "text": [
+        2.5,
+        4.4
+      ],
+      "anchor": "start"
+    },
+    {
+      "at": "westpoint",
+      "label": "West Point",
+      "text": [
+        -3.5,
+        0.8
+      ],
+      "anchor": "end"
+    },
+    {
+      "at": "hydepark",
+      "label": "Hyde Park",
+      "text": [
+        -3.5,
+        1.0
+      ],
+      "anchor": "end"
+    },
+    {
+      "at": "foxborough",
+      "label": "Foxborough",
+      "text": [
+        4.5,
+        3.8
+      ],
+      "anchor": "start"
+    },
+    {
+      "at": "manchester",
+      "label": "Manchester",
+      "text": [
+        3.2,
+        1.4
+      ],
+      "anchor": "start"
+    },
+    {
+      "at": "conway",
+      "label": "Conway",
+      "text": [
+        -1.5,
+        5.4
+      ],
+      "anchor": "end"
+    },
+    {
+      "at": "walkerspt",
+      "label": "Walker’s Point",
+      "text": [
+        -3.0,
+        1.0
+      ],
+      "anchor": "end"
+    },
+    {
+      "at": "cog",
+      "label": "The Cog",
+      "text": [
+        0,
+        4.5
+      ],
+      "anchor": "middle"
+    }
+  ],
+  "context": [
+    {
+      "at": "nyc",
+      "label": "New York",
+      "text": [
+        -2.5,
+        1.0
+      ],
+      "anchor": "end"
+    },
+    {
+      "at": "philly",
+      "label": "Philadelphia",
+      "text": [
+        2.5,
+        1.0
+      ],
+      "anchor": "start"
+    },
+    {
+      "at": "hartford",
+      "label": "Hartford",
+      "text": [
+        2.5,
+        -1.5
+      ],
+      "anchor": "start"
+    },
+    {
+      "at": "albany",
+      "label": "Albany",
+      "text": [
+        -2.5,
+        1.0
+      ],
+      "anchor": "end"
+    },
+    {
+      "at": "providence",
+      "label": "Providence",
+      "text": [
+        -2.5,
+        1
+      ],
+      "anchor": "end"
+    }
+  ],
+  "states": [
+    {
+      "label": "Pennsylvania",
+      "x": 45,
+      "y": 272
+    },
+    {
+      "label": "New York",
+      "x": 104,
+      "y": 190
+    },
+    {
+      "label": "Vermont",
+      "x": 152,
+      "y": 168,
+      "size": 3.8
+    },
+    {
+      "label": "New Hampshire",
+      "x": 170,
+      "y": 186,
+      "size": 3.8
+    },
+    {
+      "label": "Maine",
+      "x": 218.5,
+      "y": 134,
+      "size": 4
+    },
+    {
+      "label": "Massachusetts",
+      "x": 156,
+      "y": 213,
+      "size": 3.8
+    },
+    {
+      "label": "Connecticut",
+      "x": 162,
+      "y": 240,
+      "size": 3.6
+    },
+    {
+      "label": "New Jersey",
+      "x": 118,
+      "y": 282,
+      "size": 3.6
+    },
+    {
+      "label": "Maryland",
+      "x": 70,
+      "y": 314,
+      "size": 3.6
+    },
+    {
+      "label": "Virginia",
+      "x": 36,
+      "y": 362
+    },
+    {
+      "label": "Ontario",
+      "x": 45,
+      "y": 139,
+      "canada": true
+    }
+  ],
+  "ocean": {
+    "label": "ATLANTIC OCEAN",
+    "x": 176,
+    "y": 350
+  },
+  "icons": [
+    {
+      "id": "capitol-dome",
+      "x": 36,
+      "y": 318
+    },
+    {
+      "id": "cannon",
+      "x": 30,
+      "y": 290
+    },
+    {
+      "id": "blast-furnace",
+      "x": 106,
+      "y": 267
+    },
+    {
+      "id": "red-jeep",
+      "x": 66,
+      "y": 288,
+      "note": "our red Jeep",
+      "noteAt": [
+        7.5,
+        2.5
+      ]
+    },
+    {
+      "id": "cadet-cap",
+      "x": 116,
+      "y": 239,
+      "size": 9
+    },
+    {
+      "id": "guitar",
+      "x": 214,
+      "y": 234
+    },
+    {
+      "id": "coffee-cup",
+      "x": 201,
+      "y": 183.5
+    },
+    {
+      "id": "hiking-boot",
+      "x": 176,
+      "y": 172
+    },
+    {
+      "id": "ox",
+      "x": 219,
+      "y": 141,
+      "size": 9
+    },
+    {
+      "id": "lobster",
+      "x": 142,
+      "y": 353
+    },
+    {
+      "id": "lighthouse",
+      "x": 225,
+      "y": 176
+    },
+    {
+      "id": "hockey",
+      "x": 218,
+      "y": 203
+    }
+  ],
+  "compass": {
+    "x": 124,
+    "y": 178,
+    "size": 16
+  },
+  "scalebar": {
+    "x": 100,
+    "y": 172
+  }
+}

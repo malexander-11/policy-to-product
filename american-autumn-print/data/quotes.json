@@ -1,0 +1,37 @@
+{
+  "_": "Handwritten marginalia from the diary. x/y are page mm of the text's top-left; width in mm; rotate in degrees.",
+  "quotes": [
+    {
+      "text": "“ask whoever planned today’s trip to buy some lottery tickets”",
+      "who": "Our Cog guide · Sun 4 Oct",
+      "x": 100,
+      "y": 150,
+      "w": 50,
+      "rotate": -2.5
+    },
+    {
+      "text": "“Clean Plate Award, earned”",
+      "who": "Red Arrow Diner · Sat 3 Oct",
+      "x": 150,
+      "y": 193,
+      "w": 40,
+      "rotate": 2
+    },
+    {
+      "text": "“Maine lobster at Scales. Natch.”",
+      "who": "Portland · Tue 6 Oct",
+      "x": 138,
+      "y": 360,
+      "w": 64,
+      "rotate": 1.5
+    },
+    {
+      "text": "“Not much to celebrate!”",
+      "who": "Bunker Hill · Sat 10 Oct",
+      "x": 157,
+      "y": 245,
+      "w": 34,
+      "rotate": -2
+    }
+  ]
+}

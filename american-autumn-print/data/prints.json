@@ -1,0 +1,142 @@
+{
+  "_": "The taped-on photos. x/y are page mm (bleed sheet) of the white print's top-left; w its width (the height follows from the photo's shape: 64 mm long edge + 3 mm border + 16 mm caption strip); rotate in degrees; leader names a route id to draw a dotted line to, or null; from (optional) is the page point the leader starts at, otherwise the print's edge. Photos are public/scrapbook-media/<hex>-f.jpg. 'placed': false keeps a print available without drawing it.",
+  "prints": [
+    {
+      "hex": "1dd98538a3da21cb",
+      "cap": "The two of us in the Proposal Booth",
+      "day": "Day 3 · Tue 29 Sept · Martin’s Tavern, Georgetown",
+      "x": 20,
+      "y": 60,
+      "w": 70,
+      "rotate": -1.5,
+      "leader": null,
+      "placed": true
+    },
+    {
+      "hex": "0d117a18a4ac6cc2",
+      "cap": "One British man, one tiny cave",
+      "day": "Day 7 · Sat 3 Oct · Lost River Gorge, NH",
+      "x": 96,
+      "y": 60,
+      "w": 54,
+      "rotate": 2,
+      "leader": "lostriver",
+      "from": [
+        140,
+        146.8
+      ],
+      "placed": true
+    },
+    {
+      "hex": "7478e96be23c8227",
+      "cap": "Dressed for the fair, Bean boots and all",
+      "day": "Day 10 · Tue 6 Oct · Fryeburg Fair, Maine",
+      "x": 156,
+      "y": 56,
+      "w": 54,
+      "rotate": -2,
+      "leader": "fryeburg",
+      "from": [
+        204.5,
+        141.2
+      ],
+      "placed": true
+    },
+    {
+      "hex": "7c9346d1334ff145",
+      "cap": "Waumbek pushing off up the mountain",
+      "day": "Day 8 · Sun 4 Oct · The Cog Railway, Mt Washington",
+      "x": 228,
+      "y": 58,
+      "w": 54,
+      "rotate": 2.5,
+      "leader": null,
+      "placed": true
+    },
+    {
+      "hex": "5498d01ea75919bb",
+      "cap": "The appropriate catch, secured",
+      "day": "Day 11 · Wed 7 Oct · Lobstering, Casco Bay",
+      "x": 233,
+      "y": 149,
+      "w": 54,
+      "rotate": 3,
+      "leader": "portland",
+      "from": [
+        233.5,
+        170
+      ],
+      "placed": true
+    },
+    {
+      "hex": "578dafa0149d4130",
+      "cap": "Dwarfed by the blast furnaces",
+      "day": "Day 5 · Thu 1 Oct · Bethlehem Steel, PA",
+      "x": 30,
+      "y": 178,
+      "w": 54,
+      "rotate": -2,
+      "leader": "bethlehem",
+      "placed": true
+    },
+    {
+      "hex": "bdac3f356449b2a6",
+      "cap": "The two of us, and Abe",
+      "day": "Day 2 · Mon 28 Sept · Lincoln Memorial, DC",
+      "x": 62,
+      "y": 318,
+      "w": 70,
+      "rotate": 1.5,
+      "leader": "dc",
+      "placed": true
+    },
+    {
+      "hex": "868a3a2e08418f62",
+      "cap": "Zach Bryan at Gillette Stadium, worth the wait",
+      "day": "Day 6 · Fri 2 Oct · Foxborough, MA",
+      "x": 232,
+      "y": 241,
+      "w": 54,
+      "rotate": 2,
+      "leader": "foxborough",
+      "placed": true
+    },
+    {
+      "hex": "8b1457e9e28e928c",
+      "cap": "Riding the Democratic donkey at Old City Hall",
+      "day": "Day 14 · Sat 10 Oct · Old City Hall, Boston",
+      "x": 150,
+      "y": 262,
+      "w": 54,
+      "rotate": -2.5,
+      "leader": "boston",
+      "placed": true,
+      "from": [
+        194,
+        261.1
+      ]
+    },
+    {
+      "hex": "7fb71e53e5e9c6e1",
+      "cap": "Portland Head Light",
+      "day": "Day 11 · Wed 7 Oct · Cape Elizabeth, Maine",
+      "x": 0,
+      "y": 0,
+      "w": 70,
+      "rotate": 0,
+      "leader": null,
+      "placed": false
+    },
+    {
+      "hex": "94fca634265ac2f6",
+      "cap": "Lights down at the TD Garden",
+      "day": "Day 14 · Sat 10 Oct · Bruins v Flyers, Boston",
+      "x": 0,
+      "y": 0,
+      "w": 70,
+      "rotate": 0,
+      "leader": null,
+      "placed": false
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "_": "The road as we drove it, in order. 'main' is DC to Boston; 'spur' is the out-and-back from North Woodstock to the Cog Railway on Sunday 4 Oct. lat/lng from public/american-autumn.html where it has them.",
+  "main": [
+    {"id": "dc",          "name": "Washington DC",            "lat": 38.9073, "lng": -77.0369},
+    {"id": "gettysburg",  "name": "Gettysburg",               "lat": 39.8309, "lng": -77.2311},
+    {"id": "bethlehem",   "name": "Bethlehem Steel",          "lat": 40.6153, "lng": -75.3665},
+    {"id": "watergap",    "name": "Delaware Water Gap",       "lat": 40.9723, "lng": -75.1352},
+    {"id": "bearmtn",     "name": "Bear Mountain",            "lat": 41.3123, "lng": -73.9887},
+    {"id": "westpoint",   "name": "West Point",               "lat": 41.3889, "lng": -73.9571},
+    {"id": "hydepark",    "name": "Hyde Park",                "lat": 41.7670, "lng": -73.9330},
+    {"id": "hartford",    "name": "Hartford",                 "lat": 41.7637, "lng": -72.6851},
+    {"id": "milford",     "name": "Milford",                  "lat": 42.1398, "lng": -71.5163},
+    {"id": "foxborough",  "name": "Gillette Stadium",         "lat": 42.0909, "lng": -71.2643},
+    {"id": "manchester",  "name": "Manchester",               "lat": 42.9956, "lng": -71.4548},
+    {"id": "lostriver",   "name": "Lost River Gorge",         "lat": 44.0345, "lng": -71.7865},
+    {"id": "nwoodstock",  "name": "North Woodstock",          "lat": 44.0334, "lng": -71.6851},
+    {"id": "kanc",        "name": "Kancamagus Pass",          "lat": 44.0000, "lng": -71.4500},
+    {"id": "conway",      "name": "Conway",                   "lat": 44.0537, "lng": -71.1281},
+    {"id": "fryeburg",    "name": "Fryeburg",                 "lat": 44.0206, "lng": -70.9789},
+    {"id": "portland",    "name": "Portland",                 "lat": 43.6708, "lng": -70.2844},
+    {"id": "walkerspt",   "name": "Walker’s Point",           "lat": 43.3486, "lng": -70.4552},
+    {"id": "salem",       "name": "Salem",                    "lat": 42.5195, "lng": -70.8967},
+    {"id": "jfk",         "name": "JFK Library",              "lat": 42.3160, "lng": -71.0341},
+    {"id": "boston",      "name": "Boston",                   "lat": 42.3555, "lng": -71.0565}
+  ],
+  "spur": [
+    {"id": "nwoodstock",  "name": "North Woodstock",          "lat": 44.0334, "lng": -71.6851},
+    {"id": "franconia",   "name": "Franconia Notch",          "lat": 44.1500, "lng": -71.6830},
+    {"id": "twinmtn",     "name": "Twin Mountain",            "lat": 44.2700, "lng": -71.5400},
+    {"id": "brettonwoods","name": "Bretton Woods",            "lat": 44.2581, "lng": -71.4409},
+    {"id": "cog",         "name": "The Cog Railway",          "lat": 44.2700, "lng": -71.3502}
+  ],
+  "extra": [
+    {"id": "headlight",   "name": "Portland Head Light",      "lat": 43.6231, "lng": -70.2078},
+    {"id": "nyc",         "name": "New York",                 "lat": 40.7128, "lng": -74.0060},
+    {"id": "philly",      "name": "Philadelphia",             "lat": 39.9526, "lng": -75.1652},
+    {"id": "albany",      "name": "Albany",                   "lat": 42.6526, "lng": -73.7562},
+    {"id": "providence",  "name": "Providence",               "lat": 41.8240, "lng": -71.4128},
+    {"id": "burlington",  "name": "Burlington",               "lat": 44.4759, "lng": -73.2121},
+    {"id": "montreal",    "name": "Montréal",                 "lat": 45.5017, "lng": -73.5673},
+    {"id": "bangor",      "name": "Bangor",                   "lat": 44.8016, "lng": -68.7712},
+    {"id": "mtwashington","name": "Mt Washington",            "lat": 44.2706, "lng": -71.3033}
+  ]
+}

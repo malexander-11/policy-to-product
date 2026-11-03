@@ -1,0 +1,9 @@
+Caveat (Pablo Impallari), Gelasio (Eben Sorkin) and Special Elite (Astigmatic) are distributed under the
+SIL Open Font License 1.1. The files here are the Google Fonts latin subsets, copied unchanged.
+
+To refresh them: request
+https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Gelasio:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap
+with a current Chrome User-Agent, take the woff2 URL from each "/* latin */" @font-face block, and save them
+under the names used in fonts.css.
+
+Full licence text: https://openfontlicense.org/open-font-license-official-text/

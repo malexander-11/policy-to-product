@@ -1,0 +1,77 @@
+/* Matt & Billy's American Autumn: the A3 print. Everything is in millimetres on a 303 x 426 bleed sheet
+   (trim 297 x 420, 3 mm in). The palette is the scrapbook's. No filters or blurred shadows anywhere:
+   Chromium would rasterise them in the PDF. */
+:root{
+  --kraft:#C4A276; --page:#FCF8EE; --map-paper:#FBF4E4; --canada:#F3EAD6;
+  --ink:#2E2419; --faint:#7A6955; --rust:#A63A0C; --rule:#E3D6BF; --border:#CDBB99;
+  --water:#D7E4EC; --coast:#A3BCCF; --statename:#C8B899; --ocean:#86A3B9;
+  --tape:rgba(236,224,182,.82); --shadow:rgba(60,40,15,.18);
+}
+@page{margin:0;}
+html,body{margin:0;padding:0;background:var(--page);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+body{font:4mm/1.35 Gelasio,Georgia,serif;color:var(--ink);}
+*{box-sizing:border-box;}
+.sheet{position:relative;width:303mm;height:426mm;overflow:hidden;background:var(--page);}
+.art{position:absolute;left:0;top:0;width:303mm;height:426mm;}
+body.trim-only .sheet{width:297mm;height:420mm;}
+body.trim-only .art{left:-3mm;top:-3mm;}
+
+/* ---------- title ---------- */
+.title{position:absolute;left:0;right:0;top:14mm;text-align:center;}
+.title h1{margin:0;font:700 20mm/1.05 Caveat,cursive;color:var(--rust);white-space:nowrap;}
+.title h1 span{display:inline-block;}
+.title .sub{margin:3.2mm 0 0;font:3.2mm/1.5 'Special Elite','Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);}
+.title .sub + .sub{margin-top:0.4mm;}
+
+/* ---------- the map card ---------- */
+.card{position:absolute;left:16mm;top:54mm;width:271mm;height:334mm;background:var(--map-paper);outline:0.3mm solid #DDCDAE;}
+.card svg{display:block;width:271mm;height:334mm;}
+.tape{position:absolute;width:22mm;height:6mm;background:var(--tape);z-index:5;
+  clip-path:polygon(2% 10%,6% 0,95% 6%,100% 14%,98% 88%,100% 100%,4% 94%,0 86%);}
+.card .tape.tl{left:-6mm;top:-2.6mm;transform:rotate(-38deg);}
+.card .tape.tr{right:-6mm;top:-2.6mm;transform:rotate(38deg);}
+.card .tape.bl{left:-6mm;bottom:-2.6mm;transform:rotate(38deg);}
+.card .tape.br{right:-6mm;bottom:-2.6mm;transform:rotate(-38deg);}
+
+/* SVG text (user unit = mm) */
+.state{font:italic 4.5px Gelasio,Georgia,serif;fill:var(--statename);letter-spacing:.06em;}
+.state.canada{fill:#D6C9AE;}
+.ocean{font:italic 4.2px Gelasio,Georgia,serif;fill:var(--ocean);letter-spacing:1.4px;}
+.lbl{font:700 2.9px Gelasio,Georgia,serif;fill:var(--ink);paint-order:stroke;stroke:var(--map-paper);stroke-width:1px;stroke-linejoin:round;}
+.lbl.town{font-size:2.6px;}
+.lbl.ctx{font-weight:400;font-size:2.4px;fill:var(--faint);}
+.badge-n{font:3.2px 'Special Elite','Courier New',monospace;fill:var(--ink);}
+.scale-t,.compass-t{font:2.2px 'Special Elite','Courier New',monospace;fill:var(--faint);letter-spacing:.1em;}
+.compass-n{font:700 4px Caveat,cursive;fill:var(--rust);}
+.icon-note{font:500 3.2px Caveat,cursive;fill:var(--rust);}
+
+/* ---------- prints ---------- */
+.print{position:absolute;margin:0;padding:3mm 3mm 0;background:#fff;z-index:4;}
+.print::after{content:"";position:absolute;left:0.6mm;top:0.9mm;width:100%;height:100%;background:var(--shadow);z-index:-1;}
+.print img{display:block;width:100%;height:auto;}
+.print .tape{left:50%;top:-2.8mm;margin-left:-11mm;transform:rotate(-4deg);}
+.print figcaption{height:16mm;padding:1mm 0.4mm 0;overflow:hidden;}
+.print .cap{display:block;font:500 3.8mm/1.05 Caveat,cursive;color:var(--ink);}
+.print .day{display:block;margin-top:0.5mm;font:2.1mm/1.2 'Special Elite','Courier New',monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);}
+
+/* ---------- handwritten notes ---------- */
+.quote{position:absolute;z-index:3;}
+.quote .q{display:block;font:500 4.6mm/1.1 Caveat,cursive;color:var(--ink);opacity:.88;}
+.quote .who{display:block;margin-top:0.8mm;font:2.2mm/1.3 'Special Elite','Courier New',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);white-space:nowrap;}
+
+/* ---------- key ---------- */
+.key{position:absolute;left:206mm;top:334mm;width:78mm;height:54mm;padding:3mm 4mm 2mm;background:var(--page);outline:0.3mm solid var(--rule);z-index:4;}
+.key::after{content:"";position:absolute;left:0.6mm;top:0.9mm;width:100%;height:100%;background:var(--shadow);z-index:-1;}
+.key .tape{left:50%;top:-2.8mm;margin-left:-11mm;transform:rotate(-3deg);}
+.key h2{margin:0 0 1.2mm;font:2.8mm/1.2 'Special Elite','Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);}
+.key ol{list-style:none;margin:0;padding:0;}
+.key li{display:grid;grid-template-columns:5.6mm 1fr;gap:0 1.2mm;align-items:center;height:6.2mm;}
+.key .b{width:4.4mm;height:4.4mm;border:0.35mm solid var(--ink);border-radius:50%;background:var(--page);text-align:center;font:2.5mm/3.8mm 'Special Elite','Courier New',monospace;color:var(--ink);}
+.key .where{display:block;font:2.5mm/1.15 Gelasio,Georgia,serif;color:var(--ink);white-space:nowrap;}
+.key .when{display:block;font:2mm/1.2 'Special Elite','Courier New',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);white-space:nowrap;}
+
+/* ---------- footer ---------- */
+.foot{position:absolute;left:16mm;right:16mm;top:393mm;display:flex;justify-content:space-between;align-items:flex-start;}
+.foot .stats{font:2.8mm/1.5 'Special Elite','Courier New',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
+.foot .credit{display:block;margin-top:0.8mm;font:2mm/1.4 'Special Elite','Courier New',monospace;letter-spacing:.06em;color:#B5A68C;text-transform:none;}
+.foot .hand{font:500 5mm/1.1 Caveat,cursive;color:var(--rust);text-align:right;transform:rotate(-1.5deg);margin-top:1mm;}

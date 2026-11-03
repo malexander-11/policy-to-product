@@ -1,0 +1,12 @@
+{
+  "ne_10m_admin_1_states_provinces_lakes.geojson": {
+    "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces_lakes.geojson",
+    "bytes": 41037472,
+    "sha256": "ff5e330cf097a639cc413ab849814d605ba76307235e3a9eba5d1aa0491beba1"
+  },
+  "ne_10m_rivers_lake_centerlines.geojson": {
+    "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_rivers_lake_centerlines.geojson",
+    "bytes": 7307743,
+    "sha256": "bb854a900ecbd3b408df46d5e16e3e0f974ba55993f9d8b5c26e855273c0905a"
+  }
+}
